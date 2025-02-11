@@ -1,0 +1,112 @@
+---
+title: "STAT 245 Project: Statement of Work"
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: visual
+---
+
+# Part 1: Shared RStudio Project
+
+1.  Create a shared project in RStudio for your project team.
+
+2.  Make sure it is shared to all team members plus Prof DR (email id: sld33).
+
+    -   *Note: If you prefer to use github within RStudio for project collaboration and file sharing/storage, I am happy to support it - reach out to me for resources if you want to try this.*
+
+# Part 2: Statement of Work
+
+In your shared project, create a new Quarto document in which to write your Statement of Work. You will hand in the rendered version of this document on Moodle.
+
+A statement of work outlines the goals and scope of your project. It will include a description of the questions you'll try to answer, the data you will use, and the deliverables you will provide to your partner at the end (products: reports, presentations, slide decks, graphics, dashboard...).
+
+Your answers need not be long - the average statement of work will probably be around 2 pages. The goal is not to go into great detail, but to touch on all the key areas you need to plan. You can come back to this statement throughout the project to gauge your progress, and revise *the document* or *what you are doing* as needed.
+
+**Ensure that your Statement of Work includes all the sections below. Submit the rendered version on Moodle (one submission per group, with all names on it).**
+
+*Hint: you can use the* `Code` *link at the upper right of this doc to copy/paste the source code, and use it as a template for your work! Just make sure you delete the instructions and change the title, etc. before you submit.*
+
+## Project Partner
+
+In a short paragraph, who is your project partner and what is their main mission? If appropriate, you may quote (with citation) from your contact person, partner organization website, etc. You can also use materials from the project descriptions you were given earlier.
+
+## Goals
+
+What questions will you be trying to answer in this project? Try to be as specific as possible (but concise is good).
+
+This can be a bulleted list. Aim for about 2-4 questions in priority order.
+
+You will likely begin with "research questions" in plain language (like: "How do demographic factors influence the number of overdoses that occur?"). Do your best to refine it into a statistical question that makes it clear what data variables will be used in the analysis (like: "Are we able to detect differences in the number of overdoses per month by gender and race/ethnicity, controlling for possible effects of location, season, and socio-economic status?")
+
+## Deliverables
+
+What materials will you produce to achieve the goals above? These "deliverables" are the specific documents, files, etc. you will do/make/provide to your partner. Provide a list of the deliverables you and your partner would like to have.
+
+**A default option for deliverables is:**
+
+-   **an analysis-ready version of the dataset and**
+
+-   **a set of presentation slides with graphics, tables, and statistical model conclusions.**
+
+But consider what is right for your project:
+
+-   Would a report, a folder of image files with graphics, or an interactive web dashboard be more useful than a slide deck and presentation?
+
+-   Do people at the partner organization want to learn to do/replicate the analysis (maybe you provide an Rmd file and videos or written instructions)?
+
+-   Is your team trying to prepare a manuscript for a peer-reviewed journal (if so, maybe an outline or draft of the methods and results sections, or more, is the main deliverable)?
+
+I don't care if you write a report or not -- I want you to make things that are useful for your partner organization, using data, graphics, and regression models somehow. So in your initial meeting, do your best to discern what deliverables would be most needed!
+
+**If possible, your partner should review the "Goals and Deliverables" section of your proposal, either before or after you submit it to me. Then, be sure to revise it with their feedback in mind.**
+
+## Data
+
+What data will you use? Do you already have it, and if not, when and how will you get it? What format is it in (electronic or on paper; what file type(s))? Is there one data file, or several that will need to be joined together?
+
+You don't necessarily have to *have* your copy of the data yet, or to have it in a ready-to-analyze state; this question is asking you about the form the data will be in when you get it from your partner. If you do have the dataset already, make note of which variables you *will* or *won't* use (according to your partner) if possible.
+
+## Data Prep
+
+Do you already know of specific tasks you will need to do to get your data in a format ready to read into R and prepared for analysis? If so, describe here. (Do you need to convert paper data sheets to a csv file? Combine several datasets into one? Recode or rename variables, or compute new ones? Rearrange rows and columns?)
+
+If you do not know yet, just say so.
+
+Your answer to this question helps you look ahead at what needs to be done soon, and helps me prepare support materials for you to work with your data.
+
+## Background
+
+What library, literature, or online resources will you need to consult to understand the **context** of your project?
+
+**Your list should include more than just web links. At least one should be a peer-reviewed academic article or an official report (from a government or nongovernmental organization). Maybe one might also be a film or a TED talk or something you listen to.**
+
+**Identify 3 or more ideas and list them.**
+
+-   Your partner may have suggestions
+
+-   You can consult Prof DR
+
+-   You can get help and advice from the Math/Science Hekman Library liaison, Katherine Swart ([kswart20\@calvin.edu](mailto:kswart20@calvin.edu "mailto:kswart20@calvin.edu"))
+
+    -   Katherine's appointment tool:<https://kswart20.youcanbook.me/>
+    -   Katherine's online office hours: Wednesdays 11:00am-1:00pm and Fridays 3:00-4:30pm (Start a chat in the left sidebar at <https://library.calvin.edu/math-stats>)
+    -   Come to the 4th floor Research Desk during the library's open hours for walk-up help
+    -   Use the LiveChat pop-up on the library website to instant message a librarian 24/7
+
+Ideally, not all of your context resources will be web sites - consider whether there are films (documentary, TED talks, etc), books, or academic journal articles that are relevant.
+
+**The idea is to review these materials in the first weeks of your project to get familiar with the topic and understand what other data analysts are doing with similar data, not to do a full literature review or write anything up. One idea is to have different group members review different resources, and present/discuss them together at an early group meeting.** These sources *will* be used later in presenting your project to your classmates at the end of the semester.
+
+## Current Skills
+
+What skills and strengths do your group members bring to the project that are likely to be useful? (This might include interpersonal skills and qualities like organization or leadership, or skills with other software (GIS, Tableau, Excel, github...)) or specific R, data, or general coding experience.
+
+## Work Plan
+
+Talk with your group about how you think you will work best. Will you divide tasks and then hold meetings to report on progress, or hold more frequent meetings to work collaboratively? Do certain group members want to take the lead on certain tasks? What times will work for meetings outside class time, if they are needed? Just spend a little time thinking about how you will coordinate effort for the project, and write a brief summary of your initial plans.
+
+## Requests from You
+
+Is there anything else you expect you will need from me to complete your project? Please feel free to let me know so I can also plan ahead.
