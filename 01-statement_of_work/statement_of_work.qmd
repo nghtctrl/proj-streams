@@ -1,5 +1,5 @@
 ---
-title: "STAT 245 Project: Statement of Work"
+title: "proj-streams Statement of Work"
 author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
 date: 02-18-2025
 format: 
@@ -10,50 +10,13 @@ format:
 editor: source
 ---
 
-# Part 1: Shared RStudio Project
-
-1.  Create a shared project in RStudio for your project team.
-
-2.  Make sure it is shared to all team members plus Prof DR (email id:
-    sld33).
-
-    -   *Note: If you prefer to use github within RStudio for project
-        collaboration and file sharing/storage, I am happy to support
-        it - reach out to me for resources if you want to try this.*
-
-# Part 2: Statement of Work
-
-In your shared project, create a new Quarto document in which to write
-your Statement of Work. You will hand in the rendered version of this
-document on Moodle.
-
-A statement of work outlines the goals and scope of your project. It
-will include a description of the questions you'll try to answer, the
-data you will use, and the deliverables you will provide to your partner
-at the end (products: reports, presentations, slide decks, graphics,
-dashboard...).
-
-Your answers need not be long - the average statement of work will
-probably be around 2 pages. The goal is not to go into great detail, but
-to touch on all the key areas you need to plan. You can come back to
-this statement throughout the project to gauge your progress, and
-revise *the document* or *what you are doing* as needed.
-
-**Ensure that your Statement of Work includes all the sections below.
-Submit the rendered version on Moodle (one submission per group, with
-all names on it).**
-
-*Hint: you can use the* `Code` *link at the upper right of this doc to
-copy/paste the source code, and use it as a template for your work! Just
-make sure you delete the instructions and change the title, etc. before
-you submit.*
+::: {.callout-note}
+proj-streams refers to the STAT 245 project that the authors of this document are working on in collaboration with their project partner, [Streams](https://streamsgr.org/).
+:::
 
 ## Project Partner
 
-In a short paragraph, who is your project partner and what is their main
-mission? If appropriate, you may quote (with citation) from your contact
-person, partner organization website, etc. You can also use materials
-from the project descriptions you were given earlier.
+Our project partner is [Streams](https://streamsgr.org/), a Christian non-profit organization based on Grand Rapids, MI. Streams serves as a neighborhood hub for the Townline neighborhood, providing essential services such as healthcare through Catherine’s Health Center, food distribution, tutoring, and playgroups. Their mission is to bridge health disparities and improve the well-being of the diverse and underserved populations in the neighborhood.
 
 ## Goals
 
