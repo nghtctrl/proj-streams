@@ -34,6 +34,10 @@ makes it clear what data variables will be used in the analysis (like:
 by gender and race/ethnicity, controlling for possible effects of
 location, season, and socio-economic status?")
 
+---
+
+- The main project goal our group is focusing on is assisting in the gathering of health information about residents living in the "Steams Healthy Neighborhood Hub" and the individuals who use Streams' services. Once we have the neighborhood health data, our goal is to generate findings related to information gathered. 
+
 ## Deliverables
 
 What materials will you produce to achieve the goals above? These
@@ -71,6 +75,14 @@ discern what deliverables would be most needed!
 section of your proposal, either before or after you submit it to me.
 Then, be sure to revise it with their feedback in mind.**
 
+---
+
+We will produce the following deliverables:
+
+- Cleaned and analysis-ready version of the dataset.
+- A report summarizing statistical analysis, results, and community health recommendations.
+- A presentation with visualizations and key takeaway messages to share with Streams and other stakeholders.
+
 ## Data
 
 What data will you use? Do you already have it, and if not, when and how
@@ -83,6 +95,10 @@ have it in a ready-to-analyze state; this question is asking you about
 the form the data will be in when you get it from your partner. If you
 do have the dataset already, make note of which variables you *will* or
 *won't* use (according to your partner) if possible.
+
+---
+
+- We will use the collection of health surveys that was completed by individuals who utilize the Streams neighborhood hub services and residents who live in the surrounding Townline neighborhood as our primary data. 
 
 ## Data Prep
 
@@ -97,6 +113,10 @@ If you do not know yet, just say so.
 Your answer to this question helps you look ahead at what needs to be
 done soon, and helps me prepare support materials for you to work with
 your data.
+
+---
+
+- We don't know yet. 
 
 ## Background
 
@@ -139,6 +159,10 @@ different resources, and present/discuss them together at an early group
 meeting.** These sources *will* be used later in presenting your project
 to your classmates at the end of the semester.
 
+1. https://www.ncbi.nlm.nih.gov/books/NBK578537/
+2.
+3.
+
 ## Current Skills
 
 What skills and strengths do your group members bring to the project
@@ -146,6 +170,12 @@ that are likely to be useful? (This might include interpersonal skills
 and qualities like organization or leadership, or skills with other
 software (GIS, Tableau, Excel, github...)) or specific R, data, or
 general coding experience.
+
+-Our group as a collective has experience in R, Python, Excel, GitHub and Tableau. These 
+are essential software we will use in processing and interpreting the data provided.
+We are a proactive team and will be ever willing to embrace changes and errors in 
+case of their occurrence. Though the team has limited knowledge on the nuances of the 
+subject matter(healthcare )
 
 ## Work Plan
 
@@ -157,7 +187,16 @@ outside class time, if they are needed? Just spend a little time
 thinking about how you will coordinate effort for the project, and write
 a brief summary of your initial plans.
 
+---
+
+- We are planning on dividing tasks with occasional meetings to check in and make sure everyone is on the same page. We plan to communicate questions and information through Microsoft teams and personal contact information. From 9:50 - 10:20am every Tuesday our group plans to meet with our project managers on a teams meeting, to ensure direction and efficiency. 
+
 ## Requests from You
 
 Is there anything else you expect you will need from me to complete your
 project? Please feel free to let me know so I can also plan ahead.
+
+---
+
+- Advice on statistical analysis for this project.
+- Feedback on draft reports and presentations.
