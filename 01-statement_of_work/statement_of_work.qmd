@@ -36,7 +36,10 @@ location, season, and socio-economic status?")
 
 ---
 
-- The main project goal our group is focusing on is assisting in the gathering of health information about residents living in the "Steams Healthy Neighborhood Hub" and the individuals who use Streams' services. Once we have the neighborhood health data, our goal is to generate findings related to information gathered. 
+- The main project goal our group is focusing on is assisting in the interpretation of health information about residents living in the "Steams Healthy Neighborhood Hub" and the individuals who use Streams' services. Using the previously gathered neighborhood health data, our goal is to generate findings related to information gathered and look for possible assumptions or areas for improvement. Specifically, answering how Streams can better utilize Catherines Health Center. 
+- Answer: Who uses Catherines services and who doesn't? What are the key differences between these groups? What are some of the barriers to using Catherines. (ex: "Is income a barrier?")
+
+- Overall Goal of Management: Catherines wants more people to use their clinic. Currently, health providers at the clinic do not have full schedules every day, how can that be changed.
 
 ## Deliverables
 
@@ -98,7 +101,7 @@ do have the dataset already, make note of which variables you *will* or
 
 ---
 
-- We will use the collection of health surveys that was completed by individuals who utilize the Streams neighborhood hub services and residents who live in the surrounding Townline neighborhood as our primary data. 
+- We will use the collection of health surveys that was completed by individuals who utilize the Streams neighborhood hub services and residents who live in the surrounding Townline neighborhood as our primary data. We don't have this data yet but Professor Boldenow will send us the Excel file within a few days. 
 
 ## Data Prep
 
@@ -160,8 +163,8 @@ meeting.** These sources *will* be used later in presenting your project
 to your classmates at the end of the semester.
 
 1. https://www.ncbi.nlm.nih.gov/books/NBK578537/
-2.
-3.
+2. https://youtu.be/xAlxtog_4ns?si=J9SAE0QdrBQkHsd5
+3. https://pmc.ncbi.nlm.nih.gov/articles/PMC1592072/
 
 ## Current Skills
 
@@ -172,10 +175,10 @@ software (GIS, Tableau, Excel, github...)) or specific R, data, or
 general coding experience.
 
 -Our group as a collective has experience in R, Python, Excel, GitHub and Tableau. These 
-are essential software we will use in processing and interpreting the data provided.
+are essential software we will use in processing, interpreting and communicating the data provided.
 We are a proactive team and will be ever willing to embrace changes and errors in 
-case of their occurrence. Though the team has limited knowledge on the nuances of the 
-subject matter(healthcare )
+case of their occurrence during this process. Though the team has limited knowledge on the nuances of the 
+subject matter(healthcare), we are a driven group of people and are readily willing to learn and re-learn.
 
 ## Work Plan
 
