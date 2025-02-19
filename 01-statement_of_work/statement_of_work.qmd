@@ -20,186 +20,63 @@ Our project partner is [Streams](https://streamsgr.org/), a Christian non-profit
 
 ## Goals
 
-What questions will you be trying to answer in this project? Try to be
-as specific as possible (but concise is good).
+Key research questions we aim to answer:
 
-This can be a bulleted list. Aim for about 2-4 questions in priority
-order.
-
-You will likely begin with "research questions" in plain language (like:
-"How do demographic factors influence the number of overdoses that
-occur?"). Do your best to refine it into a statistical question that
-makes it clear what data variables will be used in the analysis (like:
-"Are we able to detect differences in the number of overdoses per month
-by gender and race/ethnicity, controlling for possible effects of
-location, season, and socio-economic status?")
-
----
-
-- The main project goal our group is focusing on is assisting in the interpretation of health information about residents living in the "Steams Healthy Neighborhood Hub" and the individuals who use Streams' services. Using the previously gathered neighborhood health data, our goal is to generate findings related to information gathered and look for possible assumptions or areas for improvement. Specifically, answering how Streams can better utilize Catherines Health Center. 
-- Answer: Who uses Catherines services and who doesn't? What are the key differences between these groups? What are some of the barriers to using Catherines. (ex: "Is income a barrier?")
-
-- Overall Goal of Management: Catherines wants more people to use their clinic. Currently, health providers at the clinic do not have full schedules every day, how can that be changed.
+- How do demographic factors influence who uses Catherine’s Health Center?
+  - Are there differences in health center utilization based on gender, age, or race/ethnicity?
+- Does income or economic status impact access to Catherine’s Health Center? 
+  - Are people with lower incomes, different employment statuses, or renters less likely to use the clinic compared to those with higher incomes or homeowners?
+- How do health conditions affect the likelihood of using Catherine’s Health Center? 
+  - Are individuals with chronic conditions like asthma, diabetes, or high blood pressure more or less likely to visit the clinic?
+  - Do people with mental health conditions such as depression or anxiety use Catherine’s Health Center at different rates?
+- What barriers prevent people from using Catherine’s Health Center?
+  - Does lack of health insurance, transportation, or appointment availability make it harder for people to access the clinic?
+  - Do language barriers  play a role in whether people seek care at Catherine’s?
+  - Are financial concerns a significant factor in preventing people from visiting the clinic?
 
 ## Deliverables
 
-What materials will you produce to achieve the goals above? These
-"deliverables" are the specific documents, files, etc. you will
-do/make/provide to your partner. Provide a list of the deliverables you
-and your partner would like to have.
+Our expected deliverables are:
 
-**A default option for deliverables is:**
-
--   **an analysis-ready version of the dataset and**
-
--   **a set of presentation slides with graphics, tables, and
-    statistical model conclusions.**
-
-But consider what is right for your project:
-
--   Would a report, a folder of image files with graphics, or an
-    interactive web dashboard be more useful than a slide deck and
-    presentation?
-
--   Do people at the partner organization want to learn to do/replicate
-    the analysis (maybe you provide an Rmd file and videos or written
-    instructions)?
-
--   Is your team trying to prepare a manuscript for a peer-reviewed
-    journal (if so, maybe an outline or draft of the methods and results
-    sections, or more, is the main deliverable)?
-
-I don't care if you write a report or not -- I want you to make things
-that are useful for your partner organization, using data, graphics, and
-regression models somehow. So in your initial meeting, do your best to
-discern what deliverables would be most needed!
-
-**If possible, your partner should review the "Goals and Deliverables"
-section of your proposal, either before or after you submit it to me.
-Then, be sure to revise it with their feedback in mind.**
-
----
-
-We will produce the following deliverables:
-
-- Cleaned and analysis-ready version of the dataset.
-- A report summarizing statistical analysis, results, and community health recommendations.
-- A presentation with visualizations and key takeaway messages to share with Streams and other stakeholders.
+- A cleaned and analysis-ready dataset.
+- A concise report summarizing key findings and insights, with a primary focus on informing Catherine’s Health Center, while also addressing relevant aspects of Streams, given their oversight role.
+- A PowerPoint presentation summarizing the key points from the report, including visuals, tables, and any relevant data analysis.
+  - This will be used during a Teams meeting with Megan (CEO of Catherine’s Health Center) and Makalah (Operations Director of Streams) to discuss the findings and recommendations.
 
 ## Data
 
-What data will you use? Do you already have it, and if not, when and how
-will you get it? What format is it in (electronic or on paper; what file
-type(s))? Is there one data file, or several that will need to be joined
-together?
-
-You don't necessarily have to *have* your copy of the data yet, or to
-have it in a ready-to-analyze state; this question is asking you about
-the form the data will be in when you get it from your partner. If you
-do have the dataset already, make note of which variables you *will* or
-*won't* use (according to your partner) if possible.
-
----
-
-- We will use the collection of health surveys that was completed by individuals who utilize the Streams neighborhood hub services and residents who live in the surrounding Townline neighborhood as our primary data. We don't have this data yet but Professor Boldenow will send us the Excel file within a few days. 
+We will use the collection of health surveys completed by individuals who utilize the Streams Neighborhood Hub services and by residents of the surrounding Townline neighborhood as our primary data. We do not have this data yet, but our partner will send us an Excel file within a few days.
 
 ## Data Prep
 
-Do you already know of specific tasks you will need to do to get your
-data in a format ready to read into R and prepared for analysis? If so,
-describe here. (Do you need to convert paper data sheets to a csv file?
-Combine several datasets into one? Recode or rename variables, or
-compute new ones? Rearrange rows and columns?)
-
-If you do not know yet, just say so.
-
-Your answer to this question helps you look ahead at what needs to be
-done soon, and helps me prepare support materials for you to work with
-your data.
-
----
-
-- We don't know yet. 
+We don't know yet.
 
 ## Background
 
-What library, literature, or online resources will you need to consult
-to understand the **context** of your project?
+We will use the following resources:
 
-**Your list should include more than just web links. At least one should
-be a peer-reviewed academic article or an official report (from a
-government or nongovernmental organization). Maybe one might also be a
-film or a TED talk or something you listen to.**
+- Our partner Dr. Dani and Prof. Boldenow for advice and feedback.
+- Prof. De Ruiter for advice and feedback.
+- Help and advice from the Math/Science Hekman Library liaison, Katherine Swart.
+- Google Scholar, Semantic Scholar, NIH database for literature search and review.
 
-**Identify 3 or more ideas and list them.**
+We will review the following sources:
 
--   Your partner may have suggestions
-
--   You can consult Prof DR
-
--   You can get help and advice from the Math/Science Hekman Library
-    liaison, Katherine Swart
-    ([kswart20\@calvin.edu](mailto:kswart20@calvin.edu "mailto:kswart20@calvin.edu"))
-
-    -   Katherine's appointment tool:<https://kswart20.youcanbook.me/>
-    -   Katherine's online office hours: Wednesdays 11:00am-1:00pm and
-        Fridays 3:00-4:30pm (Start a chat in the left sidebar at
-        <https://library.calvin.edu/math-stats>)
-    -   Come to the 4th floor Research Desk during the library's open
-        hours for walk-up help
-    -   Use the LiveChat pop-up on the library website to instant
-        message a librarian 24/7
-
-Ideally, not all of your context resources will be web sites - consider
-whether there are films (documentary, TED talks, etc), books, or
-academic journal articles that are relevant.
-
-**The idea is to review these materials in the first weeks of your
-project to get familiar with the topic and understand what other data
-analysts are doing with similar data, not to do a full literature review
-or write anything up. One idea is to have different group members review
-different resources, and present/discuss them together at an early group
-meeting.** These sources *will* be used later in presenting your project
-to your classmates at the end of the semester.
-
-1. https://www.ncbi.nlm.nih.gov/books/NBK578537/
-2. https://youtu.be/xAlxtog_4ns?si=J9SAE0QdrBQkHsd5
-3. https://pmc.ncbi.nlm.nih.gov/articles/PMC1592072/
+- [Access to Healthcare and Disparities in Access](https://www.ncbi.nlm.nih.gov/books/NBK578537/)
+- [Evaluating Michigan’s Community Hospital Access: Spatial Methods for Decision Support](https://pmc.ncbi.nlm.nih.gov/articles/PMC1592072/)
+- [How Social Determinants Impact Healthcare](https://youtu.be/xAlxtog_4ns?si=J9SAE0QdrBQkHsd5)
 
 ## Current Skills
 
-What skills and strengths do your group members bring to the project
-that are likely to be useful? (This might include interpersonal skills
-and qualities like organization or leadership, or skills with other
-software (GIS, Tableau, Excel, github...)) or specific R, data, or
-general coding experience.
-
--Our group as a collective has experience in R, Python, Excel, GitHub and Tableau. These 
-are essential software we will use in processing, interpreting and communicating the data provided.
-We are a proactive team and will be ever willing to embrace changes and errors in 
-case of their occurrence during this process. Though the team has limited knowledge on the nuances of the 
-subject matter(healthcare), we are a driven group of people and are readily willing to learn and re-learn.
+Our group includes members with leadership and research experience, which will be valuable for our project. We are proficient in R, Python, Excel, GitHub, and Tableau, and we are happy to learn new skills as needed.
 
 ## Work Plan
 
-Talk with your group about how you think you will work best. Will you
-divide tasks and then hold meetings to report on progress, or hold more
-frequent meetings to work collaboratively? Do certain group members want
-to take the lead on certain tasks? What times will work for meetings
-outside class time, if they are needed? Just spend a little time
-thinking about how you will coordinate effort for the project, and write
-a brief summary of your initial plans.
+We will divide tasks and hold occasional check-ins as needed to keep everyone aligned. Communication will be through Microsoft Teams and personal contacts. Every Tuesday from 9:50 to 10:20 AM, we will meet with our partners via Teams.
 
----
+## Requests
 
-- We are planning on dividing tasks with occasional meetings to check in and make sure everyone is on the same page. We plan to communicate questions and information through Microsoft teams and personal contact information. From 9:50 - 10:20am every Tuesday our group plans to meet with our project managers on a teams meeting, to ensure direction and efficiency. 
+We would appreciate your help with the following:
 
-## Requests from You
-
-Is there anything else you expect you will need from me to complete your
-project? Please feel free to let me know so I can also plan ahead.
-
----
-
-- Advice on statistical analysis for this project.
+- Advice on statistical analysis for this project and team management.
 - Feedback on draft reports and presentations.
