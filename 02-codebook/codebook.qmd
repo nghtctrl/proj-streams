@@ -10,165 +10,55 @@ format:
 editor: source
 ---
 
-
-- How & Where was the data collected?
-The data was collected using convenience sampling by surveying people in the Heartside, Creston/Belknap, Baxter/Madison, & Burton Heights neighborhood along with individuals that utilize the Streams/Catherines services. 
-
-- Why was the data collected?
-The data was collected in order to gather health information about the community members living in the Townline neighbourhood surrounding the Streams Healthy Neighbourhood Hub and the individuals who utilize the services at Streams. Ultimately, the data was collected to assess the lack of access to health care and mental health resources.
-
-- What is the size of the dataset?
-There are 104 observations within the dataset
-
-- Unit of observation?
-1 person
-
-- `QID6`: Is there a place you usually go when you are sick or need advice about your health?
-  - Unit(s) of Measure: (1,2,3,4,5)
-
-- `QID7`: What kind of place is it?
-  - Unit(s) of Measure: (1,2,3,4,5,6,7)
-
-- `QID8`: Which of the following clinics or resources are you aware of?
-  - Unit(s) of Measure: (5,4,3,1,7,6)
-
-- `QID9`: During the past 12 months, how many times have you visited a doctor?
-  - Unit(s) of Measure: 
-
-- `QID12`: About how long has it been since you last visited a doctor?
-  - Unit(s) of Measure: (1,2,3,4,5,6,7)
-
-- `QID89BH_1`: Have you or anyone in your household ever been diagnosed with depression?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `QID89BH_2`: Have you or anyone in your household ever been diagnosed with anxiety?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `QID89BH_3`: Have you or anyone in your household ever been diagnosed with bipolar disorder?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `QID89BH_4`: Have you or anyone in your household ever been diagnosed with schizophrenia?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `QID89BH_5`: Have you or anyone in your household ever been diagnosed with PTSD?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `QID89BH_6`: Have you or anyone in your household ever been diagnosed with another mental health condition?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `Q16_1`: Do you smoke cigarettes?
-  - Unit(s) of Measure: (1,2,3)
-
-- `Q16_4`: Do you use e-cigarettes or vapes?
-  - Unit(s) of Measure: (1,2,3)
-
-- `Q16_6`: Do you use marijuana?
-  - Unit(s) of Measure: (1,2,3)
-
-- `Q16_7`: Do you use other recreational drugs?
-  - Unit(s) of Measure: (1,2,3)
-
-- `Q16_9`: Do you drink alcohol?
-  - Unit(s) of Measure: (1,2,3)
-
-- `QID20`: How many servings of fruits do you eat per day?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `QID21`: How many servings of vegetables do you eat per day?
-  - Unit(s) of Measure: (1,2,3,4,5,6)
-
-- `QID22`: How many days per week do you engage in physical activity?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `QID26`: How would you describe your general health?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `QID200`: Do you have health insurance?
-  - Unit(s) of Measure: (1,2,3,4,5,6,7)
-
-- `QID201`: What type of health insurance do you have?
-  - Unit(s) of Measure: (1,2,3,4,5,6,7)
-
-- `QID202`: How would you rate your access to healthcare?
-  - Unit(s) of Measure: (1,2,3,4,5,6,7)
-
-- `QID29`: Do you have a regular primary care provider?
-  - Unit(s) of Measure:(1,2,3,4,5,6,7)
-
-- `QID30`: Do you face any barriers to accessing healthcare?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `QID31`: What are the main barriers to accessing healthcare?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `QID204`: Have you ever delayed seeking medical care due to cost?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `QID208`: Have you ever delayed seeking medical care due to transportation issues?
-  - Unit(s) of Measure: (1,2,3,4)
-
-- `Q34_1`: Are you satisfied with the healthcare services in your community?
-  - Unit(s) of Measure: (1,2,3,4,5,6,7)
-
-- `Q34_2`: Do you feel safe in your neighborhood?
-  - Unit(s) of Measure: (1,2,3,4,5,6,7)
-
-- `Q34_3`: Do you have access to healthy food options in your neighborhood?
-  - Unit(s) of Measure: (1,2,3,4,5,6,7)
-
-- `Q34_4`: Do you have access to public transportation in your neighborhood?
-  - Unit(s) of Measure: (1,2,3,4,5,6,7)
-
-- `QID44`: What is your age?
-  - Unit(s) of Measure: (1,2,6,7,3,4,5)
-
-- `QID44_3_TEXT`: Please specify your age if you selected “Other.”
-  - Unit(s) of Measure: 
-
-- `QID45`: What is your gender?
-  - Unit(s) of Measure: 
-
-- `Q41`: What is your race or ethnicity?
-  - Unit(s) of Measure:
-
-- `QID46`: What is your marital status?
-  - Unit(s) of Measure:
-
-- `QID47`: What is your highest level of education?
-  - Unit(s) of Measure:
-
-- `QID47_7_TEXT`: Please specify your education level if you selected “Other.”
-  - Unit(s) of Measure:
-
-- `QID49`: What is your employment status?
-  - Unit(s) of Measure:
-
-- `QID91`: How would you describe your gender?: Selected options
-  - Unit(s) of Measure:
-
-- `QID91_4_TEXT`: How would you describe your gender?: Prefer to self-describe
-  - Unit(s) of Measure:
-
-- `Q107`: Have you received services at Catherine’s Health Center?
-  - Unit(s) of Measure:
-
-- `Q108`: Please rate your experience at Catherine’s Health Center.
-  - Unit(s) of Measure:
-
-- `Q109`: What prevents you from utilizing Catherine’s Health Center?
-  - Unit(s) of Measure:
-
-- `Q109_6_TEXT`: Please specify the reason if you selected “Other.”
-  - Unit(s) of Measure:
-
-- `Q110`: Do you live in zip code 49548?
-  - Unit(s) of Measure:
-
-- `QID52`: Would you be interested in coming to these meetings or events?
-  - Unit(s) of Measure:
-
-- `QID212`: Interviewer: Please record any notes or observations.
-  - Unit(s) of Measure:
-
-- `Paper`: Paper version indicator.
-  - Unit(s) of Measure:
+| Variable Name | Description | Units | Possible Values | Notes |
+| :---: | :---: | :---: | :---: | :---: |
+| `QID6` | Usual place for health care | N/A | 1 = Yes, 2 = No, 3 = More than one place, 4 = Don’t know / Not sure, 5 = Refused | |
+| `QID7` | Type of healthcare facility for usual health care | N/A | 1 = Clinic or health center, 2 = Doctor’s office or HMO, 3 = Hospital ER, 4 = Urgent care / walk-in clinic, 5 = Some other place, 6 = Don’t know, 7 = Refused | |
+| `QID8` | Awareness of clinics/resources (multiple selections possible) | N/A | 1 = Clinica Santa Maria, 3 = Cherry Street Clinic, 4 = Exalta Health, 5 = Catherine’s Health Center, 6 = None of these, 7 = Corewell Urgent Care | Some concerns about the ordering of the choices |
+| `QID9` | Number of ER visits in past year | Count | Integer values | |
+| `QID12` | Time since last routine checkup | N/A | 1 = $0 <= x < 1$ years, $2 = 1 <= x < 2$ years, 3 = $2 <= x < 5$ years, 4 = $x > 5$ years, 5 = Never, 6 = Don’t know / Not sure, 7 = Refused | |
+| `QID89BH_1` | Whether the respondent or someone in their household has been diagnosed with asthma | N/A | 1 = Respondent, 2 = No one, 3 = Don’t know/refused, 4 = Household member | |
+| `QID89BH_2` | Whether the respondent or someone in their household has been diagnosed with high blood pressure | N/A | Same as above | |
+| `QID89BH_3` | Whether the respondent or someone in their household has been diagnosed as overweight | N/A | Same as above | |
+| `QID89BH_4` | Whether the respondent or someone in their household has been diagnosed with depression | N/A | Same as above | |
+| `QID89BH_5` | Whether the respondent or someone in their household has been diagnosed with an anxiety disorder | N/A | Same as above | |
+| `QID89BH_6` | Whether the respondent or someone in their household has been diagnosed with diabetes | N/A | Same as above | |
+| `Q16_1` | Lack of health insurance as a barrier to receiving needed health care | N/A | 1 = Agree or true, 2 = Neutral or not sure, 3 = Disagree or not true | |
+| `Q16_4` | Language barriers preventing access to health care | N/A | Same as above | |
+| `Q16_6` | Availability of transportation to health care | N/A | Same as above | |
+| `Q16_7` | Availability of doctors or nurses at convenient times | N/A | Same as above | |
+| `Q16_9` | Delayed health care due to appointment wait times | N/A | Same as above | |
+| `QID20` | Health coverage status | N/A | 1 = Yes, 2 = No, 3 = Don’t know / Not sure, 4 = Refused | |
+| `QID21` | Medicaid/Medicare coverage | N/A | 1 = Medicaid only, 2 = Medicare only, 3 = Both, 4 = No, 5 = Don’t know / Not sure, 6 = Refused | |
+| `QID22` | Whether the respondent needed to see a doctor in the past 12 months but could not due to cost | N/A | 1 = Yes, 2 = No, 3 = Don’t know / Not sure, 4 = Refused | |
+| `QID26` | Prescription medication affordability | N/A | 1 = Yes, 2 = No, 3 = Don’t know / Not sure, 4 = Refused | |
+| `QID200` | Trust in healthcare system | N/A | 1 = Completely trust, 2 = Slightly trust, 3 = Neither trust nor distrust, 4 = Slightly distrust, 5 = Completely distrust, 6 = Don’t know / Not sure, 7 = Refused | |
+| `QID201` | Frequency of problems understanding medical condition due to difficulty reading written information from health providers | N/A | 1 = Always, 2 = Often, 3 = Sometimes, 4 = Occasionally, 5 = Never, 6 = Don’t know / Not sure, 7 = Refused | |
+| `QID202` | Frequency of problems understanding verbal medical information from health providers | N/A | Same as above | |
+| `QID29` | Time since last dental visit (includes all types of dentists) | N/A | 1 = $0 <= x < 1$ years, $2 = 1 <= x < 2$ years, 3 = $2 <= x < 5$ years, 4 = $x > 5$ years, 5 = Never, 6 = Don’t know / Not sure, 7 = Refused | |
+| `QID30` | Whether respondent has any dental insurance coverage | N/A | 1 = Yes, 2 = No, 3 = Don’t know / Not sure, 4 = Refused | Is dental insurance under the umbrella of health coverage, or are they considered different? Otherwise, potential discrepancy. |
+| `QID31` | Whether respondent has forgone dental care in the past year due to cost | N/A | Same as above | |
+| `QID204` | Whether the respondent feels that children in their neighborhood have access to safe spaces to play and be physically active after school (3-6 PM) | N/A | 1 = Yes, 2 = No, 3 = Don’t know / Not sure, 4 = Refused | |
+| `QID208` | Housing insecurity (e.g., inability to pay rent/utilities) | N/A | 1 = Yes, 2 = No, 3 = Don’t know / Not sure, 4 = Refused | |
+| `Q34_1` | Frequency of feeling nervous, anxious, or on edge in the past two weeks | N/A | 1 = Not at all, 2 = Several days, 3 = More than half the days, 4 = Nearly every day, 6 = Don’t know / Not sure, 7 = Refused | |
+| `Q34_2` | Frequency of being unable to stop or control worrying in the past two weeks | N/A | Same as above | |
+| `Q34_3` | Frequency of feeling little interest or pleasure in doing things in the past two weeks | N/A | Same as above | |
+| `Q34_4` | Frequency of feeling down, depressed, or hopeless in the past two weeks | N/A | Same as above | |
+| `QID44` | Primary language spoken | N/A | 1 = English, 2 = Spanish, 6 = Nepali, 7 = Vietnamese, 3 = Other, 4 = Don’t know / Not sure, 5 = Refused | |
+| `QID44_3_TEXT` | Primary language spoken (other) | Text | User input | |
+| `QID45` | Home ownership status | N/A | 1 = Own, 2 = Rent, 3 = Don’t know / Not sure, 4 = Refused | |
+| `Q41` | Highest education level | N/A | 1 = Less than 6th grade, 11 = 6th-8th grade, 8 = 9th-11th grade, 2 = High school diploma / GED, 4 = Some college, 5 = Associate or technical degree, 6 = Bachelor's degree, 7 = Master's degree or higher, 9 = Don't know / Not sure, 10 = Refused | |
+| `QID46` | Age | Years | Integer values | |
+| `QID47` | Race/Ethnicity (multiple selections possible) | N/A | 1 = White / Caucasian, 2 = Black / African-American, 3 = Hispanic / Latino / Spanish origin, 4 = American Indian or Alaska Native, 5 = Asian, 6 = Native Hawaiian / Pacific Islander, 7 = Other, 9 = Don't know / Not sure, 8 = Refused | |
+| `QID47_7_TEXT` | Race/Ethnicity (other) | Text | User input | |
+| `QID49` | Annual household income | N/A | 1 = Less than \$10,000, 2 = \$10,000 to \$14,999, 3 = \$15,000 to \$19,999, 4 = \$20,000 to \$24,999, 5 = \$25,000 to \$34,999, 6 = \$35,000 to \$49,999, 7 = \$50,000 to \$74,999, 10 = \$75,000 or above, 8 = Don't know / Not sure, 9 = Refused | |
+| `QID91` | Gender identity | N/A | 1 = Male, 2 = Female, 3 = Non-binary, 4 = Self-described, 5 = Prefer not to say | |
+| `QID91_4_TEXT` | Gender identity (self-described) | Text | User input | |
+| `Q107` | Whether the respondent has received services at Catherine’s Health Center at Streams | N/A | 1 = Yes, 2 = No, 3 = Don’t know / Not sure, 4 = Refused | |
+| `Q108` | Satisfaction with experience at Catherine’s Health Center | N/A | 1 = Very satisfied, 2 = Satisfied, 3 = Neither satisfied nor dissatisfied, 4 = Dissatisfied, 5 = Very dissatisfied, 6 = Don’t know / Not sure, 7 = Refused | |
+| `Q109` | Barriers preventing respondent from utilizing Catherine’s Health Center (multiple selections possible) | N/A | 1 = Lack of information, 2 = Lack of insurance, 3 = Lack of transportation, 4 = Long appointment wait times, 5 = Clinic hours not convenient, 6 = Other, 7 = Don’t know / Not sure, 8 = Refused | |
+| `Q109_6_TEXT` | Barriers preventing respondent from utilizing Catherine’s Health Center (other) | Text | User input | |
+| `Q110` | Whether the respondent lives in zip code 49548 | N/A | 1 = Yes, 2 = No, 3 = Don’t know / Not sure, 4 = Refused | |
+| `QID52` | Interest in coming back for survey | N/A | 1 = Yes, 2 = No, 3 = Don’t know / Not sure, 4 = Refused | This is probably not useful for analysis |
+| `QID212` | Interviewer’s notes or observations about the interview | Text | Interviewer response | Same as above |
+| `Paper` | Indicates whether the survey was completed on paper | N/A | Yes or N/A | Are there significant difference between electronic/paper versions that we should be worried? |
