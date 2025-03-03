@@ -1,0 +1,174 @@
+---
+title: "Codebook"
+author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
+date: 03-04-2025
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: source
+---
+
+
+- How & Where was the data collected?
+The data was collected using convenience sampling by surveying people in the Heartside, Creston/Belknap, Baxter/Madison, & Burton Heights neighborhood along with individuals that utilize the Streams/Catherines services. 
+
+- Why was the data collected?
+The data was collected in order to gather health information about the community members living in the Townline neighbourhood surrounding the Streams Healthy Neighbourhood Hub and the individuals who utilize the services at Streams. Ultimately, the data was collected to assess the lack of access to health care and mental health resources.
+
+- What is the size of the dataset?
+There are 104 observations within the dataset
+
+- Unit of observation?
+1 person
+
+- `QID6`: Is there a place you usually go when you are sick or need advice about your health?
+  - Unit(s) of Measure: (1,2,3,4,5)
+
+- `QID7`: What kind of place is it?
+  - Unit(s) of Measure: (1,2,3,4,5,6,7)
+
+- `QID8`: Which of the following clinics or resources are you aware of?
+  - Unit(s) of Measure: (5,4,3,1,7,6)
+
+- `QID9`: During the past 12 months, how many times have you visited a doctor?
+  - Unit(s) of Measure: 
+
+- `QID12`: About how long has it been since you last visited a doctor?
+  - Unit(s) of Measure: (1,2,3,4,5,6,7)
+
+- `QID89BH_1`: Have you or anyone in your household ever been diagnosed with depression?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `QID89BH_2`: Have you or anyone in your household ever been diagnosed with anxiety?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `QID89BH_3`: Have you or anyone in your household ever been diagnosed with bipolar disorder?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `QID89BH_4`: Have you or anyone in your household ever been diagnosed with schizophrenia?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `QID89BH_5`: Have you or anyone in your household ever been diagnosed with PTSD?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `QID89BH_6`: Have you or anyone in your household ever been diagnosed with another mental health condition?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `Q16_1`: Do you smoke cigarettes?
+  - Unit(s) of Measure: (1,2,3)
+
+- `Q16_4`: Do you use e-cigarettes or vapes?
+  - Unit(s) of Measure: (1,2,3)
+
+- `Q16_6`: Do you use marijuana?
+  - Unit(s) of Measure: (1,2,3)
+
+- `Q16_7`: Do you use other recreational drugs?
+  - Unit(s) of Measure: (1,2,3)
+
+- `Q16_9`: Do you drink alcohol?
+  - Unit(s) of Measure: (1,2,3)
+
+- `QID20`: How many servings of fruits do you eat per day?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `QID21`: How many servings of vegetables do you eat per day?
+  - Unit(s) of Measure: (1,2,3,4,5,6)
+
+- `QID22`: How many days per week do you engage in physical activity?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `QID26`: How would you describe your general health?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `QID200`: Do you have health insurance?
+  - Unit(s) of Measure: (1,2,3,4,5,6,7)
+
+- `QID201`: What type of health insurance do you have?
+  - Unit(s) of Measure: (1,2,3,4,5,6,7)
+
+- `QID202`: How would you rate your access to healthcare?
+  - Unit(s) of Measure: (1,2,3,4,5,6,7)
+
+- `QID29`: Do you have a regular primary care provider?
+  - Unit(s) of Measure:(1,2,3,4,5,6,7)
+
+- `QID30`: Do you face any barriers to accessing healthcare?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `QID31`: What are the main barriers to accessing healthcare?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `QID204`: Have you ever delayed seeking medical care due to cost?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `QID208`: Have you ever delayed seeking medical care due to transportation issues?
+  - Unit(s) of Measure: (1,2,3,4)
+
+- `Q34_1`: Are you satisfied with the healthcare services in your community?
+  - Unit(s) of Measure: (1,2,3,4,5,6,7)
+
+- `Q34_2`: Do you feel safe in your neighborhood?
+  - Unit(s) of Measure: (1,2,3,4,5,6,7)
+
+- `Q34_3`: Do you have access to healthy food options in your neighborhood?
+  - Unit(s) of Measure: (1,2,3,4,5,6,7)
+
+- `Q34_4`: Do you have access to public transportation in your neighborhood?
+  - Unit(s) of Measure: (1,2,3,4,5,6,7)
+
+- `QID44`: What is your age?
+  - Unit(s) of Measure: (1,2,6,7,3,4,5)
+
+- `QID44_3_TEXT`: Please specify your age if you selected “Other.”
+  - Unit(s) of Measure: 
+
+- `QID45`: What is your gender?
+  - Unit(s) of Measure: 
+
+- `Q41`: What is your race or ethnicity?
+  - Unit(s) of Measure:
+
+- `QID46`: What is your marital status?
+  - Unit(s) of Measure:
+
+- `QID47`: What is your highest level of education?
+  - Unit(s) of Measure:
+
+- `QID47_7_TEXT`: Please specify your education level if you selected “Other.”
+  - Unit(s) of Measure:
+
+- `QID49`: What is your employment status?
+  - Unit(s) of Measure:
+
+- `QID91`: How would you describe your gender?: Selected options
+  - Unit(s) of Measure:
+
+- `QID91_4_TEXT`: How would you describe your gender?: Prefer to self-describe
+  - Unit(s) of Measure:
+
+- `Q107`: Have you received services at Catherine’s Health Center?
+  - Unit(s) of Measure:
+
+- `Q108`: Please rate your experience at Catherine’s Health Center.
+  - Unit(s) of Measure:
+
+- `Q109`: What prevents you from utilizing Catherine’s Health Center?
+  - Unit(s) of Measure:
+
+- `Q109_6_TEXT`: Please specify the reason if you selected “Other.”
+  - Unit(s) of Measure:
+
+- `Q110`: Do you live in zip code 49548?
+  - Unit(s) of Measure:
+
+- `QID52`: Would you be interested in coming to these meetings or events?
+  - Unit(s) of Measure:
+
+- `QID212`: Interviewer: Please record any notes or observations.
+  - Unit(s) of Measure:
+
+- `Paper`: Paper version indicator.
+  - Unit(s) of Measure:
