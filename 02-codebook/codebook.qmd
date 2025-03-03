@@ -10,6 +10,16 @@ format:
 editor: source
 ---
 
+### Description
+
+The DW2202 Streams Nursing Neighborhood Health Survey was conducted by Calvin University nursing students and Streams volunteers to assess the health care needs of residents in the Townline neighborhood. The data were collected through in-person surveys, either on paper or electronically, with respondents providing self-reported information about their healthcare access, barriers to care, mental health, oral health, housing stability, and demographic characteristics, etc. The survey aims to inform healthcare planning and resource allocation efforts by Catherine’s Health Center at Streams.
+
+**Size of the dataset:** 105 rows.
+
+**Unit of observation:** One person (survey respondent).
+
+### Data Dictionary
+
 | Variable Name | Description | Units | Possible Values | Notes |
 | :---: | :---: | :---: | :---: | :---: |
 | `QID6` | Usual place for health care | N/A | 1 = Yes, 2 = No, 3 = More than one place, 4 = Don’t know / Not sure, 5 = Refused | |
