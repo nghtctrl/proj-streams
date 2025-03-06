@@ -1,0 +1,21 @@
+---
+title: "Analysis Plan and Data Prep Requests"
+author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
+date: 03-07-2025
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: source
+---
+
+We have already attempted some initial data visualization and tried to answer basic questions, such as "Who is using Catherine's Health Center services?" and "Of those users, who is satisfied with the services?" etc. During this process, several concerns about the dataset came to light. Here are some of the concerns we have identified so far (please read the following with our Codebook):
+
+- In our dataset, some columns are interdependent. For example, participants who have answered "2 = No," "3 = Don’t know / Not sure," or "4 = Refused" for `Q107` will not have answered the follow-up questions, such as `Q108` and `Q109`; therefore, they are listed as N/A in those columns. There are other instances of such interdependent columns.
+- Furthermore, our dataset allows participants who have selected "Other" to provide textual responses describing their choice. However, similar textual responses, such as "Have another doctor," "Have Another doctor," and "Already have another doctor" (from `Q109_6_TEXT`), are currently treated as distinct entries, even though they represent the same idea. These responses need to be standardized into a single category. There are other instances of such columns.
+- Moreover, some columns in our dataset include rows with multiple answers. Our current assumption is that each observation represents one person; however, in cases such as `QID89BH_1` through `QID89BH_6`, participants can also select "4 = Household member," which indicates that the observation should be classified as a household rather than an individual. In such cases, separate variables may be needed to distinguish between different types of observations.
+- We have noticed that there are "extra columns" that exist for researchers' own notes, such as `QID52`, `QID212`, and Paper. Our partner has told us that these columns can be disregarded for data wrangling and analysis.
+- We would probably see more concerns as we continue to do some more data exploration for our partner...
+
+We may need some guidance on the best practices for proceeding with data wrangling. There might be nuanced considerations that we need advice on, such as: "Can 'No' be grouped together with 'Don’t know / Not sure' and 'Refused'?".
