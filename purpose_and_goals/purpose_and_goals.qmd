@@ -1,0 +1,47 @@
+---
+title: "Purpose and Goals"
+author: "Sally Amonoo-Mensah, Minji Hur, Jiho Kim, Jake McClure"
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: source
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(ggformula)
+library(ggeffects)
+library(ggforce)
+library(mosaic)
+```
+
+## Big Question
+
+From survey respondents, who uses Catherines, and who doesn’t use Catherines? What are the differences between them? What are the barriers to using Catherines? For example, is income a barrier?
+
+## Dataset
+
+Our original dataset was in .xlsx format so we exported as .csv file.
+
+```{r}
+health_survey <- read.csv("/rprojects/jk249/proj-streams/healthsurvey_data.csv", header = TRUE)  # Read the full data
+health_survey <- health_survey[-1, ] # exclude the question row 
+colnames(health_survey)
+tail(health_survey) 
+head(health_survey) 
+```
+
+-   Using `tail` command, we could see that last row is empty.
+
+## Population of Catherines users and non-users (Q107)
+
+```{r}
+
+```
+
+
