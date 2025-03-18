@@ -22,10 +22,38 @@ The DW2202 Streams Nursing Neighborhood Health Survey was conducted by Calvin Un
 
 ```{r}
 library(dplyr)
-health_survey <- read.csv("/rprojects/jk249/proj-streams/healthsurvey_data.csv", header = TRUE)  # Read the full data
+health_survey <- read.csv("/rprojects/jk249/proj-streams/health_survey_data.csv", header = TRUE)  # Read the full data
 health_survey <- health_survey[-1, ] # exclude the question row 
 glimpse(health_survey)
 ```
+
+### Data Preparation
+
+Note from SDR: One task to make visualization and modeling work better will be to add versions of variables with more human-readable names and values (not numeric codes). Here is an example for one variable -- I recommend your team do this for all additional variables that will be key to answering your research questions.
+
+`case_when` takes a series of inputs of the form: *logical condition ~ new value when condition is true*. For logical conditions checking if something is equal to a known value, we use `==` (since one = is for assignment). Here's an example:
+
+
+```{r}
+health_survey <- health_survey |>
+  mutate(healthcare_loc = case_when(QID6 == "1" ~ "Yes",
+                                    QID6 == "2" ~ "No",
+                                    QID6 == "3" ~ "More than one place",
+                                    QID6 == "4" ~ "Don't know / Not sure",
+                                    QID6 == "5" ~ "Refused"
+                                    ),
+         healthcare_facility_type = case_when(QID7 == "1" ~ "Clinic or health center",
+                                              QID7 == "2" ~ "Doctor’s office or HMO",
+                                              QID7 == "3" ~ "Hospital ER",
+                                              QID7 == "4" ~ "Urgent care / walk-in clinic",
+                                              QID7 == "5" ~ "Some other place",
+                                              QID7 == "6" ~ "Don’t know",
+                                              QID7 == "7" ~ "Refused")
+  )
+```
+
+Note: as shown above, you can do multiple variables within the same `mutate()` call.
+
 
 ### Data Dictionary
 
