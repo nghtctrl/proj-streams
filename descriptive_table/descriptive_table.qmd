@@ -1,0 +1,60 @@
+---
+title: "Codebook"
+author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
+date: 03-04-2025
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: source
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(ggformula)
+library(glmmTMB)
+library(ggeffects)
+library(dplyr)
+library(tidyr)
+library(mosaic)
+library(tableone)
+library(summarytools)
+```
+
+```{r}
+# Load the dataset
+health_survey_df <- read.csv("../health_survey_data.csv")
+
+# Exclude the question row 
+health_survey_df <- health_survey_df[-1, ]
+
+head(health_survey_df)
+```
+
+```{r}
+selected_health_survey_df <- health_survey_df |>
+  # Gender, Age
+  select(QID91, QID46)
+```
+
+```{r}
+health_survey_df <- type.convert(health_survey_df, as.is = TRUE)
+```
+
+```{r}
+health_survey_df 
+```
+
+```{r}
+cont_vars <- c("QID46")
+cat_vars <- c("QID91")
+```
+
+```{r}
+desc_table <- CreateTableOne(vars = cont_vars, strata = "QID91", data = health_survey_df, factorVars = cat_vars)
+print(desc_table)
+```
