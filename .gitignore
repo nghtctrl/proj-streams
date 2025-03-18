@@ -14,3 +14,5 @@
 /renv/staging/
 
 *.html
+*.csv
+*.pdf
