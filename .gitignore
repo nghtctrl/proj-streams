@@ -5,6 +5,8 @@
 .RData
 .Ruserdata
 
+.RProfile
+renv.lock
 renv/
 # /renv/library/
 # /renv/local/
