@@ -1,7 +1,7 @@
 ---
 title: "Descriptive Table"
 author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
-date: 03-04-2025
+date: 03-18-2025
 format:
   html:
     embed-resources: true
@@ -10,8 +10,9 @@ format:
 editor: source
 ---
 
+# Computation
+
 ```{r}
-#| label: setup
 #| include: false
 
 library(dplyr)
@@ -28,22 +29,11 @@ health_survey_df <- health_survey_df[-c(1, nrow(health_survey_df)), ]
 ```
 
 ```{r}
-selected_health_survey_df <- health_survey_df |>
-  select(
-    age,
-    race_ethnicity,
-    gender_identity,
-    received_services_at_catherines,
-    satisfaction_with_catherines,
-    barriers_to_using_catherines
-  )
-```
-
-```{r}
-selected_health_survey_df <- selected_health_survey_df |>
+# Convert from string to numeric format
+health_survey_df <- health_survey_df |>
   mutate(age = as.numeric(trimws(age)))
 
-age_summary <- selected_health_survey_df |>
+age_summary <- health_survey_df |>
   summarise(
     variable = "Age",
     n_percent = paste0(n(), " (", round((n() / sum(n())) * 100, 1), "%)"),
@@ -55,40 +45,107 @@ age_summary
 ```
 
 ```{r}
-categorical_summary <- health_survey_df |>
-  select(race_ethnicity, gender_identity, received_services_at_catherines) |>
-  pivot_longer(cols = everything(), names_to = "variable", values_to = "category") |>
-  group_by(variable, category) |>
+gender_identity_summary <- health_survey_df |>
+  select(gender_identity) |>
+  group_by(gender_identity) |>
   summarise(n = n(), .groups = "drop") |>
   mutate(percentage = round((n / sum(n)) * 100, 1)) |>
   mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(variable, desc(n)) |>  # Sort by variable and descending n
-  select(variable, category, n_percent)
+  arrange(desc(n))
 
-categorical_summary
+gender_identity_summary
 ```
 
-# Descriptive Table
+```{r}
+race_ethnicity_summary <- health_survey_df |>
+  select(race_ethnicity) |>
+  group_by(race_ethnicity) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+race_ethnicity_summary
+```
+
+```{r}
+received_services_summary <- health_survey_df |>
+  select(received_services_at_catherines) |>
+  group_by(received_services_at_catherines) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+received_services_summary
+```
+
+```{r}
+satisfaction_summary <- health_survey_df |>
+  select(satisfaction_with_catherines) |>
+  filter(!is.na(satisfaction_with_catherines) & satisfaction_with_catherines != "") |>
+  group_by(satisfaction_with_catherines) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+satisfaction_summary
+```
+
+```{r}
+barriers_summary <- health_survey_df |>
+  select(barriers_to_using_catherines) |>
+  filter(!is.na(barriers_to_using_catherines) & barriers_to_using_catherines != "") |>
+  group_by(barriers_to_using_catherines) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+barriers_summary
+```
+
+# Table
 
 | Variable | N (%) | Mean +/- SD | Range |
 | --- | --- | --- | --- |
 | `r age_summary$variable` | `r age_summary$n_percent` | `r age_summary$mean_sd` | `r age_summary$range` |
-| `r categorical_summary$variable[1]` | | | |
-| `r categorical_summary$category[1]` | `r categorical_summary$n_percent[1]` | | |
-| `r categorical_summary$category[2]` | `r categorical_summary$n_percent[2]` | | |
-| `r categorical_summary$category[3]` | `r categorical_summary$n_percent[3]` | | |
-| `r categorical_summary$category[4]` | `r categorical_summary$n_percent[4]` | | |
-| `r categorical_summary$variable[5]` | | | |
-| `r categorical_summary$category[5]` | `r categorical_summary$n_percent[5]` | | |
-| `r categorical_summary$category[6]` | `r categorical_summary$n_percent[6]` | | |
-| `r categorical_summary$category[7]` | `r categorical_summary$n_percent[7]` | | |
-| `r categorical_summary$category[8]` | `r categorical_summary$n_percent[8]` | | |
-| `r categorical_summary$category[9]` | `r categorical_summary$n_percent[9]` | | |
-| `r categorical_summary$category[10]` | `r categorical_summary$n_percent[10]` | | |
-| `r categorical_summary$category[11]` | `r categorical_summary$n_percent[11]` | | |
-| `r categorical_summary$category[12]` | `r categorical_summary$n_percent[12]` | | |
-| `r categorical_summary$category[13]` | `r categorical_summary$n_percent[13]` | | |
-| `r categorical_summary$category[14]` | `r categorical_summary$n_percent[14]` | | |
-| `r categorical_summary$variable[15]` | | | |
-| `r categorical_summary$category[15]` | `r categorical_summary$n_percent[15]` | | |
-| `r categorical_summary$category[16]` | `r categorical_summary$n_percent[16]` | | |
+| Gender Identity | | |
+| `r gender_identity_summary$gender_identity[1]` | `r gender_identity_summary$n_percent[1]` | |
+| `r gender_identity_summary$gender_identity[2]` | `r gender_identity_summary$n_percent[2]` | |
+| `r gender_identity_summary$gender_identity[3]` | `r gender_identity_summary$n_percent[3]` | |
+| `r gender_identity_summary$gender_identity[4]` | `r gender_identity_summary$n_percent[4]` | |
+| Race | | |
+| `r race_ethnicity_summary$race_ethnicity[1]` | `r race_ethnicity_summary$n_percent[1]` | |
+| `r race_ethnicity_summary$race_ethnicity[2]` | `r race_ethnicity_summary$n_percent[2]` | |
+| `r race_ethnicity_summary$race_ethnicity[3]` | `r race_ethnicity_summary$n_percent[3]` | |
+| `r race_ethnicity_summary$race_ethnicity[4]` | `r race_ethnicity_summary$n_percent[4]` | |
+| `r race_ethnicity_summary$race_ethnicity[5]` | `r race_ethnicity_summary$n_percent[5]` | |
+| `r race_ethnicity_summary$race_ethnicity[6]` | `r race_ethnicity_summary$n_percent[6]` | |
+| `r race_ethnicity_summary$race_ethnicity[7]` | `r race_ethnicity_summary$n_percent[7]` | |
+| `r race_ethnicity_summary$race_ethnicity[8]` | `r race_ethnicity_summary$n_percent[8]` | |
+| `r race_ethnicity_summary$race_ethnicity[9]` | `r race_ethnicity_summary$n_percent[9]` | |
+| `r race_ethnicity_summary$race_ethnicity[10]` | `r race_ethnicity_summary$n_percent[10]` | |
+| Received Services at Catherine's? | | |
+| `r received_services_summary$received_services_at_catherines[1]` | `r received_services_summary$n_percent[1]` | |
+| `r received_services_summary$received_services_at_catherines[2]` | `r received_services_summary$n_percent[2]` | |
+| Satisfied with Services at Catherine’s? | | |
+| `r satisfaction_summary$satisfaction_with_catherines[1]` | `r satisfaction_summary$n_percent[1]` | |
+| `r satisfaction_summary$satisfaction_with_catherines[2]` | `r satisfaction_summary$n_percent[2]` | |
+| `r satisfaction_summary$satisfaction_with_catherines[3]` | `r satisfaction_summary$n_percent[3]` | |
+| `r satisfaction_summary$satisfaction_with_catherines[4]` | `r satisfaction_summary$n_percent[4]` | |
+| `r satisfaction_summary$satisfaction_with_catherines[5]` | `r satisfaction_summary$n_percent[5]` | |
+| `r satisfaction_summary$satisfaction_with_catherines[6]` | `r satisfaction_summary$n_percent[6]` | |
+| `r satisfaction_summary$satisfaction_with_catherines[7]` | `r satisfaction_summary$n_percent[7]` | |
+| Barriers to Using Catherine’s | | |
+| `r barriers_summary$barriers_to_using_catherines[1]` | `r barriers_summary$n_percent[1]` | |
+| `r barriers_summary$barriers_to_using_catherines[2]` | `r barriers_summary$n_percent[2]` | |
+| `r barriers_summary$barriers_to_using_catherines[3]` | `r barriers_summary$n_percent[3]` | |
+| `r barriers_summary$barriers_to_using_catherines[4]` | `r barriers_summary$n_percent[4]` | |
+| `r barriers_summary$barriers_to_using_catherines[5]` | `r barriers_summary$n_percent[5]` | |
+| `r barriers_summary$barriers_to_using_catherines[6]` | `r barriers_summary$n_percent[6]` | |
+| `r barriers_summary$barriers_to_using_catherines[7]` | `r barriers_summary$n_percent[7]` | |
+| `r barriers_summary$barriers_to_using_catherines[8]` | `r barriers_summary$n_percent[8]` | |
+| `r barriers_summary$barriers_to_using_catherines[9]` | `r barriers_summary$n_percent[9]` | |
+| `r barriers_summary$barriers_to_using_catherines[10]` | `r barriers_summary$n_percent[10]` | |
