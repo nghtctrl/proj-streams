@@ -2,7 +2,7 @@
 title: "Descriptive Table"
 author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
 date: 03-04-2025
-format: 
+format:
   html:
     embed-resources: true
     toc: true
@@ -14,14 +14,10 @@ editor: source
 #| label: setup
 #| include: false
 
-library(tidyverse)
-library(ggformula)
-library(glmmTMB)
-library(ggeffects)
 library(dplyr)
 library(tidyr)
-library(mosaic)
 library(stringr)
+library(gt)
 ```
 
 ```{r}
@@ -31,7 +27,7 @@ health_survey_df <- read.csv("../clean_health_survey_data.csv")
 # Exclude both the first and last row
 health_survey_df <- health_survey_df[-c(1, nrow(health_survey_df)), ]
 
-head(health_survey_df)
+glimpse(health_survey_df)
 ```
 
 ```{r}
@@ -49,28 +45,67 @@ head(selected_health_survey_df)
 ```
 
 ```{r}
+selected_health_survey_df <- health_survey_df |>
+  select(
+    age,
+    race_ethnicity,
+    gender_identity,
+    received_services_at_catherines,
+    satisfaction_with_catherines,
+    barriers_to_using_catherines
+  )
+
+glimpse(selected_health_survey_df)
+```
+
+```{r}
 selected_health_survey_df <- selected_health_survey_df |>
   mutate(age = as.numeric(trimws(age)))
 
 age_summary <- selected_health_survey_df |>
   summarise(
-    Variable = "Age",
-    Mean_SD = paste0(round(mean(age, na.rm = TRUE), 1), " ± ", round(sd(age, na.rm = TRUE), 1)),
-    Range = paste0(min(age, na.rm = TRUE), " - ", max(age, na.rm = TRUE))
+    variable = "Age",
+    n_percent = paste0(n(), " (", round((n() / sum(n())) * 100, 1), "%)"),
+    mean_sd = paste0(round(mean(age, na.rm = TRUE), 1), " ± ", round(sd(age, na.rm = TRUE), 1)),
+    range = paste0(min(age, na.rm = TRUE), " - ", max(age, na.rm = TRUE))
   )
 
-print(age_summary)
+age_summary
 ```
 
 ```{r}
 categorical_summary <- health_survey_df |>
   select(race_ethnicity, gender_identity, received_services_at_catherines) |>
-  pivot_longer(cols = everything(), names_to = "Variable", values_to = "Category") |>
-  group_by(Variable, Category) |>
-  summarise(N = n(), .groups = "drop") |>
-  mutate(Percentage = round((N / sum(N)) * 100, 1)) |>
-  mutate(N_Percent = paste0(N, " (", Percentage, "%)")) |>
-  select(Variable, Category, N_Percent)
+  pivot_longer(cols = everything(), names_to = "variable", values_to = "category") |>
+  group_by(variable, category) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(variable, desc(n)) |>  # Sort by variable and descending n
+  select(variable, category, n_percent)
 
-print(categorical_summary)
+categorical_summary
 ```
+
+| Variable | N (%) | Mean +/- SD | Range |
+| --- | --- | --- | --- |
+| `r age_summary$variable` | `r age_summary$n_percent` | `r age_summary$mean_sd` | `r age_summary$range` |
+| `r categorical_summary$variable[1]` | | | |
+| `r categorical_summary$category[1]` | `r categorical_summary$n_percent[1]` | | |
+| `r categorical_summary$category[2]` | `r categorical_summary$n_percent[2]` | | |
+| `r categorical_summary$category[3]` | `r categorical_summary$n_percent[3]` | | |
+| `r categorical_summary$category[4]` | `r categorical_summary$n_percent[4]` | | |
+| `r categorical_summary$variable[5]` | | | |
+| `r categorical_summary$category[5]` | `r categorical_summary$n_percent[5]` | | |
+| `r categorical_summary$category[6]` | `r categorical_summary$n_percent[6]` | | |
+| `r categorical_summary$category[7]` | `r categorical_summary$n_percent[7]` | | |
+| `r categorical_summary$category[8]` | `r categorical_summary$n_percent[8]` | | |
+| `r categorical_summary$category[9]` | `r categorical_summary$n_percent[9]` | | |
+| `r categorical_summary$category[10]` | `r categorical_summary$n_percent[10]` | | |
+| `r categorical_summary$category[11]` | `r categorical_summary$n_percent[11]` | | |
+| `r categorical_summary$category[12]` | `r categorical_summary$n_percent[12]` | | |
+| `r categorical_summary$category[13]` | `r categorical_summary$n_percent[13]` | | |
+| `r categorical_summary$category[14]` | `r categorical_summary$n_percent[14]` | | |
+| `r categorical_summary$variable[15]` | | | |
+| `r categorical_summary$category[15]` | `r categorical_summary$n_percent[15]` | | |
+| `r categorical_summary$category[16]` | `r categorical_summary$n_percent[16]` | | |
