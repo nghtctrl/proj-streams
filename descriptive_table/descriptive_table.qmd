@@ -25,8 +25,6 @@ health_survey_df <- read.csv("../clean_health_survey_data.csv")
 
 # Exclude both the first and last row
 health_survey_df <- health_survey_df[-c(1, nrow(health_survey_df)), ]
-
-glimpse(health_survey_df)
 ```
 
 ```{r}
@@ -39,22 +37,6 @@ selected_health_survey_df <- health_survey_df |>
     satisfaction_with_catherines,
     barriers_to_using_catherines
   )
-
-head(selected_health_survey_df)
-```
-
-```{r}
-selected_health_survey_df <- health_survey_df |>
-  select(
-    age,
-    race_ethnicity,
-    gender_identity,
-    received_services_at_catherines,
-    satisfaction_with_catherines,
-    barriers_to_using_catherines
-  )
-
-glimpse(selected_health_survey_df)
 ```
 
 ```{r}
@@ -85,6 +67,8 @@ categorical_summary <- health_survey_df |>
 
 categorical_summary
 ```
+
+# Descriptive Table
 
 | Variable | N (%) | Mean +/- SD | Range |
 | --- | --- | --- | --- |
