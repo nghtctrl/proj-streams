@@ -1,7 +1,7 @@
 ---
 title: "Prepared Dataset"
 author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
-date: 03-16-2025
+date: 03-20-2025
 format: 
   html:
     embed-resources: true
@@ -18,14 +18,6 @@ library(dplyr)
 library(stringr)
 ```
 
-### Description
-
-The DW2202 Streams Nursing Neighborhood Health Survey was conducted by Calvin University nursing students and Streams volunteers to assess the health care needs of residents in the Townline neighborhood. The data were collected through in-person surveys, either on paper or electronically, with respondents providing self-reported information about their healthcare access, barriers to care, mental health, oral health, housing stability, and demographic characteristics, etc. The survey aims to inform healthcare planning and resource allocation efforts by Catherine’s Health Center at Streams.
-
-**Size of the dataset:** 105 rows.
-
-**Unit of observation:** One person (survey respondent).
-
 ### Dataset
 
 ```{r}
@@ -35,36 +27,20 @@ health_survey_df <- read.csv("../health_survey_data.csv")
 # Exclude both the first and last row
 health_survey_df <- health_survey_df[-c(1, nrow(health_survey_df)), ]
 
-head(health_survey_df)
+glimpse(health_survey_df)
 ```
+
+### Description
+
+The DW2202 Streams Nursing Neighborhood Health Survey was conducted by Calvin University nursing students and Streams volunteers to assess the health care needs of residents in the Townline neighborhood. The data were collected through in-person surveys, either on paper or electronically, with respondents providing self-reported information about their healthcare access, barriers to care, mental health, oral health, housing stability, and demographic characteristics, etc. The survey aims to inform healthcare planning and resource allocation efforts by Catherine’s Health Center at Streams.
+
+**Size of the dataset:** 105 rows.
+
+**Unit of observation:** One person (survey respondent).
 
 ### Data Preparation
 
-Note from SDR: One task to make visualization and modeling work better will be to add versions of variables with more human-readable names and values (not numeric codes). Here is an example for one variable -- I recommend your team do this for all additional variables that will be key to answering your research questions.
-
-`case_when` takes a series of inputs of the form: *logical condition ~ new value when condition is true*. For logical conditions checking if something is equal to a known value, we use `==` (since one = is for assignment). Here's an example:
-
-```
-health_survey <- health_survey |>
-  mutate(healthcare_loc = case_when(QID6 == "1" ~ "Yes",
-                                    QID6 == "2" ~ "No",
-                                    QID6 == "3" ~ "More than one place",
-                                    QID6 == "4" ~ "Don't know / Not sure",
-                                    QID6 == "5" ~ "Refused"
-                                    ),
-         healthcare_facility_type = case_when(QID7 == "1" ~ "Clinic or health center",
-                                              QID7 == "2" ~ "Doctor’s office or HMO",
-                                              QID7 == "3" ~ "Hospital ER",
-                                              QID7 == "4" ~ "Urgent care / walk-in clinic",
-                                              QID7 == "5" ~ "Some other place",
-                                              QID7 == "6" ~ "Don’t know",
-                                              QID7 == "7" ~ "Refused")
-  )
-```
-
-Note: as shown above, you can do multiple variables within the same `mutate()` call.
-
----
+To prepare our dataset for visualization and modeling purposes, we will transform the columns and values into more human-readable format. Some columns have values with multiple answers (i.e., survey respondents were able to select multiple answers to a question). For these columns, further data wrangling process may be necessary depending on our partner's needs.
 
 ```{r}
 health_survey_df <- health_survey_df |>
@@ -381,8 +357,12 @@ health_survey_df <- health_survey_df |>
 ```
 
 ```{r}
-# Uncomment and run this only when it is necessary!
-# write.csv(health_survey_df, "clean_health_survey_data.csv", row.names = FALSE)
+glimpse(health_survey_df)
+```
+
+```
+# Write the cleaned dataset to disk
+write.csv(health_survey_df, "clean_health_survey_data.csv", row.names = FALSE)
 ```
 
 ### Data Dictionary
