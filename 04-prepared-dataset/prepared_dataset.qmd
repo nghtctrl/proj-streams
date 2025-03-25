@@ -346,15 +346,6 @@ health_survey_df <- health_survey_df |>
       QID45 == "3" ~ "Don’t know / Not sure",
       QID45 == "4" ~ "Refused"
     ),
-    primary_language = case_when(
-      QID44 == "1" ~ "English",
-      QID44 == "2" ~ "Spanish",
-      QID44 == "6" ~ "Nepali",
-      QID44 == "7" ~ "Vietnamese",
-      QID44 == "3" ~ "Other",
-      QID44 == "4" ~ "Don’t know / Not sure",
-      QID44 == "5" ~ "Refused"
-    ),
     received_services_at_catherines = case_when(
       Q107 == "1" ~ "Yes",
       Q107 == "2" ~ "No",
