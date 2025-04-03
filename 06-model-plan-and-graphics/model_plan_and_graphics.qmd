@@ -1,0 +1,305 @@
+---
+title: "Model Plan and Graphics"
+author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
+date: 04-03-2025
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: source
+---
+
+```{r}
+#| include: false
+
+library(ggformula)
+library(dplyr)
+library(glmmTMB)
+```
+
+```{r}
+health_survey_df <- read.csv("../clean_health_survey_data.csv")
+glimpse(health_survey_df)
+```
+
+## Model Planning
+
+### Causal Diagram
+
+![](./causal_diagram.png)
+
+### Model Planning Checklist
+
+Response and key predictor variables:
+
+- Response variable: `received_services_at_catherines`
+- Key predictor variable: `income_category` (has `r length(unique(health_survey_df$income_category))` parameters)
+
+Confounders:
+
+- `race_ethnicity`: different racial groups of people might have a larger association with utilizing Catherine's as well as overall household income (has `r length(unique(health_survey_df$race_ethnicity))` parameters).
+
+There are no colliders that we are aware of.
+
+There are no moderators that we are aware of.
+
+Precision covariates:
+
+- `doctor_availability`: If doctor availability is minimal, patients may be more likely to not use Catherines services (has `r length(unique(health_survey_df$doctor_availability))` parameters).
+- `wait_time_barrier`: If larger wait times occur, patients may be less likely to utilize Catherines services (has `r length(unique(health_survey_df$wait_time_barrier))` parameters).
+- `satisfaction_with_catherines`: If patients are satisfied with the services, they are more likely to utilize them (has `r length(unique(health_survey_df$satisfaction_with_catherines))` parameters).
+- `transportation_availability` : If individuals had access to transportation they are more likely to make the trip to utilize Catherines (has `r length(unique(health_survey_df$transportation_availability))` parameters).
+- `dental_insurance_coverage`: Patients that are covered by dental insurance may be more likely to use Catherines (has `r length(unique(health_survey_df$dental_insurance_coverage))` parameters).
+
+Mediation chains: 
+
+- `income_category` -> `trust_in_healthcare_system` -> `received_services_at_catherines` : Depends on the income, it will affect people's trust level in healthcare system and this will prevent or encourage them to receive services at Catherines.
+- `income_category` -> `health_insurance_barrier` -> `received_services_at_catherines` : Depends on how much income a person receives, it can affect people from having a health insurance or not and depends on how much a health insurance covers it will affect people from receiving services at Catherines.
+
+```{r}
+#| include: false
+
+rsc_counts <- table(health_survey_df$received_services_at_catherines)
+yes_count <- rsc_counts["Yes"]
+no_count <- rsc_counts["No"]
+m <- min(yes_count, no_count)
+```
+
+The `received_services_at_catherines` variable contains `r yes_count` successes and `r no_count` failures such that $m = \text{min(successes, failures)} = `r m`$. A common rule of thumb suggests that the maximum number of parameters $p$ should be less than or equal to $\frac{m}{15}$, which in this case is $p \leq \frac{`r m`}{15} \approx `r round(m / 15, 0)`$. This means that I may include up to `r round(m / 15, 0)` parameters.
+
+### Model Family and Link Function
+
+Since our response variable is binary, we will use a binary regression model with the logit link function.
+
+## Data Exploration 
+
+```{r}
+# Re-ordering
+health_survey_df$income_category <- factor(
+  health_survey_df$income_category,
+  levels = c(
+    "Less than $10,000",
+    "$10,000 - $14,999",
+    "$15,000 - $19,999",
+    "$20,000 - $24,999",
+    "$25,000 - $34,999",
+    "$35,000 - $49,999",
+    "$50,000 - $74,999",
+    "$75,000 or above",
+    "Don't know / Not sure",
+    "Refused"
+  )
+)
+```
+
+```{r}
+gf_bar(~received_services_at_catherines, fill = ~income_category,
+       data = subset(health_survey_df, !is.na(income_category) & 
+                     !is.na(received_services_at_catherines)), 
+       position = "dodge") +
+  labs(
+    title = "People Who Are More Affluent Tend Not to Use Catherine's Services.",
+    x = "Income", 
+    y = "Count"
+  ) +
+  scale_fill_discrete(name = "Income Category") +
+  theme_minimal()
+```
+
+```{r}
+# Re-ordering
+health_survey_df$trust_in_healthcare_system <- factor(
+  health_survey_df$trust_in_healthcare_system, 
+  levels = c(
+    "Completely trust", 
+    "Slightly trust", 
+    "Neither trust nor distrust", 
+    "Slightly distrust", 
+    "Completely distrust", 
+    "Don't know / Not sure", 
+    "Refused"
+  )
+)  
+```
+
+```{r}
+gf_bar(~received_services_at_catherines, fill = ~trust_in_healthcare_system,
+       data = subset(health_survey_df, !is.na(trust_in_healthcare_system) & 
+                    !is.na(received_services_at_catherines)), 
+       position = "dodge") +
+  labs(
+    x = "Received services at Catherine's",
+    y = "Count"
+  ) +
+  scale_fill_discrete(name = "Trust in Healthcare System") +
+  theme_minimal()
+```
+
+```{r}
+# Re-ordering
+health_survey_df$doctor_availability <- factor(
+  health_survey_df$doctor_availability, 
+  levels = c(
+    "Agree", 
+    "Neutral", 
+    "Disagree"
+  )
+) 
+```
+
+```{r}
+gf_bar(~received_services_at_catherines, fill = ~doctor_availability,
+       data = health_survey_df, position = "dodge") +
+  labs(
+    x = "Received services at Catherine's",
+    y = "Count"
+  ) +
+  scale_fill_discrete(name = "Doctor Availability as Barrier") +
+  theme_minimal()
+```
+
+```{r}
+gf_bar(~received_services_at_catherines, fill = ~race_ethnicity,
+       data = health_survey_df, position = "dodge") +
+  labs(
+    x = "Received services at Catherine's",
+    y = "Count"
+  ) +
+  scale_fill_discrete(name = "Race/Ethnicity") +
+  theme_minimal()
+```
+
+```{r}
+ggplot(health_survey_df, aes(y = income_category, fill = received_services_at_catherines)) +
+  geom_bar(stat = "count") + 
+  facet_wrap(~ race_ethnicity) +
+  labs(
+    title = "Stacked Bar Plot of Received Services by Income Category and Race/Ethnicity",
+    x = "Count", 
+    y = "Income Category"
+  ) +
+  scale_fill_discrete(name = "Received Services\nat Catherine's") +
+  theme_minimal() +
+  theme(
+    axis.text.y = element_text(angle = 0, hjust = 1),
+    legend.position = "bottom"
+  )
+```
+
+```{r}
+health_survey_df$satisfaction_with_catherines <- factor(
+  health_survey_df$satisfaction_with_catherines, 
+  levels = c(
+    "Very satisfied",
+    "Satisfied", 
+    "Neither satisfied nor dissatisfied",
+    "Dissatisfied",
+    "Very Disatisfied",  # Note: "Disatisfied" has a typo (missing 's')
+    "Don't know / Not sure", 
+    "Refused"
+  )
+)
+```
+
+```{r}
+gf_bar(~received_services_at_catherines, fill = ~satisfaction_with_catherines,
+       data = health_survey_df, position = "dodge") +
+  labs(
+    x = "Received services at Catherine's",
+    y = "Count"
+  ) +
+  scale_fill_discrete(name = "Satisfaction Level") +
+  theme_minimal()
+```
+
+```{r}
+health_survey_df$wait_time_barrier <- factor(
+ health_survey_df$wait_time_barrier, 
+ levels = c(
+   "Agree",
+   "", 
+   "Neutral",
+   "Disagree"
+ )
+)
+```
+
+```{r}
+gf_bar(~received_services_at_catherines, fill = ~wait_time_barrier,
+      data = health_survey_df, position = "dodge") +
+ labs(
+   x = "Received services at Catherine's",
+   y = "Count"
+ ) +
+ scale_fill_discrete(name = "Wait Time as Barrier") +
+ theme_minimal()
+```
+
+```{r}
+health_survey_df$trust_in_healthcare_system <- factor(
+ health_survey_df$trust_in_healthcare_system, 
+ levels = c(
+   "Completely trust", 
+   "Slightly trust", 
+   "Neither trust nor distrust", 
+   "Slightly distrust", 
+   "Completely distrust", 
+   "Don't know / Not sure"
+ )
+)
+```
+
+```{r}
+ggplot(health_survey_df, aes(y = highest_education_level, fill = received_services_at_catherines)) +
+ geom_bar(stat = "count") +
+ facet_wrap(~ trust_in_healthcare_system) +
+ labs(
+   title = "Stacked Bar Plot of Received Services by Trust in Healthcare System and Education Level",
+   x = "Count", 
+   y = "Education Level"
+ ) +
+ scale_fill_discrete(name = "Received Services\nat Catherine's") +
+ theme_minimal() +
+ theme(
+   axis.text.y = element_text(angle = 0, hjust = 1),
+   legend.position = "bottom",
+   strip.text = element_text(size = 8)  # Smaller facet labels
+ )
+```
+
+```{r}
+gf_bar(~received_services_at_catherines, fill = ~gender_identity,
+      data = health_survey_df, position = "dodge") +
+ labs(
+   x = "Received services at Catherine's",
+   y = "Count"
+ ) +
+ scale_fill_discrete(name = "Gender Identity") +
+ theme_minimal()
+```
+
+## Model Fitting
+
+```{r}
+health_survey_df$received_services_at_catherines <- factor(
+ health_survey_df$received_services_at_catherines, 
+ levels = c("No", "Yes")
+)  
+
+health_survey_df |>
+  pull(received_services_at_catherines) |>
+  levels()
+```
+
+```{r}
+RSC_Model <- glmmTMB(
+ received_services_at_catherines ~ income_category,
+ data = health_survey_df, 
+ family = binomial(link = 'logit')
+)
+```
+
+```{r}
+summary(RSC_Model)
+```
