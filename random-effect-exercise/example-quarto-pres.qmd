@@ -1,0 +1,66 @@
+---
+title: "The relationship between body mass and field metabolic rate in individual birds and mammals"
+author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
+format:
+  revealjs:
+    slide-number: c/t
+    width: 1600
+    height: 900
+    theme: [moon, 'calvin-slides.scss']
+    title-slide-attributes:
+      data-background-image: "https://stacyderuiter.github.io/stat245-sp25/CalvinUniv-vert-full-color-NoDate.png"
+      data-background-size: 15%
+      data-background-position: 99%  90%
+      data-background-color: '#8d2232'
+    echo: true
+editor: source
+---
+
+## The Big Question
+
+-   How field metabolic rate (FMR) scales with body mass in individual birds and mammals, and the degree of variation in this relationship across different taxonomic levels.
+
+## Best Figure - Figure! {.nostretch}
+
+![](https://besjournals.onlinelibrary.wiley.com/cms/asset/7ddff2df-a69c-4c73-87bf-f5ae947e43e5/jane12086-fig-0001-m.jpg){fig-align="center"}
+
+## Best Figure - Interp!
+
+-   This figure presents two scatter plots that illustrate the linear relationship between the body mass and field metabolic rate in birds (Aves) and mammals (Mammalia). Both plots show a strong positive correlation between body mass and FMR.
+-   This figure uses the colors and shapes of the data point strategically, helping us to distinguish individual birds and mammals, even though there are a lot of them.
+
+## Random Effects Model Description
+
+-   Response variable: metabolic rate (quantitative).
+-   Model type (family and link function): linear mixed-effects model with log link function.
+-   Fixed effects predictors: aves & mammalia.
+-   Random effects: order, family & species.
+
+## Modeling Process Checklist
+
+-   Model planning, ~~causal diagram~~
+-   Plots of the data(Yes)
+-   Coefficients, model summary information(Yes)
+-   Model assessment (Yes)
+-   Model selection (AIC)
+-   Model interpretation(Yes)
+-   Prediction plots(Yes)
+
+## Answer to the Question
+
+What, according to the paper, is the *answer* to the question (that you identified on an earlier slide, and that the authors used an RE model to answer)? What evidence do they give (data graph, hypothesis test, IC?)
+
+\<\<The technique used to test the hypothesis is unfortunately flawed, because their estimates of metabolic level are not independent of body size.\>\>
+
+## Your Questions
+
+-   What was hard to figure out? Yaml Header
+-   Is there anything you wish authors had added to the paper (details, figures...)?
+-   What questions do you have about the authors' approach? What other graphics could be created to more fluently convey data to the readers.
+
+## Submit!
+
+-   Don't forget to **Submit your rendered slides on Moodle at the end of class.**
+-   *Submit whatever you have finished during class time - you are not required to finish on your own time.*
+-   You may present work next class period - be ready for this as a group!
+-   Delete this slide once you understand.

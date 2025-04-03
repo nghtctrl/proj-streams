@@ -1,0 +1,181 @@
+---
+title: "Binary Regression Practice"
+author: "STAT 245"
+format: 
+  html:
+    embed-resources: true
+    code-tools: true
+    toc: true
+  pdf: default
+editor: visual
+---
+
+```{r setup, include=FALSE}
+require(mosaic)
+require(ggformula)
+require(tidyverse)
+require(s245)
+require(DHARMa)
+require(glmmTMB)
+knitr::opts_chunk$set(echo = TRUE, 
+                      error = TRUE,
+                      message = FALSE,
+                      fig.width = 10, fig.height = 4)
+
+theme_set(theme_minimal(base_size = 16))
+```
+
+# Dataset Options
+
+## A. (Suggested) Internet Search Bias
+
+The data used here are from the paper, [The search engine manipulation effect (SEME) and its possible impact on the outcomes of elections](https://www.pnas.org/content/112/33/E4512) by Robert Epstein and Ronald E. Robertson. They report results of experiments designed to measure the effects of biased internet search results on voter opinions.
+
+You are asked to model the `Post_Choice`, which says who the voter said they would vote for (if they could), after the experiment. Researchers also recorded the experimental `Group` each participant was in.
+
+The experiments are described as follows in the paper:
+
+> > \[Participants had to consider\] the 2010 election to determine the prime minister of Australia. The candidates were Tony Abbott and Julia Gillard ... This election was used to minimize possible preexisting biases by US study participants and thus to try to guarantee that our subjects would be truly “undecided.” Initially, subjects read brief biographies of the candidates and ... \[indicated\] which of the two candidates they would vote for if the election were held that day (`Pre_Choice`). The subjects then spent up to 15 min gathering more information about the candidates using a mock search engine we had created ... Each of the three experiments used 30 actual search results and corresponding Web pages relating to ... In each experiment, subjects were randomly assigned to one of three `Group`s: (i) rankings \[biased toward\] favoring Gillard (which means that higher-ranked search results linked to Web pages that portrayed Gillard as the better candidate), (ii) rankings \[biased toward\] favoring Abbott, or (iii) rankings favoring neither.
+
+After the experiment, participants said who they would *now* vote for (`Post_Choice`) and also ranked how much they trusted the search results they'd seed (`Trust_Search`). In addition to `Searches` (number of internet searches done per week in daily life), the dataset includes several demographic variables: `Age`, `Sex`, `Race_Ethnicity`, `Marital_Status`, `Education`, `Employment_Status`, `Income`.
+
+In addition, it provides political variables: `Party` affiliation, `Politics` (Conservative, Moderate, Liberal, None), and `Voter_Status` (whether they were registered to vote).
+
+You can use the code below to read in and prepare the data (you're invited to just copy this code and will not need to explain or replicate it).
+
+```{r}
+searches <- read_csv('https://sldr.netlify.app/data/election_searches.csv') |>
+  mutate(Race_Ethnicity = str_remove_all(Race_Ethnicity, '_NA'),
+         Race_Ethnicity = str_remove_all(Race_Ethnicity, 'NA_')) |>
+  mutate(Race_Ethnicity = ifelse(grepl(pattern = '_', Race_Ethnicity), 
+                                 'Multiple', 
+                                 Race_Ethnicity)) |>
+  filter(Education != 'Less than 9th grade' & Sex != 'Other')   |> # remove as there are only very few
+  mutate(Income = fct_relevel(Income,
+                              "Under $10,000",
+                              "$10,000 to $14,999",
+                              "$15,000 to $19,999",
+                              "$20,000 to $29,999",
+                              "$30,000 to $39,999",
+                              "$40,000 to $49,999",
+                              "$50,000 to $74,999",
+                              "$75,000 to $99,999",
+                              "$100,000 to $149,999",
+                              "$150,000 and over",
+                              "I prefer not to say"),
+         Education = fct_relevel(Education,
+                                 "9th to 12th grade",
+                                 "High school graduate",
+                                 "Some college or associate degree",
+                                 "Bachelors", 
+                                 "Advanced" ),
+         Post_Choice = factor(Post_Choice),
+         Post_Choice = fct_relevel(Post_Choice, "Tony Abbott", "Julia Gillard")) |>
+  select(-c(Vote_Sway, Pre_Vote, Post_Vote))
+```
+
+### Crucial Planning Note for Internet Search Data!
+
+#### You'll need some interactions.
+
+-   If we don't include an interaction of `Group` with each predictor of interest, we won't really be able to make sense of the results in terms of "effect of that factor on susceptibility to biased search".
+    -   The main effect of a group -- say, `Education` -- only tells about "preference for Gillard over Abbott regardless of whether biased search results were viewed".
+    -   And the main effect of `Group` just tells us if biased search results affect voter choices (overall, across *all* voter groups).
+    -   What we *really* want to know is whether certain sub-groups are more susceptible to being influenced by biased search results! For example, maybe everyone can be affected by biased search results...but maybe people with more years of education are MORE (or maybe less...) affected! *That* would be an interaction of `Education` and `Group`. And *that* is what we'd really like to measure!
+
+So, a suggested structure for your model is:
+
+1.  Pick out the grouping/identity variables you think most affect voting choices and might have the most differential susceptibility to biased search results.
+2.  Fit a model of the form: `Post_Choice ~ GroupIdentityVariable * Group + GroupIdentityVariable2*Group + GroupIdentityVariable3*Group + ...` (where each chosen variable like education, income, religion, political party affiliation, etc. interacts with `Group`).
+
+
+# Tasks
+
+```{r}
+searches <- read_csv('https://sldr.netlify.app/data/election_searches.csv') |>
+  mutate(Race_Ethnicity = str_remove_all(Race_Ethnicity, '_NA'),
+         Race_Ethnicity = str_remove_all(Race_Ethnicity, 'NA_')) |>
+  mutate(Race_Ethnicity = ifelse(grepl(pattern = '_', Race_Ethnicity), 
+                                 'Multiple', 
+                                 Race_Ethnicity)) |>
+  filter(Education != 'Less than 9th grade' & Sex != 'Other')   |> # remove as there are only very few
+  mutate(Income = fct_relevel(Income,
+                              "Under $10,000",
+                              "$10,000 to $14,999",
+                              "$15,000 to $19,999",
+                              "$20,000 to $29,999",
+                              "$30,000 to $39,999",
+                              "$40,000 to $49,999",
+                              "$50,000 to $74,999",
+                              "$75,000 to $99,999",
+                              "$100,000 to $149,999",
+                              "$150,000 and over",
+                              "I prefer not to say"),
+         Education = fct_relevel(Education,
+                                 "9th to 12th grade",
+                                 "High school graduate",
+                                 "Some college or associate degree",
+                                 "Bachelors", 
+                                 "Advanced" ),
+         Post_Choice = factor(Post_Choice),
+         Post_Choice = fct_relevel(Post_Choice, "Tony Abbott", "Julia Gillard")) |>
+  select(-c(Vote_Sway, Pre_Vote, Post_Vote))
+
+glimpse(searches)
+```
+
+### 1. Model Planning (Rush)
+
+*Keep it quick in the interest of time!*
+Response variable: `Post_Choice`
+Key Predictor: `Age`
+
+Interactions: 
+
+- `Group`
+
+
+### 2. Data Exploration (Rush)
+
+*Keep it VERY brief in interest of time!*
+
+```{r}
+gf_boxplot(Post_Choice ~ Age, data = searches)
+```
+
+### 3. Model Fitting, choose Link Function (Concentrate)
+
+```{r}
+searches |>
+  pull(Post_Choice) |>
+  levels()
+```
+
+```{r}
+search_model <- glmmTMB(Post_Choice ~ Age * Group, 
+                        data = searches,
+                        family = binomial(link='logit'))
+```
+
+```{r}
+summary(search_model)
+```
+
+### 4. Model Assessment (Concentrate)
+*Be sure to list which condition you're checking, whether it's met, and why.*
+1. lin
+
+```{r}
+
+```
+
+### 5. Model Selection (Rush)
+
+
+### 6. Interpretation & Prediction Plots (Concentrate)
+
+*Make plots for all predictors that seem notable, based on selection you did...but you* ~~may~~ *better use `ggeffects` and `ggpredict()`!*
+
+```{r}
+
+```
