@@ -1,0 +1,168 @@
+---
+title: "Graphic_style_template"
+author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
+date: 03-20-2025
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: source
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(ggformula)
+library(ggthemes) # for additional themes
+library(ggforce) # for sina plot
+
+# sample dataset for examples
+bird_data <- read_csv("https://sldr.netlify.app/data/hawaii_birds.csv") 
+
+bird_data_sm <- bird_data |>
+  filter(Year > 1997) |>
+  mutate(Year = factor(Year))
+
+theme_set(theme_bw())
+```
+
+# Graphics Theme
+
+- `theme_bw` 
+- Because we are dealing with multiple categorical variables. 
+
+```{r}
+# replace the "theme_..." part of the first code line to change the theme.
+# run this chunk with different themes to view each one.
+theme_set(theme_bw())
+
+gf_point(Birds ~ Year | Location, data = bird_data)
+```
+
+# Text Elements
+
+- "sans"
+
+```{r}
+# choose a family and font to go with your chosen theme
+theme_set(theme_bw(base_family = "sans", base_size = 11))
+
+gf_point(Birds ~ Year | Location, data = bird_data)
+```
+
+# Color Palette(s)
+
+- "BuGn"
+- Catherine's brand colors are Blue and Green. 
+
+```{r}
+#| fig-width: 6.5
+#| fig-height: 10
+RColorBrewer::display.brewer.all()
+```
+
+
+```{r}
+# fill color
+gf_bar(~Year, data = bird_data_sm, fill = ~Year) |>
+  gf_theme(scale_fill_brewer(palette = "BuGn"))
+```
+
+```{r}
+# color color
+gf_point(Birds ~ Rainfall, color = ~Year, data = bird_data_sm) |>
+  gf_theme(scale_color_brewer(palette = "BuGn"))
+```
+
+# Graph Types
+
+## Two quantitative variables
+
+- We will use scatter plots in this case.
+
+```{r}
+gf_point(Birds ~ Rainfall, data = bird_data)
+```
+
+## One Categorical, One Quantitative
+
+- `gf_boxplot`
+
+```{r}
+# side-by-side boxplots
+gf_boxplot(Rainfall ~ Location, data = bird_data)
+```
+
+```{r}
+# stacked boxplots
+gf_boxplot(Location ~ Rainfall, data = bird_data)
+```
+
+```{r}
+# boxplot + sina plots (can also do w/x & y flipped of course)
+gf_boxplot(Location ~ Rainfall, 
+        data = bird_data,
+        # so outliers not plotted twice
+        outlier.color = "white") |>
+  gf_sina(color = "grey64")
+```
+
+## Two categorical variables
+
+- Stacked `gf_bar`
+
+```{r}
+# stacked bar
+gf_bar(~Species, fill = ~Location, 
+       data = bird_data, 
+       position = "dodge")
+```
+
+
+## Three categorical variables
+
+- facets and side-by-side
+
+```{r}
+# facet grid
+gf_bar(~Species,
+       data = bird_data_sm) |>
+  gf_facet_grid(
+    # formula gives row_variable ~ column_variable
+    Year ~ Location) 
+```
+
+```{r}
+# facets and side-by-side
+gf_bar(~Species, fill = ~Location,
+       position = "dodge",
+       data = bird_data_sm) |>
+  gf_facet_wrap(~Year) # |>
+  # un comment the pipe and the line below to make it horizontal!
+  # gf_refine(coord_flip())
+```
+
+
+# Important Categorical Variables
+
+- To be decided later.
+
+## Order of categories
+
+```{r}
+bird_data <- bird_data |>
+  mutate(Species = 
+           fct_relevel(
+             # first input is the name of the variable you're re-ordering (no quotes)
+             Species, 
+             # then its values, in quotes, in the order you prefer
+             "Stilt",
+             "Coot"))
+```
+
+## Colors for categorical variables
+
+- Our project team will try to use overall brand colors in our graphs. 
