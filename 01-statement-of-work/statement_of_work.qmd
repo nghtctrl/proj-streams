@@ -1,0 +1,82 @@
+---
+title: "proj-streams Statement of Work"
+author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
+date: 02-18-2025
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: source
+---
+
+::: {.callout-note}
+proj-streams refers to the STAT 245 project that the authors of this document are working on in collaboration with their project partner, [Streams](https://streamsgr.org/).
+:::
+
+## Project Partner
+
+Our project partner is [Streams](https://streamsgr.org/), a Christian non-profit organization based on Grand Rapids, MI. Streams serves as a neighborhood hub for the Townline neighborhood, providing essential services such as healthcare through Catherine’s Health Center, food distribution, tutoring, and playgroups. Their mission is to bridge health disparities and improve the well-being of the diverse and underserved populations in the neighborhood.
+
+## Goals
+
+Key research questions we aim to answer:
+
+- How do demographic factors influence who uses Catherine’s Health Center?
+  - Are there differences in health center utilization based on gender, age, or race/ethnicity?
+- Does income or economic status impact access to Catherine’s Health Center? 
+  - Are people with lower incomes, different employment statuses, or renters less likely to use the clinic compared to those with higher incomes or homeowners?
+- How do health conditions affect the likelihood of using Catherine’s Health Center? 
+  - Are individuals with chronic conditions like asthma, diabetes, or high blood pressure more or less likely to visit the clinic?
+  - Do people with mental health conditions such as depression or anxiety use Catherine’s Health Center at different rates?
+- What barriers prevent people from using Catherine’s Health Center?
+  - Does lack of health insurance, transportation, or appointment availability make it harder for people to access the clinic?
+  - Do language barriers  play a role in whether people seek care at Catherine’s?
+  - Are financial concerns a significant factor in preventing people from visiting the clinic?
+
+## Deliverables
+
+Our expected deliverables are:
+
+- A cleaned and analysis-ready dataset.
+- A concise report summarizing key findings and insights, with a primary focus on informing Catherine’s Health Center, while also addressing relevant aspects of Streams, given their oversight role.
+- A PowerPoint presentation summarizing the key points from the report, including visuals, tables, and any relevant data analysis.
+  - This will be used during a Teams meeting with Megan (CEO of Catherine’s Health Center) and Makalah (Operations Director of Streams) to discuss the findings and recommendations.
+
+## Data
+
+We will use the collection of health surveys completed by individuals who utilize the Streams Neighborhood Hub services and by residents of the surrounding Townline neighborhood as our primary data. We do not have this data yet, but our partner will send us an Excel file within a few days.
+
+## Data Prep
+
+We don't know yet.
+
+## Background
+
+We will use the following resources:
+
+- Our partner Dr. Dani and Prof. Boldenow for advice and feedback.
+- Prof. De Ruiter for advice and feedback.
+- Help and advice from the Math/Science Hekman Library liaison, Katherine Swart.
+- Google Scholar, Semantic Scholar, NIH database for literature search and review.
+
+We will review the following sources:
+
+- [Access to Healthcare and Disparities in Access](https://www.ncbi.nlm.nih.gov/books/NBK578537/)
+- [Evaluating Michigan’s Community Hospital Access: Spatial Methods for Decision Support](https://pmc.ncbi.nlm.nih.gov/articles/PMC1592072/)
+- [How Social Determinants Impact Healthcare](https://youtu.be/xAlxtog_4ns?si=J9SAE0QdrBQkHsd5)
+
+## Current Skills
+
+Our group includes members with leadership and research experience, which will be valuable for our project. We are proficient in R, Python, Excel, GitHub, and Tableau, and we are happy to learn new skills as needed.
+
+## Work Plan
+
+We will divide tasks and hold occasional check-ins as needed to keep everyone aligned. Communication will be through Microsoft Teams and personal contacts. Every Tuesday from 9:50 to 10:20 AM, we will meet with our partners via Teams.
+
+## Requests
+
+We would appreciate your help with the following:
+
+- Advice on statistical analysis for this project and team management.
+- Feedback on draft reports and presentations.
