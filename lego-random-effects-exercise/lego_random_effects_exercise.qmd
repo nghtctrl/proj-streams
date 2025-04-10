@@ -1,8 +1,7 @@
 ---
 title: "Lego Case Study - Random Effects Practice"
-author: "STAT 245"
+author: ["Jiho Kim", "Minji Hur", "Sally Amonoo-Mensah"]
 format:
-  pdf: default
   html:
     code-tools: true
     embed-resources: true
@@ -22,60 +21,91 @@ knitr::opts_chunk$set(echo = TRUE)
 theme_set(theme_minimal(base_size = 14))
 ```
 
-```{r, make-lego-data, include = FALSE, eval = FALSE}
-require(lego)
-legos <- legosets |>
-  rename(Price = USD_MSRP) |>
-  select(-GBP_MSRP, -CAD_MSRP, -EUR_MSRP, -Image_URL) |>
-  mutate(Minifigures = ifelse(is.na(Minifigures), 0, Minifigures)) |>
-  arrange(Year, Theme, Subtheme, Name)
-
-write_csv(legos, '../../../../academic-website/static/data/legos.csv')
-```
-
 ## Data
 
-The dataset for today gives details on `Price` and other characteristics of 6172 Lego sets, including whether the kit `Contains_Minifigures`, the number of `Pieces` and `Minifigures` inside, and the `Year` they were created, as well as the `Name`, `Theme`, `Subtheme` and `Item_Number` of each set.
-
-Find the data at: <https://sldr.netlify.app/data/legos.csv>.
-
 ```{r}
-#| echo: false
-#| out-width: 50%
-#| fig-cap: "Some Lego bricks and minifigures. Image is from https://www.ikea.com/us/en/p/bygglek-201-piece-lego-r-brick-set-mixed-colors-30455758/"
-#| fig-align: "center"
-
-knitr::include_graphics('https://www.ikea.com/us/en/images/products/bygglek-201-piece-lego-r-brick-set-mixed-colors__0915480_pe784779_s5.jpg?f=xxl')
+lego_data = read_csv("https://sldr.netlify.app/data/legos.csv")
+glimpse(lego_data)
 ```
-
-\newpage
 
 ## Tasks
 
-Do the jobs below, saving your work in a Quarto document.
+Response and key predictor variables:        
 
-1.  **Plan a model you can fit to this dataset.** (\$\\leq 10\$ minutes to prioritize practicing later parts of the process)
-    -   You can choose the response variable. I suggest choosing from: `Contains_Minifigures`, `Pieces`, or `Minifigures`.
-    -   Identify one research question/key predictor you're interested in and do *short* model planning.
-    -   **Include at least one random effect in your model.**
-        -   How did you choose the RE variable(s)? It might be a confounder or a precision covariate...but one that makes sense as a random rather than fixed effect.
-        -   If more than one RE: are they nested or not?
-2.  **Partial model assessment** (*Focus on ACF only* to save time for later steps).
-    -   Fit two versions of your model:
-        -   One *with* the random effect (as planned)
-        -   One with all random effect variables *completely excluded, just to understand what the RE is doing for you (this is a learning tool not a modeling practice you should always do)*
-    -   Show ACFs for both of the models. Does adding the random effect(s) help reduce residual dependence?
+- Response variable: `Contains_Minifigures`
+- Key predictor variable: `Price`
 
-<!-- -->
+Confounders:
 
-4.  **Predictions: Your choice!**
-    -   Choose whether you want to make ***average random effect group*** or ***population average*** predictions.
-    -   **Justify your choice in words, in context** (that is, using words about Legos to illustrate what the "typical RE group" or the "population average" *mean*).
-    -   There's not a right answer here, but I'm looking for answers that indicate you know what "average RE group" and "pop ave" *mean!*
-5.  **Predictions: Make a prediction plot** that displays the kind of predictions you chose.
-    -   (This will either be using `ggpredict()`, or via a parametric bootstrap.)
-6.  **Conclusions** What can you learn from this model: is your key predictor *really* associated with your response, or might any patterns in the data just be within the expect amount of variation?
-    -   To do this you have to do **Model Comparison.**
-        -   You can use AIC, BIC, or ANOVA
-        -   Show code and output for AIC/BIC or ANOVA that will help answer your research question.
-        -   Then, write a brief interpretation of the results.
+- Pieces
+- Availability
+
+Precision covariates:
+
+- Packaging
+
+Random effects:
+
+- `Theme`
+- `Subtheme`
+
+```{r}
+mosaic::tally(~Contains_Minifigures, data = lego_data)
+```
+
+```{r}
+lego_data <- lego_data |>
+    mutate(
+        Contains_Minifigures = factor(Contains_Minifigures),
+        Availability = factor(Availability),
+        Packaging = factor(Packaging),
+        Theme = factor(Theme),
+        Subtheme = factor(Subtheme)
+    )
+```
+
+```{r}
+lego_data |>
+    pull(Contains_Minifigures) |>
+    levels()
+```
+
+```{r}
+lego_model <- glmmTMB(Contains_Minifigures ~ Price + Availability + Pieces + (1|Theme/Subtheme), family = binomial(link = 'logit'),
+                       data = lego_data)
+summary(lego_model)
+```
+
+```{r}
+lego_model2 <- glmmTMB(Contains_Minifigures ~ Price + Availability + Pieces 
+                        , family = binomial(link = 'logit'),
+                       data = lego_data)
+summary(lego_model2)
+```
+    
+```{r}
+# Model with random effects 
+s245::gf_acf(~lego_model) |> gf_lims(y = c(-1, 1))
+```
+
+```{r}
+# Model without random effect
+s245::gf_acf(~lego_model2) |> gf_lims(y = c(-1, 1))
+```
+```{r}
+library(DHARMa)
+ sim_lego <- simulateResiduals(lego_model)
+ plotResiduals(sim_lego, quantreg = FALSE)
+```
+
+Yes, adding the random effect(s) help reduce residual dependence.
+    
+```{r}
+ggpredict(lego_model, terms=c("Price")) |> plot()
+```
+
+```{r}
+car::Anova(lego_model)
+```
+
+Highest priced lego sets almost certiainly contains the minifigures, but ones on the lower price, there might be some uncertainties in lego sets with lower price.
