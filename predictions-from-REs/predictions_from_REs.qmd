@@ -1,0 +1,461 @@
+---
+title: "Predictions from Random Effects Models"
+author: ["Jake McClure", "Jiho Kim", "Minji Hur", "Sally"]
+format: 
+  pdf: default
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: source
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(mosaic)
+library(tidyverse)
+library(ggformula)
+library(glmmTMB)
+library(DHARMa)
+library(s245)
+library(ggeffects)
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+theme_set(theme_minimal(base_size = 18))
+```
+
+## Instructions
+
+Today's guided practice exercise will lead you through fitting, assessing and interpreting a mixed-effect model.
+
+Before you start, elect in your group:
+
+- An R operator/code typist/screen sharer
+- A manager to keep everyone on task and on schedule
+- A communication person to take notes, talk with prof as needed
+- If you have more people: a course notes/slides/Moodle reference person
+
+Then, have fun!
+
+**As you work, write your answers to questions (and you comments about model selection graphs, etc.) in your Quarto doc. You will hand in your rendered version at the end of in-class work time for assignment credit.**
+
+## Data
+
+Read in the data (you don't need to interpret/understand the tidying being done here):
+
+```{r, message = FALSE}
+pw <- read_csv('https://sldr.netlify.app/data/pwd.csv') |>
+  mutate(activity = ifelse(n_buzzes > 0,
+                           'foraging',
+                           'other'),
+         activity = forcats::fct_relevel(activity,
+                                         'other',
+                                         'foraging'))
+pw <- pw |>
+  mutate(prev_buzzes = c(0, head(pull(pw, n_buzzes), -1)),
+         time_cat = cut_interval(time_of_day, length = 0.1))
+```
+
+**The research question you will consider is: What characteristics of pilot whale dives help you to predict whether they are foraging (hunting for food) or doing something else?**
+
+Use response variable `activity`. 
+
+The data you have were collected with animal-borne electronic tags, and the dataset has 6452 rows. Each row is one dive by an individual whale, and there are dives from 14 whales in the dataset. (So - comfortably similar to the beaked whale data you saw in class in many ways...)
+
+Possible predictors include:
+
+- `ODBA` (Overall Dynamic Body Acceleration - a measure of how much energy the animal is using to move and swim), 
+- dive `duration` in seconds, 
+- dive `depth` in meters, 
+- sonar `exposure` (noise nearby that might affect how whales behave), 
+- `dive_state`  (behavior type, as judged by biologists watching whales when they are at  the sea surface), 
+- whale's size (`ind_size`), 
+- `time_of_day` in decimal hours, 
+- `time_cat` (time as categorical variable, in one-hour blocks -- *do not* use both time of day variables in same model!), 
+- `group_size` (number of other whales in same group), 
+- `water_depth` at the whale's location, 
+- `prev_buzzes` (number of suspected feeding events in the *previous* dive),
+- `individual` (a unique identifier for each whale that was studied).
+- (**Ignore** `sound_level` and `n_buzzes` -- do not use those variables.)
+
+
+
+## Model Fitting
+
+For this exercise, to save time, you will not plan the model yourself.
+
+Instead, consider this model:
+
+```{r}
+pw_re <- glmmTMB(activity ~ ODBA + duration + 
+                   prev_buzzes*dive_state + 
+                   (1 | individual/time_cat), 
+                 data = pw, family = binomial(link = 'logit'))
+summary(pw_re)
+```
+
+Discuss with your group: 
+
+#### Question 1:
+What **random effects** and what **fixed effects** are included in this model? 
+
+REs: `individual` and `time_cat`
+FEs: `ODBA`, `dive_state`, `duration`, and `prev_buzzes`.
+
+#### Question 2: 
+Are the random effects nested, or not?
+
+- Yes, the random effects are nested (individual/time_cat).
+
+#### Question 3:
+**How many parameters (slopes and intercepts ($\beta$s) and variances ($\sigma^2$s)) have to be estimated to fit the model above? Don't forget the variances (for the random effect(s) and the residuals)...** 
+*Hint: use the model `summary()` if needed to help count! The random effect (and residual if any) variances ($\sigma^2$) and corresponding standard deviations ($\sigma = \sigma^2$) are in the "Conditional model" section and the $\beta$s are in the "Coefficient table"! Remember, for a binary regression, there is no parameter being estimated for the residual variance or dispersion (no equivalent of a `lm()`'s $\sigma_{residuals}$)*
+
+- 13 fixed + 2 re = 15 total parameters
+
+#### Question 4:
+Now, what if you had included `individual` as a fixed effect instead?  With 14 whales in the dataset, how many more parameters would it take to add the `individual` predictor as a fixed effect instead of a random effect?
+*Consult Prof DR about your answers before going further. Make sure everyone understands how you determined the answer.*
+
+- 13 fixed + 13 individual + 1 RE = 27 total parameters
+
+### Model Planning check-in
+
+According to our previous rule of thumb, how many parameters could we safely plan to estimate from this data set?  To figure it out, create a table showing the number of "successes" and "failures" in the dataset.  
+
+```{r}
+mosaic::tally(~activity, data = pw)
+```
+522/15 = 38.4 max parameters
+
+What do you think - are we estimating too many parameters, or are we OK?
+
+No, because we are not surpassing 38.
+
+When fitting random effects models, *be conservative* about the number of parameters you're including.  Fitting a random effect technically estimates just one parameter value, the random effect variance $\sigma_{RE}$. But many argue that it "uses up" an amount of parameter-fitting capacity that is somewhere between 1 (for the random effect variance) and the number of parameters it would take to include that same predictor as a regular predictor (here, 13).
+
+So when fitting random-effects models, we might err a bit on the side of including fewer predictors.
+
+
+## Model Assessment
+
+Code to produce graphs is provided in this section (again, to save time). Your job is to interpret the graphs.
+
+### Independence of residuals
+
+```{r}
+gf_acf(~pw_re) 
+```
+
+
+### Mean-variance relationship and (logit) linearity
+
+```{r}
+pw_sim <- simulateResiduals(pw_re)
+gf_point(pw_sim$scaledResiduals ~
+            # if you are going to "plot your own" scaled residuals
+           # for a model with random effects, get fitted values
+           # EXCLUDING REs with input re.form = NA.
+           # the rank() (as shown in count model notes) scales the x axis :
+           rank(predict(pw_re, re.form = NA, type = 'response')),
+         # make points semi-transparent
+         alpha = 0.1) |>
+  gf_labs(x = 'Scaled Predicted Prob(Feeding)',
+          y = 'Scaled Residuals')
+```
+
+#### Question 5:
+Which conditions are being checked? Does your team think they are met? What evidence do you see to support your judgment?
+
+Linearity: all the data points are evenly spread out, not clustering, indicating a pass
+Reisduals: While some reach beyond the bound, we agreed it was good enough to signify a pass.
+Mean Variance: all the data points are evenly dispearsed
+
+
+### (logit) Linearity
+
+In class we mentioned that for one-trial-per-row binary data, it's a bit beyond the scope of our class to do the data prep needed to make a plot of the *data* to check logit linearity.
+
+But for fun and for your consideration, code is given here that shows one example of checking linearity on a per-predictor basis:
+
+```{r}
+pw_dur <- pw |>
+  mutate(cat_duration = cut_number(duration, 10)) |>
+  group_by(cat_duration) |>
+  mutate(prop_feeding = prop(~activity == 'foraging'),
+         median_dur = median(~duration),
+         logit_p_feeding = logit(prop_feeding))
+
+gf_point(logit_p_feeding ~ median_dur,
+         data = pw_dur) |>
+  gf_labs(x = 'Dive Duration',
+          y = 'logit(P(feeding))')
+```
+
+(If you have time at the end, try this for one more predictor).
+
+## Prediction Plots: Average RE Group
+
+First, we make the predictions that are most natural and simple to make: ones for "the average random effect group".  
+
+These are equivalent to using the right-hand side of the model equation (*ignoring* both $\epsilon_{RE}$ and $\epsilon_{resid}$) and applying the inverse logit transform to convert it to a probability.
+
+Since we have two random effects: time period nested within individual, here we'll be making predictions for the *average* time-period of the *average whale*.
+
+We have to choose one predictor to make the first predictions plots for; I'll choose dive `duration`.
+
+```{r}
+library(ggeffects)
+ggpredict(pw_re, 
+          terms = 'duration',
+          type = 'fixed')
+```
+
+#### Question 6:
+At what values were the "predictors not shown" fixed?  
+
+*Hint: They are in the output above, under the heading "Adjusted for". You can do this for any prediction plot - leave off the `|> plot()` to get a printout of results including, at the bottom, the fixed values...*
+
+To get a graph rather than text output (now that we know the fixed values used to make the predictions), just add `|> plot()` to the code.
+
+```{r}
+ggpredict(pw_re, 
+          terms = 'duration',
+          type = 'fixed') |>
+  plot()
+```
+
+Taking `ggeffects` up on its offer to get a "smooth plot" which will be prettier:
+
+```{r}
+ggpredict(pw_re, 
+          terms = 'duration [all]',
+          type = 'fixed') |>
+  plot() |>
+  gf_labs(title = '',
+          y = 'Probability of Feeding',
+          x = 'Dive Duration (seconds)')
+```
+
+
+#### Question 7:
+Summarize the relationship that exists between dive duration and probability of feeding, according to this model, in a sentence.
+
+## Prediction Plots: All the Whales
+
+**This isn't something you need to be able to do or that you will do for a test or project! It is neither an "average RE group" NOR a "population average" prediction.**
+
+But I think it may help with understanding the idea of the random effect, and also the "average individual".
+
+So: I'll show you how one could make predictions for *each* of the whales in the dataset, and we'll add them to our "average RE group" prediction plot.
+
+First, we make a hypothetical dataset where duration varies from 4 to 825 seconds (like in the real data), for each of our 14 whales. We'll fix the other predictors at the same values as before.
+
+```{r}
+ind_pred_data <- expand.grid(individual = pull(pw, individual) |> unique(),
+                             duration = seq(from = 4, by = 10, to = 825),
+                             ODBA = 2.05,
+                             water_depth = 450.57,
+                             prev_buzzes =   0.18,
+                             dive_state = 'Travel',
+                             time_cat = NA) #(population-level)
+```
+
+Now, make predictions with SEs for this dataset, but *including* the random effect of individual. (R is able to estimate, for each individual, how far it is from the "average" individual; the standard deviation of these differences is the reported estimate of $\sigma_{RE}$!)
+
+```{r}
+ind_preds <- predict(pw_re,
+                     type = 'link',
+                     se.fit = TRUE,
+                     newdata = ind_pred_data,
+                     # to make specific-individual-level predictions rather than average-individual:
+                     re.form = NULL 
+                     )
+
+ave_ind <- predict(pw_re,
+                   type = 'link',
+                   se.fit = TRUE,
+                   newdata = ind_pred_data,
+                   # to EXCLUDE individual random effects from predictions:
+                   re.form = ~0)
+```
+
+Now, as we have seen before when making prediction plots before, convert the predictions and SEs to CIs in preparation for making the prediction plot. But now, because our model has a logit link function, we need to inverse-logit transform the results with function `ilogit()` to convert from logit(p) to p -- we want the predictions as probabilities at the end, not logit(probability)!
+
+```{r}
+ind_pred_data <- ind_pred_data |>
+  mutate(pred = ilogit(ind_preds$fit),
+         CI_bottom = ilogit(ind_preds$fit - 1.96*ind_preds$se.fit),
+         CI_top = ilogit(ind_preds$fit + 1.96*ind_preds$se.fit),
+         ave_ind_pred = ilogit(ave_ind$fit),
+         ave_CI_bottom = ilogit(ave_ind$fit - 1.96*ave_ind$se.fit),
+         ave_CI_top = ilogit(ave_ind$fit + 1.96*ave_ind$se.fit))
+```
+
+Finally make the graph. Start with a graph like we had before (predictions for "average RE group) in black and grey), and add on a new layer colored by whale. We omit the legend because we don't really need to know which whale is which; but each color is one whale.
+
+```{r, fig.width = 7.5, fig.height = 6.5}
+gf_ribbon(CI_bottom + CI_top ~ duration,
+            alpha = 0.3,
+            fill = ~individual,
+          data = ind_pred_data) |>
+    gf_line(pred ~ duration, 
+          data = ind_pred_data,
+          color = ~individual,
+          size = 1.5) |>
+       gf_labs(title = '',
+          y = 'Probability of Feeding',
+          x = 'Dive Duration (seconds)') |>
+    gf_theme(legend.position = 'none')  |>
+  gf_line(ave_ind_pred ~ duration,
+            size = 2, alpha = 1,
+            data = ind_pred_data,
+            color = 'black') |>
+    gf_ribbon(ave_CI_bottom + ave_CI_top ~ duration,
+              fill = 'black', alpha = 0.5)
+```
+
+
+Hmm, kind of wild. There is a lot going on there and it's hard to see detail because of all the overlapping colored CIs.
+
+What if we plot again *without uncertainty* (no CIs), just to see the lines more clearly?
+
+
+```{r, fig.width = 7.5, fig.height = 6.5}
+gf_line(pred ~ duration, 
+          data = ind_pred_data,
+          color = ~individual,
+          size = 1.5,
+        alpha = 0.7) |>
+       gf_labs(title = '',
+          y = 'Probability of Feeding',
+          x = 'Dive Duration (seconds)') |>
+  #  gf_theme(legend.position = 'none')  |>
+  gf_line(ave_ind_pred ~ duration,
+            size = 2, alpha = 1,
+            data = ind_pred_data,
+            color = 'black') 
+```
+
+The black line is the "average RE group" and the colored ones are individual-whale average predicted probabilities of foraging.
+
+Any ideas why the black "average RE group" = "average  whale" does *not* look like it is in the middle in any sense? 
+
+**Consult Prof DR with your ideas!**
+
+*Then, see the very bottom of this document for my thoughts...*
+
+
+## Prediction Plots: Population Average
+So far, we have made predictions for the *average random effect group*.
+
+But what if we wanted to make predictions for the average probability of feeding, across all whales in the population (and across all possible time-periods)? 
+
+This is the kind of "average" that a model with no random effects would typically predict.
+
+One way is to use something called a **parametric bootstrap**.  
+
+Focus on the big picture rather than the code details -- we want to get *population average* predictions to compare with the average-random-effect-group ones.
+
+To do it we will simulate many new hypothetical datasets *from the fitted model*. 
+
+To do each simulation, we draw proposed values for the intercept, all the slope parameters, and the values of each random effect. (These will vary each simulation depending on the amount of uncertainty in the model parameter estimates ($\beta$s and the variance $\sigma_{RE}$.))
+
+Then we re-fit the model to the new simulated data and make predictions from that model.
+
+We repeat many times to get a sense of the *distribution* of predicted values for every desired combination of predictor variable values.
+
+To make this work, we first have to create a function that takes a fitted model and makes the predictions we want from it. 
+
+When you run the chunk below, it won't seem to "do" anything, as what it's doing is defining a function `predict_pw_re()` for later use.
+
+```{r}
+predict_pw_re <- function(model){
+  new_dat <- ggeffects::data_grid(model, 
+                       terms = 'duration [all]',
+                       # it's important that you fill in a value *seen in the data* for each RE
+                       # but it does not matter which one it is
+                       condition = c(individual = "gm08_150c",
+                                     time_cat = "(15.2,15.3]"))
+  return(predict(model, 
+                 newdata = new_dat,
+                 type = "response", 
+                 allow.new.levels = TRUE,
+                 re.form = NULL))
+}
+```
+
+The code below does the parametric bootstrap for you. But do not run it - it will take a half hour or so, so it's been done for you (and then the result read in from online where I stored it).
+
+```{r}
+library(lme4)
+# boot_pw_re <- bootMer(pw_re, # the fitted model
+#                      FUN = predict_pw_re, # our function
+#                      nsim = 1000, # make this 1000+ if you have time/computer can handle
+#                      type = "parametric", # parametric bootstrap
+#                      use.u = FALSE)
+# saveRDS(boot_pw_re, '/Users/sld33/Dropbox/academic-website/static/data/boot_pw_re.RDS')
+
+boot_pw_re <- readRDS(url('https://sldr.netlify.app/data/boot_pw_re.RDS'))
+```
+
+The last input to `bootMer()`, `use.u = FALSE`, tells `bootMer()` to draw new normal random effect values (simulate new whales each time, not re-use the 14 actually observed in the original dataset).
+
+We get **a population average prediction** by taking the mean of the simulated predictions, and a CI can be estimated by taking their 2.5 and 97.5 percentiles.
+
+```{r}
+pop_ave_data <- ggeffects::data_grid(pw_re,
+                          # the [all] samples more values of duration
+                          # to make a smoother graph in the end
+                          terms = 'duration [all]')
+
+pop_ave_data <- pop_ave_data |>
+  mutate(pop_ave_pred = apply(boot_pw_re$t, 2, mean),
+         CIlow = apply(boot_pw_re$t, 2, quantile, probs = 0.025),
+         CIhigh = apply(boot_pw_re$t, 2, quantile, probs = 0.975)
+         )
+```
+
+Now, we just want to compare the "average random effect group" predictions to the "population average" predictions:
+
+```{r}
+gf_line(ave_ind_pred ~ duration,
+        size = 2,
+        data = ind_pred_data,
+        color = 'darkblue',
+        linetype = 'dashed') |>
+    gf_ribbon(ave_CI_bottom + ave_CI_top ~ duration,
+              data = ind_pred_data,
+              fill = 'darkblue', 
+              alpha = 0.5,
+              inherit = FALSE) |>
+  gf_line(pop_ave_pred ~ duration,
+          size = 2,
+          data = pop_ave_data,
+          color = 'darkred',
+          inherit = FALSE) |>
+  gf_ribbon(CIlow + CIhigh ~ duration,
+            data = pop_ave_data,
+            fill = 'darkred',
+            inherit = FALSE) |>
+  gf_labs(y = 'Probability of Feeding',
+          x = 'Dive Duration (seconds)')
+```
+
+The population average prediction (solid red) has a somewhat different shape, and wider confidence bands compared to the blue dashed average-individual line (because it includes the individual-to-individual variation as well as uncertainty in the parameter estimates).
+
+## Which Prediction is "Better"?
+Which one is "better"? It depends.
+
+Do you think it makes more sense to show how probability of feeding would be expected to vary over a range of depths *for a "typical" whale and a "typical" time-period* (that's "average RE group" prediction)? Or do we want to show the feeding probability-depth relationship that we'd get if we sampled bunches of dives from many whales, at many depths (that's "population average" prediction)?
+
+#### Question 8:
+Which does your group think is preferable in this scenario - average individual or population average? There is not a right answer. Rather, I want you to be able to understand the difference between the options, know which one you are doing, and give some kind of rationale for your choice.
+
+*Share your final conclusions with Prof DR and -- you're done!*
+
+**If you have more time left, go back and repeat one or more of the prediction plots for a DIFFERENT predictor...**
+
+
+## Why isn't the "average" line "in the center"?
+
+*I think the "average RE group" value is far from the middle because individual whales have very different number of dives. And when NOT feeding, the whales tend to do much shorter and shallower dives, so with each row of data representing one dive, the "very shallow not feeding" behavior is more typical in terms of the proportion of dives in the dataset that have those characteristics. Also, there are a number of whales overplotted there around the "average RE group" line -- the other lines that your eye is drawn to are 6-7, so there must be 7-8 more others under the black one!*
