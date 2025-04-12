@@ -10,4 +10,193 @@ format:
 editor: source
 ---
 
+```{r}
+#| include: false
 
+library(ggformula)
+library(dplyr)
+library(glmmTMB)
+library(DHARMa)
+library(s245)
+library(ggeffects)
+```
+
+```{r}
+health_survey_df <- read.csv("../clean_health_survey_data.csv")
+```
+
+```{r}
+health_survey_df <- health_survey_df |>
+    mutate(
+        received_services_at_catherines = factor(received_services_at_catherines),
+        language_barrier = factor(language_barrier),
+        income_category = factor(income_category),
+        lives_in_zipcode_49548= factor(lives_in_zipcode_49548)
+    )
+```
+
+```{r}
+glimpse(health_survey_df)
+```
+
+## Model Fitting
+
+### Model 1
+
+```{r}
+RSC_Model1 <- glmmTMB(
+   received_services_at_catherines ~ income_category + language_barrier,
+   data = health_survey_df, 
+   family = binomial(link = 'logit')
+)
+```
+
+```{r}
+summary(RSC_Model1)
+```
+
+### Model 2
+
+```{r}
+RSC_Model2 <- glmmTMB(
+   received_services_at_catherines ~ income_category + health_insurance_barrier,
+   data = health_survey_df, 
+   family = binomial(link = 'logit')
+)
+```
+
+```{r}
+summary(RSC_Model2)
+```
+
+### Model 3
+
+```{r}
+RSC_Model3 <- glmmTMB(
+   received_services_at_catherines ~ income_category + difficulty_understanding_verbal_medical_info,
+   data = health_survey_df, 
+   family = binomial(link = 'logit')
+)
+```
+
+```{r}
+summary(RSC_Model3)
+```
+
+### Model 4
+
+```{r}
+RSC_Model4 <- glmmTMB(
+   received_services_at_catherines ~ income_category + lives_in_zipcode_49548,
+   data = health_survey_df, 
+   family = binomial(link = 'logit')
+)
+```
+
+## Model Assessment
+
+### Model 1
+
+#### DHARMa Residuals vs. Fitted Plot
+
+```{r}
+RSC_Model1_sim <- simulateResiduals(RSC_Model1)
+plotResiduals(RSC_Model1_sim, quantreg = FALSE)
+```
+
+#### ACF Plot
+
+```{r}
+s245::gf_acf(~RSC_Model1) |> gf_lims(y = c(-1, 1))
+```
+
+### Model 2
+
+#### DHARMa Residuals vs. Fitted Plot
+
+```{r}
+sim_Model2 <- simulateResiduals(RSC_Model2)
+plotResiduals(sim_Model2, quantreg = FALSE)
+```
+
+#### ACF Plot
+
+```{r}
+s245::gf_acf(~RSC_Model2) |> gf_lims(y = c(-1, 1))
+```
+
+### Model 3
+
+#### DHARMa Residuals vs. Fitted Plot
+
+```{r}
+sim_Model3 <- simulateResiduals(RSC_Model3)
+plotResiduals(sim_Model3,quantreg = FALSE)
+```
+
+#### ACF Plot
+
+```{r}
+s245::gf_acf(~RSC_Model3)
+```
+
+### Model 4
+
+#### DHARMa Residuals vs. Fitted Plot
+
+```{r}
+sim_Model4 <- simulateResiduals(RSC_Model4)
+plotResiduals(sim_Model4, quantreg = FALSE)
+```
+
+#### ACF Plot
+
+```{r}
+s245::gf_acf(~RSC_Model4) |> gf_lims(y =c(-1, 1))
+```
+
+## Prediction Plot
+
+1.Model1
+```{r}
+ggpredict(RSC_Model1, terms=c("income_category")) |> plot()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+
+2.Model2
+```{r}
+ggpredict(RSC_Model2, terms=c("income_category")) |> plot()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+3.Model3
+
+```{r}
+ggpredict(RSC_Model3, terms=c("income_category")) |> plot()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+4.Model4
+```{r}
+ggpredict(RSC_Model4, terms=c("income_category")) |> plot()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+### Model Selection
+1.Model1
+2.Model2
+3.Model3
+4.Model4
+```{r}
+car::Anova(RSC_Model4)
+```
+### Interpretation 
+1. Model 1
+2. Model 2
+3. Model 3
+4. Model 4
+- From the model assessment above, we could see that the condition for independence of residuals is met as the values fall inside the interval. Mean-variance and linearity conditions are met as the data points are evenly spread out vertically and show no trend. However, from the Anova model selection and prediction plot, there is no strong evidence that income and zip code have an association with the response variable. 
