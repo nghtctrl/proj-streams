@@ -1,0 +1,235 @@
+---
+title: "Draft Models"
+author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
+date: 04-12-2025
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: source
+---
+
+```{r}
+#| include: false
+
+library(ggformula)
+library(dplyr)
+library(glmmTMB)
+library(DHARMa)
+library(s245)
+library(ggeffects)
+```
+
+```{r}
+health_survey_df <- read.csv("../clean_health_survey_data.csv")
+```
+
+```{r}
+glimpse(health_survey_df)
+```
+
+## Model Fitting
+
+```{r}
+health_survey_df <- health_survey_df |>
+    mutate(
+        received_services_at_catherines = factor(received_services_at_catherines),
+        language_barrier = factor(language_barrier),
+        income_category = factor(income_category),
+        lives_in_zipcode_49548 = factor(lives_in_zipcode_49548)
+    )
+```
+
+### Model 1
+
+```{r}
+RSC_Model1 <- glmmTMB(
+    received_services_at_catherines ~ income_category + language_barrier,
+    data = health_survey_df,
+    family = binomial(link = "logit")
+)
+```
+
+```{r}
+summary(RSC_Model1)
+```
+
+### Model 2
+
+```{r}
+RSC_Model2 <- glmmTMB(
+    received_services_at_catherines ~ income_category + health_insurance_barrier,
+    data = health_survey_df,
+    family = binomial(link = "logit")
+)
+```
+
+```{r}
+summary(RSC_Model2)
+```
+
+### Model 3
+
+```{r}
+RSC_Model3 <- glmmTMB(
+    received_services_at_catherines ~ income_category + difficulty_understanding_verbal_medical_info,
+    data = health_survey_df,
+    family = binomial(link = "logit")
+)
+```
+
+```{r}
+summary(RSC_Model3)
+```
+
+### Model 4
+
+```{r}
+RSC_Model4 <- glmmTMB(
+    received_services_at_catherines ~ income_category + lives_in_zipcode_49548,
+    data = health_survey_df,
+    family = binomial(link = "logit")
+)
+```
+
+```{r}
+summary(RSC_Model4)
+```
+
+## Model Assessment
+
+### Model 1
+
+#### DHARMa Residuals vs. Fitted Plot
+
+```{r}
+RSC_Model1_sim <- simulateResiduals(RSC_Model1)
+plotResiduals(RSC_Model1_sim, quantreg = FALSE)
+```
+
+This plot checks for (1) logit-linearity and (2) the mean-variance relationship. The curvy trend in red quantile lines suggests that the relationship is not logit-linear. Furthermore, the residual spread appears clustered at various point spaces, suggesting that the variance is not constant. Therefore, conditions (1) and (2) are not met.
+
+#### ACF Plot
+
+```{r}
+s245::gf_acf(~RSC_Model1) |> gf_lims(y = c(-1, 1))
+```
+
+This plot helps to check for the independence of residuals. At $\text{Lag} = 0$, the $\text{ACF} = 1$, and at all other $\text{Lag}$s, the $\text{ACF}$ values are generally inside the "fence" of the confidence bounds. Therefore, the condition is met.
+
+### Model 2
+
+#### DHARMa Residuals vs. Fitted Plot
+
+```{r}
+RSC_Model2_sim <- simulateResiduals(RSC_Model2)
+plotResiduals(RSC_Model2_sim, quantreg = FALSE)
+```
+
+#### ACF Plot
+
+```{r}
+s245::gf_acf(~RSC_Model2) |> gf_lims(y = c(-1, 1))
+```
+
+### Model 3
+
+#### DHARMa Residuals vs. Fitted Plot
+
+```{r}
+RSC_Model3_sim <- simulateResiduals(RSC_Model3)
+plotResiduals(RSC_Model3_sim, quantreg = FALSE)
+```
+
+#### ACF Plot
+
+```{r}
+s245::gf_acf(~RSC_Model3) |> gf_lims(y = c(-1, 1))
+```
+
+### Model 4
+
+#### DHARMa Residuals vs. Fitted Plot
+
+```{r}
+RSC_Model4_sim <- simulateResiduals(RSC_Model4)
+plotResiduals(RSC_Model4_sim, quantreg = FALSE)
+```
+
+#### ACF Plot
+
+```{r}
+s245::gf_acf(~RSC_Model4) |> gf_lims(y = c(-1, 1))
+```
+
+## Prediction Plot
+
+### Model 1
+
+```{r}
+ggpredict(RSC_Model1, terms = c("income_category")) |> plot() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### Model 2
+
+```{r}
+ggpredict(RSC_Model2, terms = c("income_category")) |> plot() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+
+### Model 3
+
+```{r}
+ggpredict(RSC_Model3, terms = c("income_category")) |> plot() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+### Model 4
+
+```{r}
+ggpredict(RSC_Model4, terms = c("income_category")) |> plot() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+## Model Selection
+
+### Model 1
+
+```{r}
+car::Anova(RSC_Model1)
+```
+
+### Model 2
+
+```{r}
+car::Anova(RSC_Model2)
+```
+
+### Model 3
+
+```{r}
+car::Anova(RSC_Model3)
+```
+
+### Model 4
+
+```{r}
+car::Anova(RSC_Model4)
+```
+
+## Interpretation 
+
+### Model 1
+
+This model failed to pass the model assessment, so the following conclusion is not valid. However, model 1 shows a potential association between income and whether or not the individual received services at Catherine’s, with lower-income individuals showing higher predicted probabilities of service use, as reflected in the prediction plot. While the ANOVA results show that there is evidence that income category is a predictor of whether or not the individual received services at Catherine’s (p = 0.065), there is no evidence that language barrier is a predictor of whether or not the individual received services at Catherine’s  (p = 0.297), indicating that income may play a more meaningful role in Catherine’s utilization. However, we note that the wide confidence intervals in the prediction plot suggest some uncertainty.
+
+### Model 2
+
+### Model 3
+
+### Model 4
+
+From the model assessment above, we could see that the condition for independence of residuals is met as the values fall inside the interval. Mean-variance and linearity conditions are met as the data points are evenly spread out vertically and show no trend. However, from the Anova model selection and prediction plot, there is no strong evidence that income and zip code have an association with the response variable.
