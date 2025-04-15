@@ -1,0 +1,53 @@
+---
+title: "Technical Report"
+author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
+date: 04-12-2025
+format: 
+  html:
+    embed-resources: true
+    toc: true
+    code-tools: true
+editor: source
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+```
+
+## Introduction
+
+## Model Planning
+
+### Model Planning Checklist
+
+## Data Exploration
+
+## Model Fitting
+
+### Model Equation
+
+## Assessment
+
+### Residuals vs. Fitted Plot
+
+### ACF Plot
+
+### Overall Conclusion
+
+## Prediction Plot
+
+### Generate Hypothetical Dataset
+
+### Make Predictions From Fitted Model
+
+### Put Predictions, SEs, and CI in Hypothetical Dataset
+
+### Plot the Result
+
+## Making Inference
+
+## Interpretation
+
+## Conclusion
