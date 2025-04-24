@@ -1,0 +1,131 @@
+---
+title: "Catherine's Service Utilization"
+format: 
+  html:
+    embed-resources: true
+    code-tools: true
+    theme: minty
+    page-layout: custom
+    fontsize: '80%'
+    margin-left: "10px"
+    margin-right: "10px"
+editor: visual
+---
+Jiho Kim, Minji Hur, Jake McClure, Sally Amonoo-Mensah
+
+```{r}
+#| label: setup
+#| include: false
+
+library(tidyverse)
+library(ggformula)
+library(ggforce)
+library(glmmTMB)
+library(ggeffects)
+
+knitr::opts_chunk$set(echo = FALSE,
+                      message = FALSE,
+                      fig.width = 7,
+                      fig.height = 4
+                      )
+theme_set(theme_minimal(base_size = 20))
+health_survey_df <- read.csv("../clean_health_survey_data.csv")
+```
+
+```{=html}
+<!-- consider more customization of colors, etc. - some options at
+<!-- https://quarto.org/docs/output-formats/html-themes.html -->
+```
+::: grid
+::: g-col-4
+<!-- This column takes 1/3 of the page -->
+
+# Introduction
+
+-   Our project partner is Streams, a Christian non-profit organization based in Grand Rapids, MI. Streams serves as a neighborhood hub for the Townline neighborhood, providing essential services.
+-   Their mission is to bridge health disparities and improve the well-being of the diverse and underserved populations in the neighborhood.
+-   Recently, Streams put together a data set that gathered health information about the community members living in the Townline neighborhood surrounding the Streams Neighborhood Hub in an attempt to answer the big question about Catherine's utilization.
+
+## Research Question
+
+- From survey respondents, what are key differences between individuals who utilize Catherines services versus not use? What are the barriers to using Catherines?
+- End Goal: Catherines wants more people to use their health clinic. Currently, health providers at the clinic do not have full schedules every day.
+
+# Statistical Modeling
+
+- We fitted a binomial regression model with `received_services_at_catherines` as the response variable and `age` as the key predictor. 
+- `age` has a p-value of 0.00145 which suggests that there is evidence that it has some association with the response variable.
+
+:::
+
+::: g-col-4
+<!-- This column takes 1/3 of the page -->
+
+# Data Exploration
+
+```{r, echo = FALSE, out.width='95%'}
+gf_boxplot(received_services_at_catherines ~ age,
+           data = health_survey_df,
+           color = "darkblue",        
+           fill = "skyblue",          
+           alpha = 0.6) + 
+  labs(title = "Services Received at Catherine's by Age",
+       x = "Age",
+       y = "Services Received") +
+  theme_minimal() 
+```
+
+- Older individuals are more likely to have received services at Catherines, whereas those who have not received services there tend to be younger.
+
+# Main Findings
+## Prediction Plot
+```{r}
+#| include: false
+health_survey_df <- health_survey_df |>
+    mutate(
+        received_services_at_catherines = factor(received_services_at_catherines))
+
+RSC_Model1 <- glmmTMB(
+    received_services_at_catherines ~ age,
+    data = health_survey_df,
+    family = binomial(link = "logit"))
+summary(RSC_Model1)
+```
+
+```{r, echo = FALSE}
+age_preds <- ggpredict(RSC_Model1, terms = c("age"))
+plot(age_preds) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high),
+              fill = "skyblue", alpha = 0.4) +   
+  geom_line(color = "darkblue",  linewidth= 1.2) +    
+  labs(title = "Predicted Probability of Receiving Services by Age",
+       x = "Age",
+       y = "Predicted Probability") +
+  theme_minimal()
+``` 
+:::
+
+::: g-col-4
+<!-- This column takes 1/3 of the page -->
+
+# Your experience
+
+Major challenges:
+-   model overfitting & small dataset. 
+-   Overall, our group experienced steady growth by maintaining open communication with both teammates and service partners, persevering through unforeseen difficulties, and upholding a strong sense of social responsibility by assistinthe analysis g in community-bparticipatory ased res(CBPR)ea
+ch. 
+
+# References & Acknowledgements
+
+-   We would like to thank Dr. Dani & Prof. Boldenow for their consistent guidance throughout the course of our research.
+-   We would also like to acknowledge the support of Calvin University's Science Department for lending resources to assist in our research.Lastly, w-   We would like to acknowledge Calvin's nursing department and Catherine's foradmtering surveys to collect the data used in our research. 
+
+## Works Cited
+
+-   “Access to Healthcare and Disparities in Access.” 2021 National Healthcare Quality and Disparities Report \[Internet\]., U.S. National Library of Medicine, www.ncbi.nlm.nih.gov/books/NBK578537/. Accessed 22 Apr. 2025.
+-   Messina, Joseph P, et al. “Evaluating Michigan’s Community Hospital Access: Spatial Methods for Decision Support.” International Journal of Health Geographics, U.S. National Library of Medicine, 22 Sept. 2006, pmc.ncbi.nlm.nih.gov/articles/PMC1592072/.
+-   YouTube, youtu.be/xAlxtog_4ns?si=J9SAE0QdrBQkHsd5. Accessed 22 Apr. 2025.
+:::
+:::
+
+:::
