@@ -6,12 +6,12 @@ format:
     code-tools: true
     theme: minty
     page-layout: custom
-    fontsize: '80%'
-    margin-left: "10px"
-    margin-right: "10px"
+    fontsize: '75%'
+    margin-left: "5px"
+    margin-right: "5px"
 editor: visual
 ---
-Jiho Kim, Minji Hur, Jake McClure, Sally Amonoo-Mensah
+<p style="margin-top: -10px;"> Jiho Kim, Minji Hur, Jake McClure, Sally Amonoo-Mensah </p>
 
 ```{r}
 #| label: setup
@@ -42,9 +42,7 @@ health_survey_df <- read.csv("../clean_health_survey_data.csv")
 
 # Introduction
 
--   Our project partner is Streams, a Christian non-profit organization based in Grand Rapids, MI. Streams serves as a neighborhood hub for the Townline neighborhood, providing essential services.
--   Their mission is to bridge health disparities and improve the well-being of the diverse and underserved populations in the neighborhood.
--   Recently, Streams put together a data set that gathered health information about the community members living in the Townline neighborhood surrounding the Streams Neighborhood Hub in an attempt to answer the big question about Catherine's utilization.
+-   Our project partner is Streams, a Christian non-profit organization based in Grand Rapids, MI. Streams serves as a neighborhood hub for the Townline neighborhood, providing essential services. Their mission is to bridge health disparities and improve the well-being of the diverse and underserved populations in the neighborhood. Catherine's Health Center, which located within the Streams, provides medical care and support to local residents. Recently, Streams put together a data set that gathered health information about the community members living in the Townline neighborhood surrounding the Streams Neighborhood Hub in an attempt to answer the big question about Catherine's utilization.
 
 ## Research Question
 
@@ -70,15 +68,11 @@ gf_boxplot(received_services_at_catherines ~ age,
            fill = "skyblue",          
            alpha = 0.6) + 
   labs(title = "Services Received at Catherine's by Age",
-       x = "Age",
+       x = "Age (years)",
        y = "Services Received") +
   theme_minimal() 
 ```
-
-- Older individuals are more likely to have received services at Catherines, whereas those who have not received services there tend to be younger.
-
 # Main Findings
-## Prediction Plot
 ```{r}
 #| include: false
 health_survey_df <- health_survey_df |>
@@ -99,7 +93,7 @@ plot(age_preds) +
               fill = "skyblue", alpha = 0.4) +   
   geom_line(color = "darkblue",  linewidth= 1.2) +    
   labs(title = "Predicted Probability of Receiving Services by Age",
-       x = "Age",
+       x = "Age (years)",
        y = "Predicted Probability") +
   theme_minimal()
 ``` 
@@ -108,19 +102,17 @@ plot(age_preds) +
 ::: g-col-4
 <!-- This column takes 1/3 of the page -->
 
-# Your experience
+# Student Group Experience
 
-Major challenges:
--   model overfitting & small dataset. 
--   Overall, our group experienced steady growth by maintaining open communication with both teammates and service partners, persevering through unforeseen difficulties, and upholding a strong sense of social responsibility by assistinthe analysis g in community-bparticipatory ased res(CBPR)ea
-ch. 
+-   Major challenges: Model overfitting & small dataset. 
+-   Our group experienced steady growth by maintaining open communication with both teammates and service partners, persevering through unforeseen difficulties, and upholding a strong sense of social responsibility by assisting in the analysis in CBPR.
 
-# References & Acknowledgements
+# Acknowledgements
 
 -   We would like to thank Dr. Dani & Prof. Boldenow for their consistent guidance throughout the course of our research.
--   We would also like to acknowledge the support of Calvin University's Science Department for lending resources to assist in our research.Lastly, w-   We would like to acknowledge Calvin's nursing department and Catherine's foradmtering surveys to collect the data used in our research. 
+-   We would also like to acknowledge the support of Calvin University's Science Department for lending resources to assist in our research. Lastly, We would like to acknowledge Calvin's nursing department and Catherine's urveys to collect the data used in our research. 
 
-## Works Cited
+## References 
 
 -   “Access to Healthcare and Disparities in Access.” 2021 National Healthcare Quality and Disparities Report \[Internet\]., U.S. National Library of Medicine, www.ncbi.nlm.nih.gov/books/NBK578537/. Accessed 22 Apr. 2025.
 -   Messina, Joseph P, et al. “Evaluating Michigan’s Community Hospital Access: Spatial Methods for Decision Support.” International Journal of Health Geographics, U.S. National Library of Medicine, 22 Sept. 2006, pmc.ncbi.nlm.nih.gov/articles/PMC1592072/.

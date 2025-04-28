@@ -1,0 +1,124 @@
+---
+title: "models"
+format: html
+editor: visual
+---
+
+```{r}
+#| include: false
+
+library(ggformula)
+library(dplyr)
+library(glmmTMB)
+library(DHARMa)
+library(s245)
+library(ggeffects)
+```
+
+```{r}
+health_survey_df <- read.csv("../clean_health_survey_data.csv")
+```
+
+```{r}
+glimpse(health_survey_df)
+```
+
+## Model Fitting
+
+```{r}
+health_survey_df <- health_survey_df |>
+    mutate(
+        received_services_at_catherines = factor(received_services_at_catherines),
+        language_barrier = factor(language_barrier),
+        income_category = factor(income_category),
+        transportation_availability = factor(transportation_availability),
+        doctor_availability = factor(doctor_availability),
+        wait_time_barrier = factor(wait_time_barrier),
+        lives_in_zipcode_49548 = factor(lives_in_zipcode_49548)
+    )
+```
+
+### Model 1
+
+```{r}
+RSC_Model1 <- glmmTMB(
+    received_services_at_catherines ~ age,
+    data = health_survey_df,
+    family = binomial(link = "logit"))
+summary(RSC_Model1)
+```
+
+```{r}
+RSC_Model2 <- glmmTMB(
+    received_services_at_catherines ~ gender_identity,
+    data = health_survey_df,
+    family = binomial(link = "logit"))
+summary(RSC_Model2)
+```
+
+```{r}
+RSC_Model3 <- glmmTMB(
+    received_services_at_catherines ~ transportation_availability,
+    data = health_survey_df,
+    family = binomial(link = "logit"))
+summary(RSC_Model3)
+```
+
+```{r}
+RSC_Model4 <- glmmTMB(
+    received_services_at_catherines ~ doctor_availability,
+    data = health_survey_df,
+    family = binomial(link = "logit"))
+summary(RSC_Model4)
+```
+
+```{r}
+RSC_Model5 <- glmmTMB(
+    received_services_at_catherines ~ wait_time_barrier,
+    data = health_survey_df,
+    family = binomial(link = "logit"))
+summary(RSC_Model5)
+```
+
+```{r}
+RSC_Model6 <- glmmTMB(
+    received_services_at_catherines ~ language_barrier + primary_language,
+    data = health_survey_df,
+    family = binomial(link = "logit"))
+summary(RSC_Model6)
+```
+
+## Model Assessment
+
+### Model 1
+
+#### DHARMa Residuals vs. Fitted Plot
+
+```{r}
+RSC_Model1_sim <- simulateResiduals(RSC_Model1)
+plotResiduals(RSC_Model1_sim, quantreg = FALSE)
+```
+
+This plot checks for (1) logit-linearity and (2) the mean-variance relationship. The curvy trend in red quantile lines suggests that the relationship is not logit-linear. Furthermore, the residual spread appears clustered at various point spaces, suggesting that the variance is not constant. Therefore, conditions (1) and (2) are not met.
+
+#### ACF Plot
+
+```{r}
+s245::gf_acf(~RSC_Model1) |> gf_lims(y = c(-1, 1))
+```
+
+This plot helps to check for the independence of residuals. At $\text{Lag} = 0$, the $\text{ACF} = 1$, and at all other $\text{Lag}$s, the $\text{ACF}$ values are generally inside the "fence" of the confidence bounds. Therefore, the condition is met.
+
+## Prediction Plot
+
+### Model 1
+
+```{r}
+ggpredict(RSC_Model1, terms = c("age")) |> plot()
+```
+
+### Model 1
+
+```{r}
+car::Anova(RSC_Model1)
+```

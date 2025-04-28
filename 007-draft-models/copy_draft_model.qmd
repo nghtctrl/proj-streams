@@ -15,6 +15,7 @@ editor: source
 
 library(ggformula)
 library(dplyr)
+library(tidyverse)
 library(glmmTMB)
 library(DHARMa)
 library(s245)
@@ -23,13 +24,45 @@ library(ggeffects)
 
 ```{r}
 health_survey_df <- read.csv("../clean_health_survey_data.csv")
+
 ```
 
 ```{r}
-glimpse(health_survey_df)
+health_survey_df$income_category
 ```
 
 ## Model Fitting
+
+```{r}
+# Re-ordering
+health_survey_df$income_category <- factor(
+  health_survey_df$income_category,
+  levels = c(
+    "Less than $10,000",
+    "$10,000 - $14,999",
+    "$15,000 - $19,999",
+    "$20,000 - $24,999",
+    "$25,000 - $34,999",
+    "$35,000 - $49,999",
+    "$50,000 - $74,999",
+    "$75,000 or above",
+    "Don't know / Not sure",
+    "Refused"
+  )
+)
+
+health_survey_df <- health_survey_df |> 
+mutate(income_category = forcats::fct_relevel(income_category, "Less than $10,000",
+    "$10,000 - $14,999",
+    "$15,000 - $19,999",
+    "$20,000 - $24,999",
+    "$25,000 - $34,999",
+    "$35,000 - $49,999",
+    "$50,000 - $74,999",
+    "$75,000 or above",
+    "Don't know / Not sure",
+    "Refused"))
+```
 
 ```{r}
 health_survey_df <- health_survey_df |>
@@ -39,13 +72,34 @@ health_survey_df <- health_survey_df |>
         income_category = factor(income_category),
         lives_in_zipcode_49548 = factor(lives_in_zipcode_49548)
     )
+
+```
+
+```{r}
+levels(health_survey_df$income_category)
+```
+
+```{r}
+health_survey_df$income_collapsed <- fct_collapse(health_survey_df$income_category,
+  less_than_20000 = c("Less than $10,000", "$10,000 - $14,999", "$15,000 - $19,999"),
+  more_than_20000 = c("$20,000 - $24,999",
+                      "$25,000 - $34,999",
+                      "$35,000 - $49,999",
+                      "$50,000 - $74,999",
+                      "$75,000 or above"),
+  not_sure = c("Don’t know / Not sure"),
+  refused = c("Refused")
+)
+```
+```{r}
+levels(health_survey_df$income_collapsed)
 ```
 
 ### Model 1
 
 ```{r}
 RSC_Model1 <- glmmTMB(
-    received_services_at_catherines ~ age
+    received_services_at_catherines ~ income_collapsed + language_barrier,
     data = health_survey_df,
     family = binomial(link = "logit")
 )
@@ -168,7 +222,7 @@ s245::gf_acf(~RSC_Model4) |> gf_lims(y = c(-1, 1))
 ### Model 1
 
 ```{r}
-ggpredict(RSC_Model1, terms = c("income_category")) |> plot() +
+ggpredict(RSC_Model1, terms = c("income_collapsed")) |> plot() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 

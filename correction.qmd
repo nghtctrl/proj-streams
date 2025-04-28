@@ -293,17 +293,8 @@ health_survey_df |>
 ```
 
 ```{r}
-RSC_Model <- glmmTMB(
- received_services_at_catherines ~ income_category + language_barrier,
- data = health_survey_df, 
- family = binomial(link = 'logit')
-)
-summary(RSC_Model)
-```
-
-```{r}
 health_survey_df$received_services_at_catherines <- factor(health_survey_df$received_services_at_catherines, 
                                              levels = c("Yes","No"))  
-RSC_Model2 <- glmmTMB(received_services_at_catherines ~ income_category + doctor_availability + wait_time_barrier + satisfaction_with_catherines + transportation_availability + dental_insurance_coverage, data=health_survey_df, family = binomial(link = 'logit'))
-summary(RSC_Model2)
+RSC_Model <- glmmTMB(received_services_at_catherines ~ income_category + doctor_availability + wait_time_barrier + satisfaction_with_catherines + transportation_availability + dental_insurance_coverage, data=health_survey_df, family = binomial(link = 'logit'))
 ```
+
