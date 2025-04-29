@@ -1,7 +1,7 @@
 ---
 title: "Technical Report"
 author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
-date: 04-12-2025
+date: 05-02-2025
 format:
   html:
     embed-resources: true
@@ -44,7 +44,7 @@ The primary objective of the survey was to evaluate the healthcare needs of Town
 
 To provide an initial visualization of the self-reported survey data, we created sets of descriptive tables showing the basic statistics (i.e., percentage of respondents, mean, standard deviation, and range) for the relevant variables.
 
-The descriptive tables were manually constructed using the outputs from @sec-appendix-c. To produce these tables, we first cleaned and prepared the survey data. For more details on the data cleaning and preparation process, please refer to @sec-appendix-b.
+The descriptive tables were manually constructed using the outputs from [Appendix C](#sec-appendix-c). To produce these tables, we first cleaned and prepared the survey data. For more details on the data cleaning and preparation process, please refer to [Appendix B](#sec-appendix-b).
 
 ![](./table1.png)
 
@@ -241,7 +241,7 @@ However, we note a limitation in our conclusion: we did not include precision co
 
 # Appendix A {#sec-appendix-a}
 
-This is a data dictionary that we developed based on looking at the [original raw data](https://github.com/nghtctrl/proj-streams/blob/main/health_survey_data.csv). It was used to guide the data cleaning and preparation as shown on @sec-appendix-b.
+This is a data dictionary that we developed based on looking at the [original raw data](https://github.com/nghtctrl/proj-streams/blob/main/health_survey_data.csv). It was used to guide the data cleaning and preparation as shown on [Appendix B](#sec-appendix-b).
 
 | Variable Name | Description | Units | Possible Values | Notes |
 | :---: | :---: | :---: | :---: | :---: |
@@ -313,7 +313,7 @@ glimpse(health_survey_df)
 
 To clean and prepare our dataset for visualization and modeling purposes, we will transform the columns and values into more human-readable format. Some columns have values with multiple answers (i.e., survey respondents were able to select multiple answers to a question). For these columns, further data wrangling process may be necessary.
 
-The column names were renamed using the data dictionary that we developed on @sec-appendix-A.
+The column names were renamed using the data dictionary that we developed on [Appendix A](#sec-appendix-a).
 
 ```{r}
 health_survey_df <- health_survey_df |>
@@ -674,13 +674,6 @@ gender_identity_summary
 ```
 
 ```{r}
-# List what "Self-described" is
-health_survey_numeric_df$QID91_4_TEXT[
-  health_survey_numeric_df$QID91_4_TEXT != ""
-]
-```
-
-```{r}
 race_ethnicity_summary <- health_survey_df |>
   select(race_ethnicity) |>
   group_by(race_ethnicity) |>
@@ -693,13 +686,6 @@ race_ethnicity_summary
 ```
 
 ```{r}
-# List what "Other" is
-health_survey_numeric_df$QID47_7_TEXT[
-  health_survey_numeric_df$QID47_7_TEXT != ""
-]
-```
-
-```{r}
 primary_language_summary <- health_survey_df |>
   select(primary_language_spoken) |>
   group_by(primary_language_spoken) |>
@@ -709,13 +695,6 @@ primary_language_summary <- health_survey_df |>
   arrange(desc(n))
 
 primary_language_summary
-```
-
-```{r}
-# List what "Other" is
-health_survey_numeric_df$QID44_3_TEXT[
-  health_survey_numeric_df$QID44_3_TEXT != ""
-]
 ```
 
 ```{r}
@@ -840,14 +819,7 @@ barriers_summary <- health_survey_df |>
 barriers_summary
 ```
 
-```{r}
-# List what "Other" is
-health_survey_numeric_df$Q109_6_TEXT[
-  health_survey_numeric_df$Q109_6_TEXT != ""
-]
-```
-
-Summary of "Other":
+Summary of "Other" barriers:
 
 - **Has another doctor / healthcare needs met (19)**
   - "Have another doctor "
