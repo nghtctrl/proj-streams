@@ -9,7 +9,6 @@ format:
     margin-left: "10px"
     margin-right: "10px"
 ---
-
 ```{r}
 #| label: setup
 #| include: false

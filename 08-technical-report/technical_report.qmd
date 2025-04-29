@@ -32,6 +32,189 @@ health_survey_df <- read_csv(
   "https://github.com/nghtctrl/proj-streams/raw/refs/heads/main/clean_health_survey_data.csv",
   show_col_types = FALSE
 )
+
+health_survey_numeric_df <- read_csv(
+  "https://github.com/nghtctrl/proj-streams/raw/refs/heads/main/health_survey_data.csv",
+  show_col_types = FALSE
+)
+```
+
+```{r}
+#| include: false
+
+# Convert from string to numeric format
+health_survey_df <- health_survey_df |>
+  mutate(age = as.numeric(trimws(age)))
+
+trust_in_healthcare_system_summary <- health_survey_df |>
+  select(trust_in_healthcare_system) |>
+  group_by(trust_in_healthcare_system) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+age_summary <- health_survey_df |>
+  summarise(
+    variable = "Age",
+    n_percent = paste0(n(), " (", round((n() / sum(n())) * 100, 1), "%)"),
+    mean_sd = paste0(round(mean(age, na.rm = TRUE), 1), " ± ", round(sd(age, na.rm = TRUE), 1)),
+    range = paste0(min(age, na.rm = TRUE), " - ", max(age, na.rm = TRUE))
+  )
+
+gender_identity_summary <- health_survey_df |>
+  select(gender_identity) |>
+  group_by(gender_identity) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+race_ethnicity_summary <- health_survey_df |>
+  select(race_ethnicity) |>
+  group_by(race_ethnicity) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+primary_language_summary <- health_survey_df |>
+  select(primary_language_spoken) |>
+  group_by(primary_language_spoken) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+income_category_summary <- health_survey_df |>
+  select(income_category) |>
+  group_by(income_category) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+health_coverage_summary <- health_survey_df |>
+  select(health_coverage) |>
+  group_by(health_coverage) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+dental_insurance_coverage_summary <- health_survey_df |>
+  select(dental_insurance_coverage) |>
+  group_by(dental_insurance_coverage) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+medicaid_medicare_coverage_summary <- health_survey_df |>
+  select(medicaid_medicare_coverage) |>
+  group_by(medicaid_medicare_coverage) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+time_since_last_checkup_summary <- health_survey_df |>
+  select(time_since_last_checkup) |>
+  group_by(time_since_last_checkup) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+awareness_of_clinics_summary <- health_survey_df |>
+  select(awareness_of_clinics) |>
+  group_by(awareness_of_clinics) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+received_services_summary <- health_survey_df |>
+  select(received_services_at_catherines) |>
+  group_by(received_services_at_catherines) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+satisfaction_summary <- health_survey_df |>
+  select(satisfaction_with_catherines) |>
+  filter(!is.na(satisfaction_with_catherines) & satisfaction_with_catherines != "") |>
+  group_by(satisfaction_with_catherines) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+barriers_summary <- health_survey_df |>
+  select(barriers_to_using_catherines) |>
+  filter(!is.na(barriers_to_using_catherines) & barriers_to_using_catherines != "") |>
+  group_by(barriers_to_using_catherines) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+health_insurance_barrier_summary <- health_survey_df |>
+  select(health_insurance_barrier) |>
+  group_by(health_insurance_barrier) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+language_barrier_summary <- health_survey_df |>
+  select(language_barrier) |>
+  group_by(language_barrier) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+difficulty_understanding_written_medical_info_summary <- health_survey_df |>
+  select(difficulty_understanding_written_medical_info) |>
+  group_by(difficulty_understanding_written_medical_info) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+difficulty_understanding_verbal_medical_info_summary <- health_survey_df |>
+  select(difficulty_understanding_verbal_medical_info) |>
+  group_by(difficulty_understanding_verbal_medical_info) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+transportation_availability_summary <- health_survey_df |>
+  select(transportation_availability) |>
+  group_by(transportation_availability) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+doctor_availability_summary <- health_survey_df |>
+  select(doctor_availability) |>
+  group_by(doctor_availability) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
+
+wait_time_barrier_summary <- health_survey_df |>
+  select(wait_time_barrier) |>
+  group_by(wait_time_barrier) |>
+  summarise(n = n(), .groups = "drop") |>
+  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+  arrange(desc(n))
 ```
 
 # Introduction
@@ -44,13 +227,157 @@ The primary objective of the survey was to evaluate the healthcare needs of Town
 
 To provide an initial visualization of the self-reported survey data, we created sets of descriptive tables showing the basic statistics (i.e., percentage of respondents, mean, standard deviation, and range) for the relevant variables.
 
-The descriptive tables were manually constructed using the outputs from [Appendix C](#sec-appendix-c). To produce these tables, we first cleaned and prepared the survey data. For more details on the data cleaning and preparation process, please refer to [Appendix B](#sec-appendix-b).
+To produce these tables, we first cleaned and prepared the survey data. For more details on the data cleaning and preparation process, please refer to [Appendix B](#sec-appendix-b).
 
-![](./table1.png)
+## Table 1. Characteristics of Respondents
 
-![](./table2.png)
+| Variable | N (%) | Mean +/- SD | Range |
+| --- | --- | --- | --- |
+| `r age_summary$variable` | `r age_summary$n_percent` | `r age_summary$mean_sd` | `r age_summary$range` |
+| Gender Identity | | |
+| `r gender_identity_summary$gender_identity[1]` | `r gender_identity_summary$n_percent[1]` | |
+| `r gender_identity_summary$gender_identity[2]` | `r gender_identity_summary$n_percent[2]` | |
+| `r gender_identity_summary$gender_identity[3]` | `r gender_identity_summary$n_percent[3]` | |
+| `r gender_identity_summary$gender_identity[4]` | `r gender_identity_summary$n_percent[4]` | |
+| Race | | |
+| `r race_ethnicity_summary$race_ethnicity[1]` | `r race_ethnicity_summary$n_percent[1]` | |
+| `r race_ethnicity_summary$race_ethnicity[2]` | `r race_ethnicity_summary$n_percent[2]` | |
+| `r race_ethnicity_summary$race_ethnicity[3]` | `r race_ethnicity_summary$n_percent[3]` | |
+| `r race_ethnicity_summary$race_ethnicity[4]` | `r race_ethnicity_summary$n_percent[4]` | |
+| `r race_ethnicity_summary$race_ethnicity[5]` | `r race_ethnicity_summary$n_percent[5]` | |
+| `r race_ethnicity_summary$race_ethnicity[6]` | `r race_ethnicity_summary$n_percent[6]` | |
+| `r race_ethnicity_summary$race_ethnicity[7]` | `r race_ethnicity_summary$n_percent[7]` | |
+| `r race_ethnicity_summary$race_ethnicity[8]` | `r race_ethnicity_summary$n_percent[8]` | |
+| `r race_ethnicity_summary$race_ethnicity[9]` | `r race_ethnicity_summary$n_percent[9]` | |
+| `r race_ethnicity_summary$race_ethnicity[10]` | `r race_ethnicity_summary$n_percent[10]` | |
+| Primary Language Spoken | | |
+| `r primary_language_summary$primary_language_spoken[1]` | `r primary_language_summary$n_percent[1]` | | |
+| `r primary_language_summary$primary_language_spoken[2]` | `r primary_language_summary$n_percent[2]` | | |
+| `r primary_language_summary$primary_language_spoken[3]` | `r primary_language_summary$n_percent[3]` | | |
+| `r primary_language_summary$primary_language_spoken[4]` | `r primary_language_summary$n_percent[4]` | | |
+| `r primary_language_summary$primary_language_spoken[5]` | `r primary_language_summary$n_percent[5]` | | |
+| Income | | |
+| `r income_category_summary$income_category[1]` | `r income_category_summary$n_percent[1]` | |
+| `r income_category_summary$income_category[2]` | `r income_category_summary$n_percent[2]` | |
+| `r income_category_summary$income_category[3]` | `r income_category_summary$n_percent[3]` | |
+| `r income_category_summary$income_category[4]` | `r income_category_summary$n_percent[4]` | |
+| `r income_category_summary$income_category[5]` | `r income_category_summary$n_percent[5]` | |
+| `r income_category_summary$income_category[6]` | `r income_category_summary$n_percent[6]` | |
+| `r income_category_summary$income_category[7]` | `r income_category_summary$n_percent[7]` | |
+| `r income_category_summary$income_category[8]` | `r income_category_summary$n_percent[8]` | |
+| `r income_category_summary$income_category[9]` | `r income_category_summary$n_percent[9]` | |
+| `r income_category_summary$income_category[10]` | `r income_category_summary$n_percent[10]` | |
+| Health Coverage | | |
+| `r health_coverage_summary$health_coverage[1]` | `r health_coverage_summary$n_percent[1]` | |
+| `r health_coverage_summary$health_coverage[2]` | `r health_coverage_summary$n_percent[2]` | |
+| Dental Coverage | | | |
+| `r dental_insurance_coverage_summary$dental_insurance_coverage[1]` | `r dental_insurance_coverage_summary$n_percent[1]` | |
+| `r dental_insurance_coverage_summary$dental_insurance_coverage[2]` | `r dental_insurance_coverage_summary$n_percent[2]` | |
+| `r dental_insurance_coverage_summary$dental_insurance_coverage[3]` | `r dental_insurance_coverage_summary$n_percent[3]` | |
+| `r dental_insurance_coverage_summary$dental_insurance_coverage[4]` | `r dental_insurance_coverage_summary$n_percent[4]` | |
+| Medicaid / Medicare Coverage | | | |
+| `r medicaid_medicare_coverage_summary$medicaid_medicare_coverage[1]` | `r medicaid_medicare_coverage_summary$n_percent[1]` | |
+| `r medicaid_medicare_coverage_summary$medicaid_medicare_coverage[2]` | `r medicaid_medicare_coverage_summary$n_percent[2]` | |
+| `r medicaid_medicare_coverage_summary$medicaid_medicare_coverage[3]` | `r medicaid_medicare_coverage_summary$n_percent[3]` | |
+| `r medicaid_medicare_coverage_summary$medicaid_medicare_coverage[4]` | `r medicaid_medicare_coverage_summary$n_percent[4]` | |
+| `r medicaid_medicare_coverage_summary$medicaid_medicare_coverage[5]` | `r medicaid_medicare_coverage_summary$n_percent[5]` | |
 
-![](./table3.png)
+### Table 2. Questions Related to Personal Healthcare
+
+| Variable | N (%) | Mean +/- SD | Range |
+| --- | --- | --- | --- |
+| Time Since Last Checkup | | |
+| `r time_since_last_checkup_summary$time_since_last_checkup[1]` | `r time_since_last_checkup_summary$n_percent[1]` | |
+| `r time_since_last_checkup_summary$time_since_last_checkup[2]` | `r time_since_last_checkup_summary$n_percent[2]` | |
+| `r time_since_last_checkup_summary$time_since_last_checkup[3]` | `r time_since_last_checkup_summary$n_percent[3]` | |
+| `r time_since_last_checkup_summary$time_since_last_checkup[4]` | `r time_since_last_checkup_summary$n_percent[4]` | |
+| `r time_since_last_checkup_summary$time_since_last_checkup[5]` | `r time_since_last_checkup_summary$n_percent[5]` | |
+| Trust in Healthcare System | | |
+| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[1]` | `r trust_in_healthcare_system_summary$n_percent[1]` | |
+| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[2]` | `r trust_in_healthcare_system_summary$n_percent[2]` | |
+| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[3]` | `r trust_in_healthcare_system_summary$n_percent[3]` | |
+| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[4]` | `r trust_in_healthcare_system_summary$n_percent[4]` | |
+| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[5]` | `r trust_in_healthcare_system_summary$n_percent[5]` | |
+| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[6]` | `r trust_in_healthcare_system_summary$n_percent[6]` | |
+| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[7]` | `r trust_in_healthcare_system_summary$n_percent[7]` | |
+| Awareness of Clinics | | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[1]` | `r awareness_of_clinics_summary$n_percent[1]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[2]` | `r awareness_of_clinics_summary$n_percent[2]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[3]` | `r awareness_of_clinics_summary$n_percent[3]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[4]` | `r awareness_of_clinics_summary$n_percent[4]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[5]` | `r awareness_of_clinics_summary$n_percent[5]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[6]` | `r awareness_of_clinics_summary$n_percent[6]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[7]` | `r awareness_of_clinics_summary$n_percent[7]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[8]` | `r awareness_of_clinics_summary$n_percent[8]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[9]` | `r awareness_of_clinics_summary$n_percent[9]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[10]` | `r awareness_of_clinics_summary$n_percent[10]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[11]` | `r awareness_of_clinics_summary$n_percent[11]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[12]` | `r awareness_of_clinics_summary$n_percent[12]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[13]` | `r awareness_of_clinics_summary$n_percent[13]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[14]` | `r awareness_of_clinics_summary$n_percent[14]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[15]` | `r awareness_of_clinics_summary$n_percent[15]` | |
+| `r awareness_of_clinics_summary$awareness_of_clinics[16]` | `r awareness_of_clinics_summary$n_percent[16]` | |
+| Received Services at Catherine's? | | |
+| `r received_services_summary$received_services_at_catherines[1]` | `r received_services_summary$n_percent[1]` | |
+| `r received_services_summary$received_services_at_catherines[2]` | `r received_services_summary$n_percent[2]` | |
+| Satisfied with Services at Catherine’s? | | |
+| `r satisfaction_summary$satisfaction_with_catherines[1]` | `r satisfaction_summary$n_percent[1]` | |
+| `r satisfaction_summary$satisfaction_with_catherines[2]` | `r satisfaction_summary$n_percent[2]` | |
+| `r satisfaction_summary$satisfaction_with_catherines[3]` | `r satisfaction_summary$n_percent[3]` | |
+| `r satisfaction_summary$satisfaction_with_catherines[4]` | `r satisfaction_summary$n_percent[4]` | |
+| `r satisfaction_summary$satisfaction_with_catherines[5]` | `r satisfaction_summary$n_percent[5]` | |
+| `r satisfaction_summary$satisfaction_with_catherines[6]` | `r satisfaction_summary$n_percent[6]` | |
+| `r satisfaction_summary$satisfaction_with_catherines[7]` | `r satisfaction_summary$n_percent[7]` | |
+| Barriers to Using Catherine’s | | |
+| `r barriers_summary$barriers_to_using_catherines[1]` | `r barriers_summary$n_percent[1]` | |
+| `r barriers_summary$barriers_to_using_catherines[2]` | `r barriers_summary$n_percent[2]` | |
+| `r barriers_summary$barriers_to_using_catherines[3]` | `r barriers_summary$n_percent[3]` | |
+| `r barriers_summary$barriers_to_using_catherines[4]` | `r barriers_summary$n_percent[4]` | |
+| `r barriers_summary$barriers_to_using_catherines[5]` | `r barriers_summary$n_percent[5]` | |
+| `r barriers_summary$barriers_to_using_catherines[6]` | `r barriers_summary$n_percent[6]` | |
+| `r barriers_summary$barriers_to_using_catherines[7]` | `r barriers_summary$n_percent[7]` | |
+| `r barriers_summary$barriers_to_using_catherines[8]` | `r barriers_summary$n_percent[8]` | |
+| `r barriers_summary$barriers_to_using_catherines[9]` | `r barriers_summary$n_percent[9]` | |
+| `r barriers_summary$barriers_to_using_catherines[10]` | `r barriers_summary$n_percent[10]` | |
+
+### Table 3. Questions Related to Catherine’s Utilization
+
+| Variable | N (%) | Mean +/- SD | Range |
+| --- | --- | --- | --- |
+| Is Health Insurance a Barrier? | | |
+| `r health_insurance_barrier_summary$health_insurance_barrier[1]` | `r health_insurance_barrier_summary$n_percent[1]` | |
+| `r health_insurance_barrier_summary$health_insurance_barrier[2]` | `r health_insurance_barrier_summary$n_percent[2]` | |
+| `r health_insurance_barrier_summary$health_insurance_barrier[3]` | `r health_insurance_barrier_summary$n_percent[3]` | |
+| Is Language a Barrier? | | |
+| `r language_barrier_summary$language_barrier[1]` | `r language_barrier_summary$n_percent[1]` | |
+| `r language_barrier_summary$language_barrier[2]` | `r language_barrier_summary$n_percent[2]` | |
+| `r language_barrier_summary$language_barrier[3]` | `r language_barrier_summary$n_percent[3]` | |
+| Difficulty Understanding Written Medical Info | | |
+| `r difficulty_understanding_written_medical_info_summary$difficulty_understanding_written_medical_info[1]` | `r difficulty_understanding_written_medical_info_summary$n_percent[1]` | |
+| `r difficulty_understanding_written_medical_info_summary$difficulty_understanding_written_medical_info[2]` | `r difficulty_understanding_written_medical_info_summary$n_percent[2]` | |
+| `r difficulty_understanding_written_medical_info_summary$difficulty_understanding_written_medical_info[3]` | `r difficulty_understanding_written_medical_info_summary$n_percent[3]` | |
+| `r difficulty_understanding_written_medical_info_summary$difficulty_understanding_written_medical_info[4]` | `r difficulty_understanding_written_medical_info_summary$n_percent[4]` | |
+| `r difficulty_understanding_written_medical_info_summary$difficulty_understanding_written_medical_info[5]` | `r difficulty_understanding_written_medical_info_summary$n_percent[5]` | |
+| `r difficulty_understanding_written_medical_info_summary$difficulty_understanding_written_medical_info[6]` | `r difficulty_understanding_written_medical_info_summary$n_percent[6]` | |
+| Difficulty Understanding Verbal Medical Info | | |
+| `r difficulty_understanding_verbal_medical_info_summary$difficulty_understanding_verbal_medical_info[1]` | `r difficulty_understanding_verbal_medical_info_summary$n_percent[1]` | |
+| `r difficulty_understanding_verbal_medical_info_summary$difficulty_understanding_verbal_medical_info[2]` | `r difficulty_understanding_verbal_medical_info_summary$n_percent[2]` | |
+| `r difficulty_understanding_verbal_medical_info_summary$difficulty_understanding_verbal_medical_info[3]` | `r difficulty_understanding_verbal_medical_info_summary$n_percent[3]` | |
+| `r difficulty_understanding_verbal_medical_info_summary$difficulty_understanding_verbal_medical_info[4]` | `r difficulty_understanding_verbal_medical_info_summary$n_percent[4]` | |
+| `r difficulty_understanding_verbal_medical_info_summary$difficulty_understanding_verbal_medical_info[5]` | `r difficulty_understanding_verbal_medical_info_summary$n_percent[5]` | |
+| `r difficulty_understanding_verbal_medical_info_summary$difficulty_understanding_verbal_medical_info[6]` | `r difficulty_understanding_verbal_medical_info_summary$n_percent[6]` | |
+| Is Transportation Availability a Barrier? | | |
+| `r transportation_availability_summary$transportation_availability[1]` | `r transportation_availability_summary$n_percent[1]` | |
+| `r transportation_availability_summary$transportation_availability[2]` | `r transportation_availability_summary$n_percent[2]` | |
+| `r transportation_availability_summary$transportation_availability[3]` | `r transportation_availability_summary$n_percent[3]` | |
+| Is Doctor/Nurse Availability a Barrier? | | |
+| `r doctor_availability_summary$doctor_availability[1]` | `r doctor_availability_summary$n_percent[1]` | |
+| `r doctor_availability_summary$doctor_availability[2]` | `r doctor_availability_summary$n_percent[2]` | |
+| `r doctor_availability_summary$doctor_availability[3]` | `r doctor_availability_summary$n_percent[3]` | |
+| Is Appointment Wait Time a Barrier? | | |
+| `r wait_time_barrier_summary$wait_time_barrier[1]` | `r wait_time_barrier_summary$n_percent[1]` | |
+| `r wait_time_barrier_summary$wait_time_barrier[2]` | `r wait_time_barrier_summary$n_percent[2]` | |
+| `r wait_time_barrier_summary$wait_time_barrier[3]` | `r wait_time_barrier_summary$n_percent[3]` | |
 
 # Data Exploration
 
@@ -157,7 +484,7 @@ denied_count <- approval_counts["No"]
 m <- min(approved_count, denied_count)
 ```
 
-The `Received Services at Catherine's?` variable contains `r approved_count` successes and `r denied_count` failures such that $m = \text{min(successes, failures)} = `r m`$. A common rule of thumb suggests that the maximum number of parameters $p$ should be less than or equal to $\frac{m}{15}$, which in this case is $p \leq \frac{`r m`}{15} \approx `r round(m / 15, 0)`$. This means that we may have up to `r round(m / 15, 0)` parameters.
+The `Received Services at Catherine's?` variable contains `r approved_count` successes and `r denied_count` failures ("Yes" was considered success and "No" was considered failure) such that $m = \text{min(successes, failures)} = `r m`$. A common rule of thumb suggests that the maximum number of parameters $p$ should be less than or equal to $\frac{m}{15}$, which in this case is $p \leq \frac{`r m`}{15} \approx `r round(m / 15, 0)`$. This means that we may have up to `r round(m / 15, 0)` parameters.
 
 Based on this rule of thumb, we will not be able to include any precision covariates, since including them would violate the rule of thumb. Since all the mediation chains we have identified branch out, we will choose `Age` for all of them in the interest of measuring the total effect. This means that our total parameter count is 1, which is less than `r round(m / 15, 0)`. Therefore, we will not be violating the $p < \frac{m}{15}$ rule of thumb.
 
@@ -633,458 +960,3 @@ health_survey_df <- health_survey_df |>
 # Write the cleaned dataset to disk
 write.csv(health_survey_df, "clean_health_survey_data.csv", row.names = FALSE)
 ```
-
-# Appendix C {#sec-appendix-c}
-
-```{r}
-health_survey_numeric_df <- read_csv(
-  "https://github.com/nghtctrl/proj-streams/raw/refs/heads/main/health_survey_data.csv",
-  show_col_types = FALSE
-)
-```
-
-Descriptive table summaries:
-
-```{r}
-# Convert from string to numeric format
-health_survey_df <- health_survey_df |>
-  mutate(age = as.numeric(trimws(age)))
-
-age_summary <- health_survey_df |>
-  summarise(
-    variable = "Age",
-    n_percent = paste0(n(), " (", round((n() / sum(n())) * 100, 1), "%)"),
-    mean_sd = paste0(round(mean(age, na.rm = TRUE), 1), " ± ", round(sd(age, na.rm = TRUE), 1)),
-    range = paste0(min(age, na.rm = TRUE), " - ", max(age, na.rm = TRUE))
-  )
-
-age_summary
-```
-
-```{r}
-gender_identity_summary <- health_survey_df |>
-  select(gender_identity) |>
-  group_by(gender_identity) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-gender_identity_summary
-```
-
-```{r}
-race_ethnicity_summary <- health_survey_df |>
-  select(race_ethnicity) |>
-  group_by(race_ethnicity) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-race_ethnicity_summary
-```
-
-```{r}
-primary_language_summary <- health_survey_df |>
-  select(primary_language_spoken) |>
-  group_by(primary_language_spoken) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-primary_language_summary
-```
-
-```{r}
-income_category_summary <- health_survey_df |>
-  select(income_category) |>
-  group_by(income_category) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-income_category_summary
-```
-
-```{r}
-health_coverage_summary <- health_survey_df |>
-  select(health_coverage) |>
-  group_by(health_coverage) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-health_coverage_summary
-```
-
-```{r}
-dental_insurance_coverage_summary <- health_survey_df |>
-  select(dental_insurance_coverage) |>
-  group_by(dental_insurance_coverage) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-dental_insurance_coverage_summary
-```
-
-```{r}
-medicaid_medicare_coverage_summary <- health_survey_df |>
-  select(medicaid_medicare_coverage) |>
-  group_by(medicaid_medicare_coverage) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-medicaid_medicare_coverage_summary
-```
-
-```{r}
-time_since_last_checkup_summary <- health_survey_df |>
-  select(time_since_last_checkup) |>
-  group_by(time_since_last_checkup) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-time_since_last_checkup_summary
-```
-
-```{r}
-trust_in_healthcare_system_summary <- health_survey_df |>
-  select(trust_in_healthcare_system) |>
-  group_by(trust_in_healthcare_system) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-trust_in_healthcare_system_summary
-```
-
-```{r}
-awareness_of_clinics_summary <- health_survey_df |>
-  select(awareness_of_clinics) |>
-  group_by(awareness_of_clinics) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-awareness_of_clinics_summary
-```
-
-```{r}
-received_services_summary <- health_survey_df |>
-  select(received_services_at_catherines) |>
-  group_by(received_services_at_catherines) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-received_services_summary
-```
-
-```{r}
-satisfaction_summary <- health_survey_df |>
-  select(satisfaction_with_catherines) |>
-  filter(!is.na(satisfaction_with_catherines) & satisfaction_with_catherines != "") |>
-  group_by(satisfaction_with_catherines) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-satisfaction_summary
-```
-
-```{r}
-barriers_summary <- health_survey_df |>
-  select(barriers_to_using_catherines) |>
-  filter(!is.na(barriers_to_using_catherines) & barriers_to_using_catherines != "") |>
-  group_by(barriers_to_using_catherines) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-barriers_summary
-```
-
-Summary of "Other" barriers:
-
-- **Has another doctor / healthcare needs met (19)**
-  - "Have another doctor "
-  - "Have Another doctor. "
-  - "Other doctor"
-  - "Have another doctor"
-  - "has established care elsewhere" 
-  - "Already have a doctor. " 
-  - "Already have a doctor. "
-  - "Already have another doctor." 
-  - "Has insurance and a doctor already."
-  - "Other doctor" 
-  - "Has dr elsewhere UMHW " 
-  - "have another doctor" 
-  - "has a doctor" 
-  - "have another doctor"
-  - "Has a Dr. and insurance "
-  - "Has a DR."
-  - "Has a Dr"
-  - "Has another Dr"
-  - "Own healthcare"
-- **Insurance-related issues (4)**
-  - "Has other insurance. "
-  - "cost too high, wouldn't take insurance"
-  - "insurance best at doctor's office"
-  - "insurance best for doctor"
-- **Clinic hours-related issues (2)**
-  - "No childcare during open hours"
-  - "no openings for appointments"
-- **Misc (4)**
-  - "Has sido"
-  - "Will in the future, nothing preventing"
-  - "working location"
-  - "No need"
-
-```{r}
-health_insurance_barrier_summary <- health_survey_df |>
-  select(health_insurance_barrier) |>
-  group_by(health_insurance_barrier) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-health_insurance_barrier_summary
-```
-
-```{r}
-language_barrier_summary <- health_survey_df |>
-  select(language_barrier) |>
-  group_by(language_barrier) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-language_barrier_summary
-```
-
-```{r}
-difficulty_understanding_written_medical_info_summary <- health_survey_df |>
-  select(difficulty_understanding_written_medical_info) |>
-  group_by(difficulty_understanding_written_medical_info) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-difficulty_understanding_written_medical_info_summary
-```
-
-```{r}
-difficulty_understanding_verbal_medical_info_summary <- health_survey_df |>
-  select(difficulty_understanding_verbal_medical_info) |>
-  group_by(difficulty_understanding_verbal_medical_info) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-difficulty_understanding_verbal_medical_info_summary
-```
-
-```{r}
-transportation_availability_summary <- health_survey_df |>
-  select(transportation_availability) |>
-  group_by(transportation_availability) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-transportation_availability_summary
-```
-
-```{r}
-doctor_availability_summary <- health_survey_df |>
-  select(doctor_availability) |>
-  group_by(doctor_availability) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-doctor_availability_summary
-```
-
-```{r}
-wait_time_barrier_summary <- health_survey_df |>
-  select(wait_time_barrier) |>
-  group_by(wait_time_barrier) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
-
-wait_time_barrier_summary
-```
-
-## Tables
-
-### Demographics
-
-| Variable | N (%) | Mean +/- SD | Range |
-| --- | --- | --- | --- |
-| `r age_summary$variable` | `r age_summary$n_percent` | `r age_summary$mean_sd` | `r age_summary$range` |
-| Gender Identity | | |
-| `r gender_identity_summary$gender_identity[1]` | `r gender_identity_summary$n_percent[1]` | |
-| `r gender_identity_summary$gender_identity[2]` | `r gender_identity_summary$n_percent[2]` | |
-| `r gender_identity_summary$gender_identity[3]` | `r gender_identity_summary$n_percent[3]` | |
-| `r gender_identity_summary$gender_identity[4]` | `r gender_identity_summary$n_percent[4]` | |
-| Race | | |
-| `r race_ethnicity_summary$race_ethnicity[1]` | `r race_ethnicity_summary$n_percent[1]` | |
-| `r race_ethnicity_summary$race_ethnicity[2]` | `r race_ethnicity_summary$n_percent[2]` | |
-| `r race_ethnicity_summary$race_ethnicity[3]` | `r race_ethnicity_summary$n_percent[3]` | |
-| `r race_ethnicity_summary$race_ethnicity[4]` | `r race_ethnicity_summary$n_percent[4]` | |
-| `r race_ethnicity_summary$race_ethnicity[5]` | `r race_ethnicity_summary$n_percent[5]` | |
-| `r race_ethnicity_summary$race_ethnicity[6]` | `r race_ethnicity_summary$n_percent[6]` | |
-| `r race_ethnicity_summary$race_ethnicity[7]` | `r race_ethnicity_summary$n_percent[7]` | |
-| `r race_ethnicity_summary$race_ethnicity[8]` | `r race_ethnicity_summary$n_percent[8]` | |
-| `r race_ethnicity_summary$race_ethnicity[9]` | `r race_ethnicity_summary$n_percent[9]` | |
-| `r race_ethnicity_summary$race_ethnicity[10]` | `r race_ethnicity_summary$n_percent[10]` | |
-| Primary Language Spoken | | |
-| `r primary_language_summary$primary_language_spoken[1]` | `r primary_language_summary$n_percent[1]` | | |
-| `r primary_language_summary$primary_language_spoken[2]` | `r primary_language_summary$n_percent[2]` | | |
-| `r primary_language_summary$primary_language_spoken[3]` | `r primary_language_summary$n_percent[3]` | | |
-| `r primary_language_summary$primary_language_spoken[4]` | `r primary_language_summary$n_percent[4]` | | |
-| `r primary_language_summary$primary_language_spoken[5]` | `r primary_language_summary$n_percent[5]` | | |
-| Income | | |
-| `r income_category_summary$income_category[1]` | `r income_category_summary$n_percent[1]` | |
-| `r income_category_summary$income_category[2]` | `r income_category_summary$n_percent[2]` | |
-| `r income_category_summary$income_category[3]` | `r income_category_summary$n_percent[3]` | |
-| `r income_category_summary$income_category[4]` | `r income_category_summary$n_percent[4]` | |
-| `r income_category_summary$income_category[5]` | `r income_category_summary$n_percent[5]` | |
-| `r income_category_summary$income_category[6]` | `r income_category_summary$n_percent[6]` | |
-| `r income_category_summary$income_category[7]` | `r income_category_summary$n_percent[7]` | |
-| `r income_category_summary$income_category[8]` | `r income_category_summary$n_percent[8]` | |
-| `r income_category_summary$income_category[9]` | `r income_category_summary$n_percent[9]` | |
-| `r income_category_summary$income_category[10]` | `r income_category_summary$n_percent[10]` | |
-| Health Coverage | | |
-| `r health_coverage_summary$health_coverage[1]` | `r health_coverage_summary$n_percent[1]` | |
-| `r health_coverage_summary$health_coverage[2]` | `r health_coverage_summary$n_percent[2]` | |
-| Dental Coverage | | | |
-| `r dental_insurance_coverage_summary$dental_insurance_coverage[1]` | `r dental_insurance_coverage_summary$n_percent[1]` | |
-| `r dental_insurance_coverage_summary$dental_insurance_coverage[2]` | `r dental_insurance_coverage_summary$n_percent[2]` | |
-| `r dental_insurance_coverage_summary$dental_insurance_coverage[3]` | `r dental_insurance_coverage_summary$n_percent[3]` | |
-| `r dental_insurance_coverage_summary$dental_insurance_coverage[4]` | `r dental_insurance_coverage_summary$n_percent[4]` | |
-| Medicaid / Medicare Coverage | | | |
-| `r medicaid_medicare_coverage_summary$medicaid_medicare_coverage[1]` | `r medicaid_medicare_coverage_summary$n_percent[1]` | |
-| `r medicaid_medicare_coverage_summary$medicaid_medicare_coverage[2]` | `r medicaid_medicare_coverage_summary$n_percent[2]` | |
-| `r medicaid_medicare_coverage_summary$medicaid_medicare_coverage[3]` | `r medicaid_medicare_coverage_summary$n_percent[3]` | |
-| `r medicaid_medicare_coverage_summary$medicaid_medicare_coverage[4]` | `r medicaid_medicare_coverage_summary$n_percent[4]` | |
-| `r medicaid_medicare_coverage_summary$medicaid_medicare_coverage[5]` | `r medicaid_medicare_coverage_summary$n_percent[5]` | |
-
-### Questions
-
-| Variable | N (%) | Mean +/- SD | Range |
-| --- | --- | --- | --- |
-| Time Since Last Checkup | | |
-| `r time_since_last_checkup_summary$time_since_last_checkup[1]` | `r time_since_last_checkup_summary$n_percent[1]` | |
-| `r time_since_last_checkup_summary$time_since_last_checkup[2]` | `r time_since_last_checkup_summary$n_percent[2]` | |
-| `r time_since_last_checkup_summary$time_since_last_checkup[3]` | `r time_since_last_checkup_summary$n_percent[3]` | |
-| `r time_since_last_checkup_summary$time_since_last_checkup[4]` | `r time_since_last_checkup_summary$n_percent[4]` | |
-| `r time_since_last_checkup_summary$time_since_last_checkup[5]` | `r time_since_last_checkup_summary$n_percent[5]` | |
-| Trust in Healthcare System | | |
-| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[1]` | `r trust_in_healthcare_system_summary$n_percent[1]` | |
-| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[2]` | `r trust_in_healthcare_system_summary$n_percent[2]` | |
-| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[3]` | `r trust_in_healthcare_system_summary$n_percent[3]` | |
-| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[4]` | `r trust_in_healthcare_system_summary$n_percent[4]` | |
-| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[5]` | `r trust_in_healthcare_system_summary$n_percent[5]` | |
-| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[6]` | `r trust_in_healthcare_system_summary$n_percent[6]` | |
-| `r trust_in_healthcare_system_summary$trust_in_healthcare_system[7]` | `r trust_in_healthcare_system_summary$n_percent[7]` | |
-| Awareness of Clinics | | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[1]` | `r awareness_of_clinics_summary$n_percent[1]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[2]` | `r awareness_of_clinics_summary$n_percent[2]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[3]` | `r awareness_of_clinics_summary$n_percent[3]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[4]` | `r awareness_of_clinics_summary$n_percent[4]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[5]` | `r awareness_of_clinics_summary$n_percent[5]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[6]` | `r awareness_of_clinics_summary$n_percent[6]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[7]` | `r awareness_of_clinics_summary$n_percent[7]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[8]` | `r awareness_of_clinics_summary$n_percent[8]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[9]` | `r awareness_of_clinics_summary$n_percent[9]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[10]` | `r awareness_of_clinics_summary$n_percent[10]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[11]` | `r awareness_of_clinics_summary$n_percent[11]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[12]` | `r awareness_of_clinics_summary$n_percent[12]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[13]` | `r awareness_of_clinics_summary$n_percent[13]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[14]` | `r awareness_of_clinics_summary$n_percent[14]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[15]` | `r awareness_of_clinics_summary$n_percent[15]` | |
-| `r awareness_of_clinics_summary$awareness_of_clinics[16]` | `r awareness_of_clinics_summary$n_percent[16]` | |
-| Received Services at Catherine's? | | |
-| `r received_services_summary$received_services_at_catherines[1]` | `r received_services_summary$n_percent[1]` | |
-| `r received_services_summary$received_services_at_catherines[2]` | `r received_services_summary$n_percent[2]` | |
-| Satisfied with Services at Catherine’s? | | |
-| `r satisfaction_summary$satisfaction_with_catherines[1]` | `r satisfaction_summary$n_percent[1]` | |
-| `r satisfaction_summary$satisfaction_with_catherines[2]` | `r satisfaction_summary$n_percent[2]` | |
-| `r satisfaction_summary$satisfaction_with_catherines[3]` | `r satisfaction_summary$n_percent[3]` | |
-| `r satisfaction_summary$satisfaction_with_catherines[4]` | `r satisfaction_summary$n_percent[4]` | |
-| `r satisfaction_summary$satisfaction_with_catherines[5]` | `r satisfaction_summary$n_percent[5]` | |
-| `r satisfaction_summary$satisfaction_with_catherines[6]` | `r satisfaction_summary$n_percent[6]` | |
-| `r satisfaction_summary$satisfaction_with_catherines[7]` | `r satisfaction_summary$n_percent[7]` | |
-| Barriers to Using Catherine’s | | |
-| `r barriers_summary$barriers_to_using_catherines[1]` | `r barriers_summary$n_percent[1]` | |
-| `r barriers_summary$barriers_to_using_catherines[2]` | `r barriers_summary$n_percent[2]` | |
-| `r barriers_summary$barriers_to_using_catherines[3]` | `r barriers_summary$n_percent[3]` | |
-| `r barriers_summary$barriers_to_using_catherines[4]` | `r barriers_summary$n_percent[4]` | |
-| `r barriers_summary$barriers_to_using_catherines[5]` | `r barriers_summary$n_percent[5]` | |
-| `r barriers_summary$barriers_to_using_catherines[6]` | `r barriers_summary$n_percent[6]` | |
-| `r barriers_summary$barriers_to_using_catherines[7]` | `r barriers_summary$n_percent[7]` | |
-| `r barriers_summary$barriers_to_using_catherines[8]` | `r barriers_summary$n_percent[8]` | |
-| `r barriers_summary$barriers_to_using_catherines[9]` | `r barriers_summary$n_percent[9]` | |
-| `r barriers_summary$barriers_to_using_catherines[10]` | `r barriers_summary$n_percent[10]` | |
-
-| Variable | N (%) | Mean +/- SD | Range |
-| --- | --- | --- | --- |
-| Is Health Insurance a Barrier? | | |
-| `r health_insurance_barrier_summary$health_insurance_barrier[1]` | `r health_insurance_barrier_summary$n_percent[1]` | |
-| `r health_insurance_barrier_summary$health_insurance_barrier[2]` | `r health_insurance_barrier_summary$n_percent[2]` | |
-| `r health_insurance_barrier_summary$health_insurance_barrier[3]` | `r health_insurance_barrier_summary$n_percent[3]` | |
-| Is Language a Barrier? | | |
-| `r language_barrier_summary$language_barrier[1]` | `r language_barrier_summary$n_percent[1]` | |
-| `r language_barrier_summary$language_barrier[2]` | `r language_barrier_summary$n_percent[2]` | |
-| `r language_barrier_summary$language_barrier[3]` | `r language_barrier_summary$n_percent[3]` | |
-| Difficulty Understanding Written Medical Info | | |
-| `r difficulty_understanding_written_medical_info_summary$difficulty_understanding_written_medical_info[1]` | `r difficulty_understanding_written_medical_info_summary$n_percent[1]` | |
-| `r difficulty_understanding_written_medical_info_summary$difficulty_understanding_written_medical_info[2]` | `r difficulty_understanding_written_medical_info_summary$n_percent[2]` | |
-| `r difficulty_understanding_written_medical_info_summary$difficulty_understanding_written_medical_info[3]` | `r difficulty_understanding_written_medical_info_summary$n_percent[3]` | |
-| `r difficulty_understanding_written_medical_info_summary$difficulty_understanding_written_medical_info[4]` | `r difficulty_understanding_written_medical_info_summary$n_percent[4]` | |
-| `r difficulty_understanding_written_medical_info_summary$difficulty_understanding_written_medical_info[5]` | `r difficulty_understanding_written_medical_info_summary$n_percent[5]` | |
-| `r difficulty_understanding_written_medical_info_summary$difficulty_understanding_written_medical_info[6]` | `r difficulty_understanding_written_medical_info_summary$n_percent[6]` | |
-| Difficulty Understanding Verbal Medical Info | | |
-| `r difficulty_understanding_verbal_medical_info_summary$difficulty_understanding_verbal_medical_info[1]` | `r difficulty_understanding_verbal_medical_info_summary$n_percent[1]` | |
-| `r difficulty_understanding_verbal_medical_info_summary$difficulty_understanding_verbal_medical_info[2]` | `r difficulty_understanding_verbal_medical_info_summary$n_percent[2]` | |
-| `r difficulty_understanding_verbal_medical_info_summary$difficulty_understanding_verbal_medical_info[3]` | `r difficulty_understanding_verbal_medical_info_summary$n_percent[3]` | |
-| `r difficulty_understanding_verbal_medical_info_summary$difficulty_understanding_verbal_medical_info[4]` | `r difficulty_understanding_verbal_medical_info_summary$n_percent[4]` | |
-| `r difficulty_understanding_verbal_medical_info_summary$difficulty_understanding_verbal_medical_info[5]` | `r difficulty_understanding_verbal_medical_info_summary$n_percent[5]` | |
-| `r difficulty_understanding_verbal_medical_info_summary$difficulty_understanding_verbal_medical_info[6]` | `r difficulty_understanding_verbal_medical_info_summary$n_percent[6]` | |
-| Is Transportation Availability a Barrier? | | |
-| `r transportation_availability_summary$transportation_availability[1]` | `r transportation_availability_summary$n_percent[1]` | |
-| `r transportation_availability_summary$transportation_availability[2]` | `r transportation_availability_summary$n_percent[2]` | |
-| `r transportation_availability_summary$transportation_availability[3]` | `r transportation_availability_summary$n_percent[3]` | |
-| Is Doctor/Nurse Availability a Barrier? | | |
-| `r doctor_availability_summary$doctor_availability[1]` | `r doctor_availability_summary$n_percent[1]` | |
-| `r doctor_availability_summary$doctor_availability[2]` | `r doctor_availability_summary$n_percent[2]` | |
-| `r doctor_availability_summary$doctor_availability[3]` | `r doctor_availability_summary$n_percent[3]` | |
-| Is Appointment Wait Time a Barrier? | | |
-| `r wait_time_barrier_summary$wait_time_barrier[1]` | `r wait_time_barrier_summary$n_percent[1]` | |
-| `r wait_time_barrier_summary$wait_time_barrier[2]` | `r wait_time_barrier_summary$n_percent[2]` | |
-| `r wait_time_barrier_summary$wait_time_barrier[3]` | `r wait_time_barrier_summary$n_percent[3]` | |
