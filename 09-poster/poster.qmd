@@ -89,21 +89,21 @@ health_survey_df$income_category <- factor(
 )
 ```
 
-
 ```{r}
-gf_bar(~received_services_at_catherines,
-    fill = ~income_category,
+gf_bar(~income_category,
+    fill = ~received_services_at_catherines,
     data = subset(health_survey_df, !is.na(income_category) &
         !is.na(received_services_at_catherines)),
     position = "dodge"
 ) +
     labs(
-        title = "People Who Are More Affluent Tend Not to Use Catherine's Services.",
-        x = "Income",
-        y = "Count"
+        title = "Service Use at Catherine's by Income Category",
+        x = "Income Category",
+        y = "Count",
+        fill = "Used Catherine's Services"
     ) +
-    scale_fill_discrete(name = "Income Category") +
-    theme_minimal()
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 :::
