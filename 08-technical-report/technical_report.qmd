@@ -282,7 +282,7 @@ To produce these tables, we first cleaned and prepared the survey data. For more
 | `r medicaid_medicare_coverage_summary$medicaid_medicare_coverage[4]` | `r medicaid_medicare_coverage_summary$n_percent[4]` | |
 | `r medicaid_medicare_coverage_summary$medicaid_medicare_coverage[5]` | `r medicaid_medicare_coverage_summary$n_percent[5]` | |
 
-### Table 2. Questions Related to Personal Healthcare
+## Table 2. Questions Related to Personal Healthcare
 
 | Variable | N (%) | Mean +/- SD | Range |
 | --- | --- | --- | --- |
@@ -340,7 +340,7 @@ To produce these tables, we first cleaned and prepared the survey data. For more
 | `r barriers_summary$barriers_to_using_catherines[9]` | `r barriers_summary$n_percent[9]` | |
 | `r barriers_summary$barriers_to_using_catherines[10]` | `r barriers_summary$n_percent[10]` | |
 
-### Table 3. Questions Related to Catherine’s Utilization
+## Table 3. Questions Related to Catherine’s Utilization
 
 | Variable | N (%) | Mean +/- SD | Range |
 | --- | --- | --- | --- |
