@@ -1,6 +1,6 @@
 ---
 title: "Technical Report"
-author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah"]
+author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah", "Stacy DeRuiter", "Erica Boldenow", "Dani McBride"]
 date: 05-02-2025
 format:
   html:
