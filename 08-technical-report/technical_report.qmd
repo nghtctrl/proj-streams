@@ -1,7 +1,7 @@
 ---
 title: "Technical Report"
 author: ["Jiho Kim", "Minji Hur", "Jake McClure", "Sally Amonoo-Mensah", "Stacy DeRuiter", "Erica Boldenow", "Dani McBride"]
-date: 05-02-2025
+date: 05-08-2025
 format:
   html:
     embed-resources: true
@@ -29,13 +29,13 @@ library(car)
 #| include: false
 
 health_survey_df <- read_csv(
-  "https://github.com/nghtctrl/proj-streams/raw/refs/heads/main/clean_health_survey_data.csv",
-  show_col_types = FALSE
+    "https://github.com/nghtctrl/proj-streams/raw/refs/heads/main/clean_health_survey_data.csv",
+    show_col_types = FALSE
 )
 
 health_survey_numeric_df <- read_csv(
-  "https://github.com/nghtctrl/proj-streams/raw/refs/heads/main/health_survey_data.csv",
-  show_col_types = FALSE
+    "https://github.com/nghtctrl/proj-streams/raw/refs/heads/main/health_survey_data.csv",
+    show_col_types = FALSE
 )
 ```
 
@@ -44,178 +44,188 @@ health_survey_numeric_df <- read_csv(
 
 # Convert from string to numeric format
 health_survey_df <- health_survey_df |>
-  mutate(age = as.numeric(trimws(age)))
+    mutate(age = as.numeric(trimws(age)))
 
 trust_in_healthcare_system_summary <- health_survey_df |>
-  select(trust_in_healthcare_system) |>
-  group_by(trust_in_healthcare_system) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(trust_in_healthcare_system) |>
+    group_by(trust_in_healthcare_system) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 age_summary <- health_survey_df |>
-  summarise(
-    variable = "Age",
-    n_percent = paste0(n(), " (", round((n() / sum(n())) * 100, 1), "%)"),
-    mean_sd = paste0(round(mean(age, na.rm = TRUE), 1), " ± ", round(sd(age, na.rm = TRUE), 1)),
-    range = paste0(min(age, na.rm = TRUE), " - ", max(age, na.rm = TRUE))
-  )
+    summarise(
+        variable = "Age",
+        n_percent = paste0(n(), " (", round((n() / sum(n())) * 100, 1), "%)"),
+        mean_sd = paste0(round(mean(age, na.rm = TRUE), 1), " ± ", round(sd(age, na.rm = TRUE), 1)),
+        range = paste0(min(age, na.rm = TRUE), " - ", max(age, na.rm = TRUE))
+    )
 
 gender_identity_summary <- health_survey_df |>
-  select(gender_identity) |>
-  group_by(gender_identity) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(gender_identity) |>
+    group_by(gender_identity) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 race_ethnicity_summary <- health_survey_df |>
-  select(race_ethnicity) |>
-  group_by(race_ethnicity) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(race_ethnicity) |>
+    group_by(race_ethnicity) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 primary_language_summary <- health_survey_df |>
-  select(primary_language_spoken) |>
-  group_by(primary_language_spoken) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(primary_language_spoken) |>
+    group_by(primary_language_spoken) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 income_category_summary <- health_survey_df |>
-  select(income_category) |>
-  group_by(income_category) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(income_category) |>
+    group_by(income_category) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 health_coverage_summary <- health_survey_df |>
-  select(health_coverage) |>
-  group_by(health_coverage) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(health_coverage) |>
+    group_by(health_coverage) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 dental_insurance_coverage_summary <- health_survey_df |>
-  select(dental_insurance_coverage) |>
-  group_by(dental_insurance_coverage) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(dental_insurance_coverage) |>
+    group_by(dental_insurance_coverage) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 medicaid_medicare_coverage_summary <- health_survey_df |>
-  select(medicaid_medicare_coverage) |>
-  group_by(medicaid_medicare_coverage) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(medicaid_medicare_coverage) |>
+    group_by(medicaid_medicare_coverage) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 time_since_last_checkup_summary <- health_survey_df |>
-  select(time_since_last_checkup) |>
-  group_by(time_since_last_checkup) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(time_since_last_checkup) |>
+    group_by(time_since_last_checkup) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 awareness_of_clinics_summary <- health_survey_df |>
-  select(awareness_of_clinics) |>
-  group_by(awareness_of_clinics) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(awareness_of_clinics) |>
+    group_by(awareness_of_clinics) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 received_services_summary <- health_survey_df |>
-  select(received_services_at_catherines) |>
-  group_by(received_services_at_catherines) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(received_services_at_catherines) |>
+    group_by(received_services_at_catherines) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 satisfaction_summary <- health_survey_df |>
-  select(satisfaction_with_catherines) |>
-  filter(!is.na(satisfaction_with_catherines) & satisfaction_with_catherines != "") |>
-  group_by(satisfaction_with_catherines) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(satisfaction_with_catherines) |>
+    filter(!is.na(satisfaction_with_catherines) & satisfaction_with_catherines != "") |>
+    group_by(satisfaction_with_catherines) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 barriers_summary <- health_survey_df |>
-  select(barriers_to_using_catherines) |>
-  filter(!is.na(barriers_to_using_catherines) & barriers_to_using_catherines != "") |>
-  group_by(barriers_to_using_catherines) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(barriers_to_using_catherines) |>
+    filter(!is.na(barriers_to_using_catherines) & barriers_to_using_catherines != "") |>
+    group_by(barriers_to_using_catherines) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 health_insurance_barrier_summary <- health_survey_df |>
-  select(health_insurance_barrier) |>
-  group_by(health_insurance_barrier) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(health_insurance_barrier) |>
+    group_by(health_insurance_barrier) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 language_barrier_summary <- health_survey_df |>
-  select(language_barrier) |>
-  group_by(language_barrier) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(language_barrier) |>
+    group_by(language_barrier) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 difficulty_understanding_written_medical_info_summary <- health_survey_df |>
-  select(difficulty_understanding_written_medical_info) |>
-  group_by(difficulty_understanding_written_medical_info) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(difficulty_understanding_written_medical_info) |>
+    group_by(difficulty_understanding_written_medical_info) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 difficulty_understanding_verbal_medical_info_summary <- health_survey_df |>
-  select(difficulty_understanding_verbal_medical_info) |>
-  group_by(difficulty_understanding_verbal_medical_info) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(difficulty_understanding_verbal_medical_info) |>
+    group_by(difficulty_understanding_verbal_medical_info) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 transportation_availability_summary <- health_survey_df |>
-  select(transportation_availability) |>
-  group_by(transportation_availability) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(transportation_availability) |>
+    group_by(transportation_availability) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 doctor_availability_summary <- health_survey_df |>
-  select(doctor_availability) |>
-  group_by(doctor_availability) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(doctor_availability) |>
+    group_by(doctor_availability) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 
 wait_time_barrier_summary <- health_survey_df |>
-  select(wait_time_barrier) |>
-  group_by(wait_time_barrier) |>
-  summarise(n = n(), .groups = "drop") |>
-  mutate(percentage = round((n / sum(n)) * 100, 1)) |>
-  mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
-  arrange(desc(n))
+    select(wait_time_barrier) |>
+    group_by(wait_time_barrier) |>
+    summarise(n = n(), .groups = "drop") |>
+    mutate(percentage = round((n / sum(n)) * 100, 1)) |>
+    mutate(n_percent = paste0(n, " (", percentage, "%)")) |>
+    arrange(desc(n))
 ```
+
+::: {.callout-note}
+**Summary of Revision**
+
+- Reworded "an initial visualization..." to "an initial summary..."
+- Grouped the income categories in order.
+- Swapped the roles of the income category and Catherine's service use in the bar plot (to make it easy to compare yes/no groups).
+- Added screenshot of the rendered causal diagram (I am not sure why the mermaid fails to render in another environment, but screenshot is a workaround).
+- Added custome labels to the prediction plot.
+:::
 
 # Introduction
 
@@ -225,7 +235,7 @@ The primary objective of the survey was to evaluate the healthcare needs of Town
 
 # Descriptive Table
 
-To provide an initial visualization of the self-reported survey data, we created sets of descriptive tables showing the basic statistics (i.e., percentage of respondents, mean, standard deviation, and range) for the relevant variables.
+To provide an initial summary of the self-reported survey data, we created sets of descriptive tables showing the basic statistics (i.e., percentage of respondents, mean, standard deviation, and range) for the relevant variables.
 
 To produce these tables, we first cleaned and prepared the survey data. For more details on the data cleaning and preparation process, please refer to [Appendix B](#sec-appendix-b).
 
@@ -384,29 +394,53 @@ To produce these tables, we first cleaned and prepared the survey data. For more
 Based on the descriptive table, we were particularly curious about *who* uses Catherine's services. One factor we believed to be relevant was the survey respondents' annual household income.
 
 ```{r}
-gf_bar(~received_services_at_catherines, fill = ~income_category,
-       data = subset(health_survey_df, !is.na(income_category) & 
-                     !is.na(received_services_at_catherines)), 
-       position = "dodge") +
-  labs(
-    title = "People Who Are More Affluent Tend Not to Use Catherine's Services.",
-    x = "Income", 
-    y = "Count"
-  ) +
-  scale_fill_discrete(name = "Income Category") +
-  theme_minimal()
+#| include: false
+
+# Re-ordering
+health_survey_df$income_category <- factor(
+    health_survey_df$income_category,
+    levels = c(
+        "Less than $10,000",
+        "$10,000 - $14,999",
+        "$15,000 - $19,999",
+        "$20,000 - $24,999",
+        "$25,000 - $34,999",
+        "$35,000 - $49,999",
+        "$50,000 - $74,999",
+        "$75,000 or above",
+        "Don’t know / Not sure",
+        "Refused"
+    )
+)
+```
+
+```{r}
+gf_bar(~income_category,
+    fill = ~received_services_at_catherines,
+    data = subset(health_survey_df, !is.na(income_category) &
+        !is.na(received_services_at_catherines)),
+    position = "dodge"
+) +
+    labs(
+        title = "Service Use at Catherine's by Income Category",
+        x = "Income Category",
+        y = "Count",
+        fill = "Used Catherine's Services"
+    ) +
+    theme_minimal() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 Based on this plot, we can see that more affluent respondents (i.e., those within the $25,000 to $49,999 range) tend not to use Catherine's services. To further explore whether there is an association between annual household income and the use of Catherine's services, we initially planned to build a model. However, due to limitations in sample size, we decided to examine another factor instead: age.
 
 ```{r}
 gf_boxplot(
-  received_services_at_catherines ~ age, 
-  data = health_survey_df
+    received_services_at_catherines ~ age,
+    data = health_survey_df
 ) |> gf_labs(
-  title = "Older People Receive More Services at Catherine's",
-  x = "Age",
-  y = "Received Services at Catherine's"
+    title = "Older People Receive More Services at Catherine's",
+    x = "Age",
+    y = "Received Services at Catherine's"
 )
 ```
 
@@ -422,6 +456,7 @@ To help plan our model, we first drew a causal diagram of the variables that we 
 
 ### Causal Diagram
 
+<!--
 ```{mermaid}
 flowchart LR
   A(Age)
@@ -449,6 +484,9 @@ flowchart LR
   C --> E
   C --> F
 ```
+-->
+
+![](causal_diagram2.png)
 
 ### Checklist
 
@@ -494,16 +532,16 @@ We fitted a binomial model with logit link function because our response variabl
 
 ```{r}
 health_survey_df <- health_survey_df |>
-  mutate(
-    received_services_at_catherines = factor(
-      received_services_at_catherines
+    mutate(
+        received_services_at_catherines = factor(
+            received_services_at_catherines
+        )
     )
-  )
 
 health_survey_model <- glmmTMB(
-  received_services_at_catherines ~ age,
-  data = health_survey_df,
-  family = binomial(link = "logit")
+    received_services_at_catherines ~ age,
+    data = health_survey_df,
+    family = binomial(link = "logit")
 )
 
 summary(health_survey_model)
@@ -537,7 +575,17 @@ Since all the conditions are satisfied, we can continue and draw a conclusion us
 ## Prediction Plot
 
 ```{r}
-ggpredict(health_survey_model, terms = "age [all]") |> plot()
+# Get predicted probabilities
+pred <- ggpredict(health_survey_model, terms = "age [all]")
+
+# Plot with custom labels
+plot(pred) +
+    labs(
+        title = "Predicted Probability of Receiving Services at St. Catherine's by Age",
+        x = "Age (Years)",
+        y = "Probability of Receiving Services (%)"
+    ) +
+    theme_minimal()
 ```
 
 This plot shows that the predicted probability of receiving services at Catherine's increases with age. The shaded region represents the confidence interval, indicating greater uncertainty in predictions at both extremes of the age range.
@@ -628,8 +676,8 @@ This is a data dictionary that we developed based on looking at the [original ra
 ```{r}
 # Load the dataset
 health_survey_df <- read_csv(
-  "https://github.com/nghtctrl/proj-streams/raw/refs/heads/main/health_survey_data.csv",
-  show_col_types = FALSE
+    "https://github.com/nghtctrl/proj-streams/raw/refs/heads/main/health_survey_data.csv",
+    show_col_types = FALSE
 )
 
 # Exclude both the first and last row
@@ -644,316 +692,316 @@ The column names were renamed using the data dictionary that we developed on [Ap
 
 ```{r}
 health_survey_df <- health_survey_df |>
-  transmute(
-    usual_place_healthcare = case_when(
-      QID6 == "1" ~ "Yes",
-      QID6 == "2" ~ "No",
-      QID6 == "3" ~ "More than one place",
-      QID6 == "4" ~ "Don’t know / Not sure",
-      QID6 == "5" ~ "Refused"
-    ),
-    healthcare_facility_type = case_when(
-      QID7 == "1" ~ "Clinic or health center",
-      QID7 == "2" ~ "Doctor’s office or HMO",
-      QID7 == "3" ~ "Hospital ER",
-      QID7 == "4" ~ "Urgent care / walk-in clinic",
-      QID7 == "5" ~ "Some other place",
-      QID7 == "6" ~ "Don’t know",
-      QID7 == "7" ~ "Refused"
-    ),
-    awareness_of_clinics = str_replace_all(QID8, c(
-      "1" = "Clinica Santa Maria",
-      "3" = "Cherry Street Clinic",
-      "4" = "Exalta Health",
-      "5" = "Catherine’s Health Center",
-      "6" = "None of these",
-      "7" = "Corewell Urgent Care"
-    )),
-    num_ER_visits_past_year = QID9,
-    time_since_last_checkup = case_when(
-      QID12 == "1" ~ "Less than 1 year",
-      QID12 == "2" ~ "1-2 years",
-      QID12 == "3" ~ "2-5 years",
-      QID12 == "4" ~ "More than 5 years",
-      QID12 == "5" ~ "Never",
-      QID12 == "6" ~ "Don’t know / Not sure",
-      QID12 == "7" ~ "Refused"
-    ),
-    asthma_in_household = str_replace_all(QID89BH_1, c(
-      "1" = "Respondent",
-      "2" = "No one",
-      "3" = "Don’t know / Refused",
-      "4" = "Household member"
-    )),
-    high_bp_in_household = str_replace_all(QID89BH_2, c(
-      "1" = "Respondent",
-      "2" = "No one",
-      "3" = "Don’t know / Refused",
-      "4" = "Household member"
-    )),
-    overweight_in_household = str_replace_all(QID89BH_3, c(
-      "1" = "Respondent",
-      "2" = "No one",
-      "3" = "Don’t know / Refused",
-      "4" = "Household member"
-    )),
-    depression_in_household = str_replace_all(QID89BH_4, c(
-      "1" = "Respondent",
-      "2" = "No one",
-      "3" = "Don’t know / Refused",
-      "4" = "Household member"
-    )),
-    anxiety_in_household = str_replace_all(QID89BH_5, c(
-      "1" = "Respondent",
-      "2" = "No one",
-      "3" = "Don’t know / Refused",
-      "4" = "Household member"
-    )),
-    diabetes_in_household = str_replace_all(QID89BH_6, c(
-      "1" = "Respondent",
-      "2" = "No one",
-      "3" = "Don’t know / Refused",
-      "4" = "Household member"
-    )),
-    health_insurance_barrier = case_when(
-      Q16_1 == "1" ~ "Agree",
-      Q16_1 == "2" ~ "Neutral",
-      Q16_1 == "3" ~ "Disagree"
-    ),
-    language_barrier = case_when(
-      Q16_4 == "1" ~ "Agree",
-      Q16_4 == "2" ~ "Neutral",
-      Q16_4 == "3" ~ "Disagree"
-    ),
-    transportation_availability = case_when(
-      Q16_6 == "1" ~ "Agree",
-      Q16_6 == "2" ~ "Neutral",
-      Q16_6 == "3" ~ "Disagree"
-    ),
-    doctor_availability = case_when(
-      Q16_7 == "1" ~ "Agree",
-      Q16_7 == "2" ~ "Neutral",
-      Q16_7 == "3" ~ "Disagree"
-    ),
-    wait_time_barrier = case_when(
-      Q16_9 == "1" ~ "Agree",
-      Q16_9 == "2" ~ "Neutral",
-      Q16_9 == "3" ~ "Disagree"
-    ),
-    health_coverage = case_when(
-      QID20 == "1" ~ "Yes",
-      QID20 == "2" ~ "No",
-      QID20 == "3" ~ "Don’t know / Not sure",
-      QID20 == "4" ~ "Refused"
-    ),
-    medicaid_medicare_coverage = case_when(
-      QID21 == "1" ~ "Medicaid only",
-      QID21 == "2" ~ "Medicare only",
-      QID21 == "3" ~ "Both",
-      QID21 == "4" ~ "No",
-      QID21 == "5" ~ "Don’t know / Not sure",
-      QID21 == "6" ~ "Refused"
-    ),
-    needed_doctor_but_could_not_due_to_cost = case_when(
-      QID22 == "1" ~ "Yes",
-      QID22 == "2" ~ "No",
-      QID22 == "3" ~ "Don’t know / Not sure",
-      QID22 == "4" ~ "Refused"
-    ),
-    prescription_medication_affordability = case_when(
-      QID26 == "1" ~ "Yes",
-      QID26 == "2" ~ "No",
-      QID26 == "3" ~ "Don’t know / Not sure",
-      QID26 == "4" ~ "Refused"
-    ),
-    trust_in_healthcare_system = case_when(
-      QID200 == "1" ~ "Completely trust",
-      QID200 == "2" ~ "Slightly trust",
-      QID200 == "3" ~ "Neither trust nor distrust",
-      QID200 == "4" ~ "Slightly distrust",
-      QID200 == "5" ~ "Completely distrust",
-      QID200 == "6" ~ "Don’t know / Not sure",
-      QID200 == "7" ~ "Refused"
-    ),
-    difficulty_understanding_written_medical_info = case_when(
-      QID201 == "1" ~ "Always",
-      QID201 == "2" ~ "Often",
-      QID201 == "3" ~ "Sometimes",
-      QID201 == "4" ~ "Occasionally",
-      QID201 == "5" ~ "Never",
-      QID201 == "6" ~ "Don’t know / Not sure",
-      QID201 == "7" ~ "Refused"
-    ),
-    difficulty_understanding_verbal_medical_info = case_when(
-      QID202 == "1" ~ "Always",
-      QID202 == "2" ~ "Often",
-      QID202 == "3" ~ "Sometimes",
-      QID202 == "4" ~ "Occasionally",
-      QID202 == "5" ~ "Never",
-      QID202 == "6" ~ "Don’t know / Not sure",
-      QID202 == "7" ~ "Refused"
-    ),
-    time_since_last_dental_visit = case_when(
-      QID29 == "1" ~ "Less than 1 year",
-      QID29 == "2" ~ "1-2 years",
-      QID29 == "3" ~ "2-5 years",
-      QID29 == "4" ~ "More than 5 years",
-      QID29 == "5" ~ "Never",
-      QID29 == "6" ~ "Don’t know / Not sure",
-      QID29 == "7" ~ "Refused"
-    ),
-    dental_insurance_coverage = case_when(
-      QID30 == "1" ~ "Yes",
-      QID30 == "2" ~ "No",
-      QID30 == "3" ~ "Don’t know / Not sure",
-      QID30 == "4" ~ "Refused"
-    ),
-    forgone_dental_care_due_to_cost = case_when(
-      QID31 == "1" ~ "Yes",
-      QID31 == "2" ~ "No",
-      QID31 == "3" ~ "Don’t know / Not sure",
-      QID31 == "4" ~ "Refused"
-    ),
-    safe_spaces_for_children_after_school = case_when(
-      QID204 == "1" ~ "Yes",
-      QID204 == "2" ~ "No",
-      QID204 == "3" ~ "Don’t know / Not sure",
-      QID204 == "4" ~ "Refused"
-    ),
-    housing_insecurity = case_when(
-      QID208 == "1" ~ "Yes",
-      QID208 == "2" ~ "No",
-      QID208 == "3" ~ "Don’t know / Not sure",
-      QID208 == "4" ~ "Refused"
-    ),
-    feeling_nervous_anxious = case_when(
-      Q34_1 == "1" ~ "Not at all",
-      Q34_1 == "2" ~ "Several days",
-      Q34_1 == "3" ~ "More than half the days",
-      Q34_1 == "4" ~ "Nearly every day",
-      Q34_1 == "6" ~ "Don’t know / Not sure",
-      Q34_1 == "7" ~ "Refused"
-    ),
-    unable_to_control_worrying = case_when(
-      Q34_2 == "1" ~ "Not at all",
-      Q34_2 == "2" ~ "Several days",
-      Q34_2 == "3" ~ "More than half the days",
-      Q34_2 == "4" ~ "Nearly every day",
-      Q34_2 == "6" ~ "Don’t know / Not sure",
-      Q34_2 == "7" ~ "Refused"
-    ),
-    lack_interest_pleasure = case_when(
-      Q34_3 == "1" ~ "Not at all",
-      Q34_3 == "2" ~ "Several days",
-      Q34_3 == "3" ~ "More than half the days",
-      Q34_3 == "4" ~ "Nearly every day",
-      Q34_3 == "6" ~ "Don’t know / Not sure",
-      Q34_3 == "7" ~ "Refused"
-    ),
-    feeling_down_depressed = case_when(
-      Q34_4 == "1" ~ "Not at all",
-      Q34_4 == "2" ~ "Several days",
-      Q34_4 == "3" ~ "More than half the days",
-      Q34_4 == "4" ~ "Nearly every day",
-      Q34_4 == "6" ~ "Don’t know / Not sure",
-      Q34_4 == "7" ~ "Refused"
-    ),
-    primary_language_spoken = case_when(
-      QID44 == "1" ~ "English",
-      QID44 == "2" ~ "Spanish",
-      QID44 == "6" ~ "Nepali",
-      QID44 == "7" ~ "Vietnamese",
-      QID44 == "3" ~ "Other",
-      QID44 == "4" ~ "Don’t know / Not sure",
-      QID44 == "5" ~ "Refused"
-    ),
-    home_ownership_status = case_when(
-      QID45 == "1" ~ "Own",
-      QID45 == "2" ~ "Rent",
-      QID45 == "3" ~ "Don’t know / Not sure",
-      QID45 == "4" ~ "Refused"
-    ),
-    highest_education_level = case_when(
-      Q41 == "1" ~ "Less than 6th grade",
-      Q41 == "11" ~ "6th-8th grade",
-      Q41 == "8" ~ "9th-11th grade",
-      Q41 == "2" ~ "High school diploma / GED",
-      Q41 == "4" ~ "Some college",
-      Q41 == "5" ~ "Associate or technical degree",
-      Q41 == "6" ~ "Bachelor's degree",
-      Q41 == "7" ~ "Master's degree or higher",
-      Q41 == "9" ~ "Don't know / Not sure",
-      Q41 == "10" ~ "Refused"
-    ),
-    age = QID46,
-    race_ethnicity = str_replace_all(QID47, c(
-      "1" = "White / Caucasian",
-      "2" = "Black / African-American",
-      "3" = "Hispanic / Latino / Spanish origin",
-      "4" = "American Indian or Alaska Native",
-      "5" = "Asian",
-      "6" = "Native Hawaiian / Pacific Islander",
-      "7" = "Other",
-      "8" = "Refused",
-      "9" = "Don’t know / Not sure"
-    )),
-    income_category = case_when(
-      QID49 == "1" ~ "Less than $10,000",
-      QID49 == "2" ~ "$10,000 - $14,999",
-      QID49 == "3" ~ "$15,000 - $19,999",
-      QID49 == "4" ~ "$20,000 - $24,999",
-      QID49 == "5" ~ "$25,000 - $34,999",
-      QID49 == "6" ~ "$35,000 - $49,999",
-      QID49 == "7" ~ "$50,000 - $74,999",
-      QID49 == "10" ~ "$75,000 or above",
-      QID49 == "8" ~ "Don’t know / Not sure",
-      QID49 == "9" ~ "Refused"
-    ),
-    gender_identity = case_when(
-      QID91 == "1" ~ "Male",
-      QID91 == "2" ~ "Female",
-      QID91 == "3" ~ "Non-binary",
-      QID91 == "4" ~ "Self-described",
-      QID91 == "5" ~ "Prefer not to say"
-    ),
-    home_ownership = case_when(
-      QID45 == "1" ~ "Own",
-      QID45 == "2" ~ "Rent",
-      QID45 == "3" ~ "Don’t know / Not sure",
-      QID45 == "4" ~ "Refused"
-    ),
-    received_services_at_catherines = case_when(
-      Q107 == "1" ~ "Yes",
-      Q107 == "2" ~ "No",
-      Q107 == "3" ~ "Don’t know / Not sure",
-      Q107 == "4" ~ "Refused"
-    ),
-    satisfaction_with_catherines = case_when(
-      Q108 == "1" ~ "Very satisfied",
-      Q108 == "2" ~ "Satisfied",
-      Q108 == "3" ~ "Neither satisfied nor dissatisfied",
-      Q108 == "4" ~ "Dissatisfied",
-      Q108 == "5" ~ "Very dissatisfied",
-      Q108 == "6" ~ "Don’t know / Not sure",
-      Q108 == "7" ~ "Refused"
-    ),
-    barriers_to_using_catherines = str_replace_all(Q109, c(
-      "1" = "Lack of information",
-      "2" = "Lack of insurance",
-      "3" = "Lack of transportation",
-      "4" = "Long appointment wait times",
-      "5" = "Clinic hours not convenient",
-      "6" = "Other",
-      "7" = "Don’t know / Not sure",
-      "8" = "Refused"
-    )),
-    lives_in_zipcode_49548 = case_when(
-      Q110 == "1" ~ "Yes",
-      Q110 == "2" ~ "No",
-      Q110 == "3" ~ "Don’t know / Not sure",
-      Q110 == "4" ~ "Refused"
+    transmute(
+        usual_place_healthcare = case_when(
+            QID6 == "1" ~ "Yes",
+            QID6 == "2" ~ "No",
+            QID6 == "3" ~ "More than one place",
+            QID6 == "4" ~ "Don’t know / Not sure",
+            QID6 == "5" ~ "Refused"
+        ),
+        healthcare_facility_type = case_when(
+            QID7 == "1" ~ "Clinic or health center",
+            QID7 == "2" ~ "Doctor’s office or HMO",
+            QID7 == "3" ~ "Hospital ER",
+            QID7 == "4" ~ "Urgent care / walk-in clinic",
+            QID7 == "5" ~ "Some other place",
+            QID7 == "6" ~ "Don’t know",
+            QID7 == "7" ~ "Refused"
+        ),
+        awareness_of_clinics = str_replace_all(QID8, c(
+            "1" = "Clinica Santa Maria",
+            "3" = "Cherry Street Clinic",
+            "4" = "Exalta Health",
+            "5" = "Catherine’s Health Center",
+            "6" = "None of these",
+            "7" = "Corewell Urgent Care"
+        )),
+        num_ER_visits_past_year = QID9,
+        time_since_last_checkup = case_when(
+            QID12 == "1" ~ "Less than 1 year",
+            QID12 == "2" ~ "1-2 years",
+            QID12 == "3" ~ "2-5 years",
+            QID12 == "4" ~ "More than 5 years",
+            QID12 == "5" ~ "Never",
+            QID12 == "6" ~ "Don’t know / Not sure",
+            QID12 == "7" ~ "Refused"
+        ),
+        asthma_in_household = str_replace_all(QID89BH_1, c(
+            "1" = "Respondent",
+            "2" = "No one",
+            "3" = "Don’t know / Refused",
+            "4" = "Household member"
+        )),
+        high_bp_in_household = str_replace_all(QID89BH_2, c(
+            "1" = "Respondent",
+            "2" = "No one",
+            "3" = "Don’t know / Refused",
+            "4" = "Household member"
+        )),
+        overweight_in_household = str_replace_all(QID89BH_3, c(
+            "1" = "Respondent",
+            "2" = "No one",
+            "3" = "Don’t know / Refused",
+            "4" = "Household member"
+        )),
+        depression_in_household = str_replace_all(QID89BH_4, c(
+            "1" = "Respondent",
+            "2" = "No one",
+            "3" = "Don’t know / Refused",
+            "4" = "Household member"
+        )),
+        anxiety_in_household = str_replace_all(QID89BH_5, c(
+            "1" = "Respondent",
+            "2" = "No one",
+            "3" = "Don’t know / Refused",
+            "4" = "Household member"
+        )),
+        diabetes_in_household = str_replace_all(QID89BH_6, c(
+            "1" = "Respondent",
+            "2" = "No one",
+            "3" = "Don’t know / Refused",
+            "4" = "Household member"
+        )),
+        health_insurance_barrier = case_when(
+            Q16_1 == "1" ~ "Agree",
+            Q16_1 == "2" ~ "Neutral",
+            Q16_1 == "3" ~ "Disagree"
+        ),
+        language_barrier = case_when(
+            Q16_4 == "1" ~ "Agree",
+            Q16_4 == "2" ~ "Neutral",
+            Q16_4 == "3" ~ "Disagree"
+        ),
+        transportation_availability = case_when(
+            Q16_6 == "1" ~ "Agree",
+            Q16_6 == "2" ~ "Neutral",
+            Q16_6 == "3" ~ "Disagree"
+        ),
+        doctor_availability = case_when(
+            Q16_7 == "1" ~ "Agree",
+            Q16_7 == "2" ~ "Neutral",
+            Q16_7 == "3" ~ "Disagree"
+        ),
+        wait_time_barrier = case_when(
+            Q16_9 == "1" ~ "Agree",
+            Q16_9 == "2" ~ "Neutral",
+            Q16_9 == "3" ~ "Disagree"
+        ),
+        health_coverage = case_when(
+            QID20 == "1" ~ "Yes",
+            QID20 == "2" ~ "No",
+            QID20 == "3" ~ "Don’t know / Not sure",
+            QID20 == "4" ~ "Refused"
+        ),
+        medicaid_medicare_coverage = case_when(
+            QID21 == "1" ~ "Medicaid only",
+            QID21 == "2" ~ "Medicare only",
+            QID21 == "3" ~ "Both",
+            QID21 == "4" ~ "No",
+            QID21 == "5" ~ "Don’t know / Not sure",
+            QID21 == "6" ~ "Refused"
+        ),
+        needed_doctor_but_could_not_due_to_cost = case_when(
+            QID22 == "1" ~ "Yes",
+            QID22 == "2" ~ "No",
+            QID22 == "3" ~ "Don’t know / Not sure",
+            QID22 == "4" ~ "Refused"
+        ),
+        prescription_medication_affordability = case_when(
+            QID26 == "1" ~ "Yes",
+            QID26 == "2" ~ "No",
+            QID26 == "3" ~ "Don’t know / Not sure",
+            QID26 == "4" ~ "Refused"
+        ),
+        trust_in_healthcare_system = case_when(
+            QID200 == "1" ~ "Completely trust",
+            QID200 == "2" ~ "Slightly trust",
+            QID200 == "3" ~ "Neither trust nor distrust",
+            QID200 == "4" ~ "Slightly distrust",
+            QID200 == "5" ~ "Completely distrust",
+            QID200 == "6" ~ "Don’t know / Not sure",
+            QID200 == "7" ~ "Refused"
+        ),
+        difficulty_understanding_written_medical_info = case_when(
+            QID201 == "1" ~ "Always",
+            QID201 == "2" ~ "Often",
+            QID201 == "3" ~ "Sometimes",
+            QID201 == "4" ~ "Occasionally",
+            QID201 == "5" ~ "Never",
+            QID201 == "6" ~ "Don’t know / Not sure",
+            QID201 == "7" ~ "Refused"
+        ),
+        difficulty_understanding_verbal_medical_info = case_when(
+            QID202 == "1" ~ "Always",
+            QID202 == "2" ~ "Often",
+            QID202 == "3" ~ "Sometimes",
+            QID202 == "4" ~ "Occasionally",
+            QID202 == "5" ~ "Never",
+            QID202 == "6" ~ "Don’t know / Not sure",
+            QID202 == "7" ~ "Refused"
+        ),
+        time_since_last_dental_visit = case_when(
+            QID29 == "1" ~ "Less than 1 year",
+            QID29 == "2" ~ "1-2 years",
+            QID29 == "3" ~ "2-5 years",
+            QID29 == "4" ~ "More than 5 years",
+            QID29 == "5" ~ "Never",
+            QID29 == "6" ~ "Don’t know / Not sure",
+            QID29 == "7" ~ "Refused"
+        ),
+        dental_insurance_coverage = case_when(
+            QID30 == "1" ~ "Yes",
+            QID30 == "2" ~ "No",
+            QID30 == "3" ~ "Don’t know / Not sure",
+            QID30 == "4" ~ "Refused"
+        ),
+        forgone_dental_care_due_to_cost = case_when(
+            QID31 == "1" ~ "Yes",
+            QID31 == "2" ~ "No",
+            QID31 == "3" ~ "Don’t know / Not sure",
+            QID31 == "4" ~ "Refused"
+        ),
+        safe_spaces_for_children_after_school = case_when(
+            QID204 == "1" ~ "Yes",
+            QID204 == "2" ~ "No",
+            QID204 == "3" ~ "Don’t know / Not sure",
+            QID204 == "4" ~ "Refused"
+        ),
+        housing_insecurity = case_when(
+            QID208 == "1" ~ "Yes",
+            QID208 == "2" ~ "No",
+            QID208 == "3" ~ "Don’t know / Not sure",
+            QID208 == "4" ~ "Refused"
+        ),
+        feeling_nervous_anxious = case_when(
+            Q34_1 == "1" ~ "Not at all",
+            Q34_1 == "2" ~ "Several days",
+            Q34_1 == "3" ~ "More than half the days",
+            Q34_1 == "4" ~ "Nearly every day",
+            Q34_1 == "6" ~ "Don’t know / Not sure",
+            Q34_1 == "7" ~ "Refused"
+        ),
+        unable_to_control_worrying = case_when(
+            Q34_2 == "1" ~ "Not at all",
+            Q34_2 == "2" ~ "Several days",
+            Q34_2 == "3" ~ "More than half the days",
+            Q34_2 == "4" ~ "Nearly every day",
+            Q34_2 == "6" ~ "Don’t know / Not sure",
+            Q34_2 == "7" ~ "Refused"
+        ),
+        lack_interest_pleasure = case_when(
+            Q34_3 == "1" ~ "Not at all",
+            Q34_3 == "2" ~ "Several days",
+            Q34_3 == "3" ~ "More than half the days",
+            Q34_3 == "4" ~ "Nearly every day",
+            Q34_3 == "6" ~ "Don’t know / Not sure",
+            Q34_3 == "7" ~ "Refused"
+        ),
+        feeling_down_depressed = case_when(
+            Q34_4 == "1" ~ "Not at all",
+            Q34_4 == "2" ~ "Several days",
+            Q34_4 == "3" ~ "More than half the days",
+            Q34_4 == "4" ~ "Nearly every day",
+            Q34_4 == "6" ~ "Don’t know / Not sure",
+            Q34_4 == "7" ~ "Refused"
+        ),
+        primary_language_spoken = case_when(
+            QID44 == "1" ~ "English",
+            QID44 == "2" ~ "Spanish",
+            QID44 == "6" ~ "Nepali",
+            QID44 == "7" ~ "Vietnamese",
+            QID44 == "3" ~ "Other",
+            QID44 == "4" ~ "Don’t know / Not sure",
+            QID44 == "5" ~ "Refused"
+        ),
+        home_ownership_status = case_when(
+            QID45 == "1" ~ "Own",
+            QID45 == "2" ~ "Rent",
+            QID45 == "3" ~ "Don’t know / Not sure",
+            QID45 == "4" ~ "Refused"
+        ),
+        highest_education_level = case_when(
+            Q41 == "1" ~ "Less than 6th grade",
+            Q41 == "11" ~ "6th-8th grade",
+            Q41 == "8" ~ "9th-11th grade",
+            Q41 == "2" ~ "High school diploma / GED",
+            Q41 == "4" ~ "Some college",
+            Q41 == "5" ~ "Associate or technical degree",
+            Q41 == "6" ~ "Bachelor's degree",
+            Q41 == "7" ~ "Master's degree or higher",
+            Q41 == "9" ~ "Don't know / Not sure",
+            Q41 == "10" ~ "Refused"
+        ),
+        age = QID46,
+        race_ethnicity = str_replace_all(QID47, c(
+            "1" = "White / Caucasian",
+            "2" = "Black / African-American",
+            "3" = "Hispanic / Latino / Spanish origin",
+            "4" = "American Indian or Alaska Native",
+            "5" = "Asian",
+            "6" = "Native Hawaiian / Pacific Islander",
+            "7" = "Other",
+            "8" = "Refused",
+            "9" = "Don’t know / Not sure"
+        )),
+        income_category = case_when(
+            QID49 == "1" ~ "Less than $10,000",
+            QID49 == "2" ~ "$10,000 - $14,999",
+            QID49 == "3" ~ "$15,000 - $19,999",
+            QID49 == "4" ~ "$20,000 - $24,999",
+            QID49 == "5" ~ "$25,000 - $34,999",
+            QID49 == "6" ~ "$35,000 - $49,999",
+            QID49 == "7" ~ "$50,000 - $74,999",
+            QID49 == "10" ~ "$75,000 or above",
+            QID49 == "8" ~ "Don’t know / Not sure",
+            QID49 == "9" ~ "Refused"
+        ),
+        gender_identity = case_when(
+            QID91 == "1" ~ "Male",
+            QID91 == "2" ~ "Female",
+            QID91 == "3" ~ "Non-binary",
+            QID91 == "4" ~ "Self-described",
+            QID91 == "5" ~ "Prefer not to say"
+        ),
+        home_ownership = case_when(
+            QID45 == "1" ~ "Own",
+            QID45 == "2" ~ "Rent",
+            QID45 == "3" ~ "Don’t know / Not sure",
+            QID45 == "4" ~ "Refused"
+        ),
+        received_services_at_catherines = case_when(
+            Q107 == "1" ~ "Yes",
+            Q107 == "2" ~ "No",
+            Q107 == "3" ~ "Don’t know / Not sure",
+            Q107 == "4" ~ "Refused"
+        ),
+        satisfaction_with_catherines = case_when(
+            Q108 == "1" ~ "Very satisfied",
+            Q108 == "2" ~ "Satisfied",
+            Q108 == "3" ~ "Neither satisfied nor dissatisfied",
+            Q108 == "4" ~ "Dissatisfied",
+            Q108 == "5" ~ "Very dissatisfied",
+            Q108 == "6" ~ "Don’t know / Not sure",
+            Q108 == "7" ~ "Refused"
+        ),
+        barriers_to_using_catherines = str_replace_all(Q109, c(
+            "1" = "Lack of information",
+            "2" = "Lack of insurance",
+            "3" = "Lack of transportation",
+            "4" = "Long appointment wait times",
+            "5" = "Clinic hours not convenient",
+            "6" = "Other",
+            "7" = "Don’t know / Not sure",
+            "8" = "Refused"
+        )),
+        lives_in_zipcode_49548 = case_when(
+            Q110 == "1" ~ "Yes",
+            Q110 == "2" ~ "No",
+            Q110 == "3" ~ "Don’t know / Not sure",
+            Q110 == "4" ~ "Refused"
+        )
     )
-  )
 ```
 
 ```
