@@ -117,7 +117,7 @@ gf_boxplot(
     data = health_survey_df
 ) |> gf_labs(
     title = "Older People Receive More Services at Catherine's",
-    x = "Age (years)",
+    x = "Age (Years)",
     y = "Received Services at Catherine's"
 ) + theme_minimal()
 ```
@@ -157,12 +157,15 @@ health_survey_model <- glmmTMB(
 ```
 
 ```{r}
-age_preds <- ggpredict(health_survey_model, terms = c("age"))
-plot(age_preds) +
+# Get predicted probabilities
+pred <- ggpredict(health_survey_model, terms = "age [all]")
+
+# Plot with custom labels
+plot(pred) +
     labs(
-        title = "Predicted Probability of Receiving Services at Catherine's",
-        x = "Age (years)",
-        y = "Predicted Probability"
+        title = "Predicted Probability of Receiving Services at St. Catherine's by Age",
+        x = "Age (Years)",
+        y = "Probability of Receiving Services (%)"
     ) +
     theme_minimal()
 ```
