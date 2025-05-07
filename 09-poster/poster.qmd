@@ -69,6 +69,28 @@ health_survey_df <- read_csv("https://github.com/nghtctrl/proj-streams/raw/refs/
 ### Exploratory Data Analysis
 
 ```{r}
+#| include: false
+
+# Re-ordering
+health_survey_df$income_category <- factor(
+  health_survey_df$income_category,
+  levels = c(
+    "Less than $10,000",
+    "$10,000 - $14,999",
+    "$15,000 - $19,999",
+    "$20,000 - $24,999",
+    "$25,000 - $34,999",
+    "$35,000 - $49,999",
+    "$50,000 - $74,999",
+    "$75,000 or above",
+    "Don’t know / Not sure",
+    "Refused"
+  )
+)
+```
+
+
+```{r}
 gf_bar(~received_services_at_catherines,
     fill = ~income_category,
     data = subset(health_survey_df, !is.na(income_category) &
